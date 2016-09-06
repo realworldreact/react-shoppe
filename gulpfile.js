@@ -1,7 +1,11 @@
 var gulp = require('gulp');
+// var gutil = require('gulp-util');
+var notify = require('gulp-notify');
+var plumber = require('gulp-plumber');
 var stylus = require('gulp-stylus');
 var swiss = require('kouto-swiss');
 var nodemon = require('nodemon');
+var sourcemaps = require('gulp-sourcemaps');
 var debugFactory = require('debug');
 var browserSync = require('browser-sync');
 
@@ -22,6 +26,19 @@ var paths = {
   ],
   public: './public'
 };
+
+function errorHandler() {
+  var args = Array.prototype.slice.call(arguments);
+
+  // Send error to notification center with gulp-notify
+  notify.onError({
+    title: 'Compile Error',
+    message: '<%= error %>'
+  }).apply(this, args);
+
+  // Keep gulp from hanging on this task
+  this.emit('end');
+}
 
 gulp.task('serve', function(cb) {
   var called = false;
@@ -50,9 +67,12 @@ gulp.task('serve', function(cb) {
 
 gulp.task('stylus', function() {
   return gulp.src(paths.stylus)
+    .pipe(plumber({ errorHandler: errorHandler }))
+    .pipe(sourcemaps.init())
     .pipe(stylus({
       use: swiss()
     }))
+    .pipe(sourcemaps.write({ sourceRoot: '/stylus' }))
     .pipe(gulp.dest(paths.public))
     .pipe(reload({ stream: true }));
 });
