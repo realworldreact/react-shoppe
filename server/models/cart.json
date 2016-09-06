@@ -1,0 +1,20 @@
+{
+  "name": "cart",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "items": {
+      "type": [
+        "object"
+      ],
+      "default": "[]"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

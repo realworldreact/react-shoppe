@@ -31,5 +31,13 @@
   "Role": {
     "dataSource": "db",
     "public": false
+  },
+  "cart": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "product": {
+    "dataSource": "mongo",
+    "public": true
   }
 }
