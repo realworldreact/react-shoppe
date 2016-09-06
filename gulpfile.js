@@ -1,4 +1,6 @@
 var gulp = require('gulp');
+var stylus = require('gulp-stylus');
+var swiss = require('kouto-swiss');
 var nodemon = require('nodemon');
 var debugFactory = require('debug');
 var browserSync = require('browser-sync');
@@ -6,12 +8,19 @@ var browserSync = require('browser-sync');
 var pckg = require('./package.json');
 
 var debug = debugFactory('ar:gulpfile');
+var sync = browserSync.create('ar-sync-server');
+var reload = sync.reload.bind(sync);
 var paths = {
   server: pckg.main,
   serverIgnore: [
     './common/**/*',
     './client/**/*'
-  ]
+  ],
+  stylus: [
+    './client/**/*.styl',
+    '.common/**/*.styl'
+  ],
+  public: './public'
 };
 
 gulp.task('serve', function(cb) {
@@ -39,10 +48,21 @@ gulp.task('serve', function(cb) {
     });
 });
 
-var syncDepenedents = [ 'serve' ];
+gulp.task('stylus', function() {
+  return gulp.src(paths.stylus)
+    .pipe(stylus({
+      use: swiss()
+    }))
+    .pipe(gulp.dest(paths.public))
+    .pipe(reload({ stream: true }));
+});
 
-gulp.task('sync', syncDepenedents, function() {
-  var sync = browserSync.create();
+var syncDependents = [
+  'serve',
+  'stylus'
+];
+
+gulp.task('sync', syncDependents, function() {
   sync.init(null, {
     proxy: 'http://localhost:3000',
     logLeval: 'debug',
@@ -52,4 +72,8 @@ gulp.task('sync', syncDepenedents, function() {
   });
 });
 
-gulp.task('default', [ 'serve', 'sync' ]);
+gulp.task('watch', function() {
+  gulp.watch(paths.stylus, ['stylus']);
+});
+
+gulp.task('default', [ 'serve', 'stylus', 'sync', 'watch' ]);
