@@ -18,3 +18,5 @@ coverage
 node_modules
 npm-debug.log
 public
+*.env
+!sample.env

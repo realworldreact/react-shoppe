@@ -1,9 +1,20 @@
 'use strict';
+require('dotenv').load();
+require('babel-register');
 
 var loopback = require('loopback');
 var boot = require('loopback-boot');
+var path = require('path');
 
-var app = module.exports = loopback();
+var app = loopback();
+
+// expressState.extend(app);
+app.set('state namespace', '__ar__');
+app.set('port', process.env.PORT || 3000);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.use(loopback.token());
+app.disable('x-powered-by');
 
 app.start = function() {
   // start the web server
@@ -20,11 +31,18 @@ app.start = function() {
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, function(err) {
-  if (err) { throw err; }
+boot(
+  app,
+  {
+    appRootDir: __dirname,
+    dev: process.env.NODE_ENV
+  },
+  function(err) { if (err) { throw err; } }
+);
 
-  // start the server if `$ node server.js`
-  if (require.main === module) {
-    app.start();
-  }
-});
+module.exports = app;
+
+// start the server if `$ node server/server.js`
+if (require.main === module) {
+  app.start();
+}

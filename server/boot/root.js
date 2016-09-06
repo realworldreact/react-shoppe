@@ -1,8 +1,9 @@
-'use strict';
+export default function rootScript(app) {
+  const router = app.loopback.Router();
+  function renderHome(req, res) {
+    return res.render('index', { title: 'Advance Redux' });
+  }
 
-module.exports = function(server) {
-  // Install a `/` route that returns server status
-  var router = server.loopback.Router();
-  router.get('/', server.loopback.status());
-  server.use(router);
-};
+  router.get('/', renderHome);
+  app.use(router);
+}

@@ -8,15 +8,23 @@
     "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
+    "babel-core": "^6.14.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.14.0",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "debug": "^2.2.0",
+    "dotenv": "^2.0.0",
     "helmet": "^1.3.0",
     "loopback": "^2.22.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^2.4.0",
     "loopback-connector-mongodb": "^1.15.2",
     "loopback-datasource-juggler": "^2.39.0",
+    "pug": "^2.0.0-beta6",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
@@ -28,6 +36,7 @@
     "strong-error-handler": "^1.0.1"
   },
   "devDependencies": {
+    "babel-loader": "^6.2.5",
     "browser-sync": "^2.15.0",
     "eslint": "^3.4.0",
     "eslint-config-loopback": "^4.0.0",
@@ -41,9 +50,11 @@
     "gulp-util": "^3.0.7",
     "kouto-swiss": "^0.12.0",
     "nodemon": "^1.10.2",
+    "react-hot-loader": "^1.3.0",
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.12.2"
+    "webpack-hot-middleware": "^2.12.2",
+    "yargs": "^5.0.0"
   },
   "repository": {
     "type": "",
