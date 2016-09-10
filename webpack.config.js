@@ -4,7 +4,6 @@ var path = require('path');
 var __DEV__ = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  debug: true,
   devtool: __DEV__ ? 'inline-source-map' : null,
 
   entry: {

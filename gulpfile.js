@@ -39,7 +39,11 @@ var paths = {
     './common/**/*',
     './client/**/*'
   ],
-  stylus: '.client/index.styl',
+  stylus: './client/index.styl',
+  stylusFiles: [
+    './client/**/*.styl',
+    './common/**/*.styl'
+  ],
   public: './public',
   syncWatch: [
     './server/views/**.jade',
@@ -92,8 +96,11 @@ gulp.task('stylus', function() {
     .pipe(stylus({
       use: swiss()
     }))
-    .pipe(sourcemaps.write({ sourceRoot: '/stylus' }))
-    .pipe(gulp.dest(paths.public))
+    .pipe(sourcemaps.write({
+      includeContent: false,
+      sourceRoot: '/stylus'
+    }))
+    .pipe(gulp.dest(paths.public + '/css'))
     .pipe(reload({ stream: true }));
 });
 
@@ -130,7 +137,7 @@ gulp.task('dev-server', syncDependents, function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(paths.stylus, ['stylus']);
+  gulp.watch(paths.stylusFiles, ['stylus']);
 });
 
 gulp.task('default', [ 'serve', 'stylus', 'dev-server', 'watch' ]);

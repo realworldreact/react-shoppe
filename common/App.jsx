@@ -1,10 +1,11 @@
 import React from 'react';
+import Nav from './components/Nav.jsx';
 
 export default class App extends React.Component {
   render() {
     return (
-      <div>
-        Hello World!
+      <div className='app'>
+        <Nav />
       </div>
     );
   }

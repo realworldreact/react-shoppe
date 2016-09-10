@@ -18,5 +18,7 @@ coverage
 node_modules
 npm-debug.log
 public
+!public/images
 *.env
 !sample.env
+.tern-project

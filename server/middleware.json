@@ -40,7 +40,16 @@
       ]
     }
   },
-  "files": {},
+  "files": {
+    "loopback#static": {
+      "params": [
+        "$!../public",
+        {
+          "maxAge": "86400000"
+        }
+      ]
+    }
+  },
   "final": {
     "loopback#urlNotFound": {}
   },
