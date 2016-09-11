@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 export default class Nav extends Component {
   render() {
@@ -9,14 +10,14 @@ export default class Nav extends Component {
         </div>
         <ul className='nav-list'>
           <li className='nav-list-login'>
-            <a href='/login'>
+            <Link to='/log-in'>
               Login
-            </a>
+            </Link>
           </li>
           <li className='nav-list-sign-up'>
-            <a href='/sign-up'>
+            <Link to='/sign-up'>
               Signup
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

@@ -1,6 +1,8 @@
 const reactRoutes = [
   '/',
-  '/chart'
+  '/chart',
+  '/sign-up',
+  '/log-in'
 ];
 
 export default function rootScript(app) {

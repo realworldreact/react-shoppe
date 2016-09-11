@@ -7,7 +7,7 @@
     "host": "localhost",
     "port": 27017,
     "url": "",
-    "database": "fruits!",
+    "database": "fruits",
     "password": "",
     "name": "mongo",
     "user": "",
