@@ -14,11 +14,13 @@ export default class Product extends Component {
         <div className='products-item-description'>
           { item.description }
         </div>
-        <div className='products-item-favorite'>
-          <img src='/images/HeartItemSelected.png' />
-        </div>
-        <div className='products-item-chart'>
-          <img src='/images/AddToCartSelected.png' />
+        <div className='products-item-footer'>
+          <div className='products-item-favorite'>
+            <img src='/images/HeartItemSelected.png' />
+          </div>
+          <div className='products-item-chart'>
+            <img src='/images/AddToCartSelected.png' />
+          </div>
         </div>
       </div>
     );
