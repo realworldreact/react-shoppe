@@ -5,18 +5,11 @@ import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 
-import App from '../common/App.jsx';
-import childRoutes from '../common/routes';
+import routes from '../common';
 import createReducer from '../common/create-reducer';
 
 const devTools = window.devToolsExtension ? window.devToolsExtension() : f => f;
 const adjustUrlOnReplay = !!window.devToolsExtension;
-
-const routes = {
-  component: App,
-  path: '/',
-  ...childRoutes
-};
 
 const storeEnhancers = compose(
   applyMiddleware(

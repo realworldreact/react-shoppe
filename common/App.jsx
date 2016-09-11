@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
 import Nav from './components/Nav.jsx';
 
-export default class App extends React.Component {
+export default class App extends Component {
   render() {
     return (
       <div className='app'>
         <Nav />
-        { this.props.children }
+        <div className='app-child'>
+          { this.props.children }
+        </div>
       </div>
     );
   }
 }
+
+App.propTypes = {
+  children: PropTypes.element
+};

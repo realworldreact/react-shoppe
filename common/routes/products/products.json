@@ -1,0 +1,164 @@
+[
+  {
+    "id": "01",
+    "name": "Apples",
+    "description": "The apple tree is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple.",
+    "image": "./apples.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin C", "Fiber"]
+  },
+  {
+    "id": "02",
+    "name": "Apricots",
+    "description": "An apricot is a fruit or the tree that bears the fruit of several species in the genus Prunus.",
+    "image": "./apricot.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin A", "Vitamin C"]
+  },
+  {
+    "id": "03",
+    "name": "Bananas",
+    "description": "The banana plant is the largest herbaceous flowering plant.",
+    "image": "./banana.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Potassium", "Vitamin C", "Vitamin B-6"]
+  },
+  {
+    "id": "04",
+    "name": "Broccoli",
+    "description": "Broccoli is an edible green plant in the cabbage family whose large flowering head is eaten as a vegetable.",
+    "image": "./broccoli.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Potassium", "Vitamin C", "Fiber"]
+  },
+  {
+    "id": "05",
+    "name": "Carrots",
+    "description": "Rich in Vitamin A. Great for vision. Adored by wabbits.",
+    "image": "./carrot.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin A", "Vitamin C"]
+  },
+  {
+    "id": "06",
+    "name": "Cherries",
+    "description": "A cherry is the fruit of many plants of the genus Prunus, and is a fleshy drupe.",
+    "image": "./cherry.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin A", "Vitamin C", "Potassium"]
+  },
+  {
+    "id": "07",
+    "name": "Dill",
+    "description": "Dill is an annual herb in the celery family Apiaceae.",
+    "image": "./dill.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Calcium", "Magnesium"]
+  },
+  {
+    "id": "08",
+    "name": "Eggplant",
+    "description": "Eggplant or aubergine is a species of nightshade grown for its edible fruit.",
+    "image": "./eggplant.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Fiber"]
+  },
+  {
+    "id": "09",
+    "name": "Garlic",
+    "description": "A species in the onion genus, Allium.",
+    "image": "./garlic.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Potassium"]
+  },
+  {
+    "id": "10",
+    "name": "Grapes",
+    "description": "A fruiting berry of the deciduous woody vines of the botanical genus Vitis.",
+    "image": "./grape.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin C", "Potassium", "Magnesium"]
+  },
+  {
+    "id": "11",
+    "name": "Honeydew",
+    "description": "a cultivar group of the muskmelon, Cucumis melo Inodorus group, which includes crenshaw, casaba, Persian, winter, and other mixed melons.",
+    "image": "./honeydew.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin C", "Potassium", "Sodium"]
+  },
+  {
+    "id": "12",
+    "name": "Kiwi",
+    "description": "Kiwifruit or Chinese gooseberry is the name given to the edible berries of several species of woody vines in the genus Actinidia.",
+    "image": "./kiwi.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin C", "Potassium", "Fiber"]
+  },
+  {
+    "id": "13",
+    "name": "Mango",
+    "description": "The mango is a juicy stone fruit belonging to the genus Mangifera, consisting of numerous tropical fruiting trees, cultivated mostly for edible fruit.",
+    "image": "./mango.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin C", "Vitamin A", "Fiber", "Vitamin B-6"]
+  },
+  {
+    "id": "14",
+    "name": "Mushrooms",
+    "description": "A mushroom is the fleshy, spore-bearing fruiting body of a fungus, typically produced above ground on soil or on its food source.",
+    "image": "./mushroom.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ""
+  },
+  {
+    "id": "15",
+    "name": "Nectarines",
+    "description": "A deciduous tree native to the region of Northwest China between the Tarim Basin and the north slopes of the Kunlun Shan mountains, where it was first domesticated and cultivated.",
+    "image": "./nectarine.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin C", "Vitamin A", "Fiber", "Potassium"]
+  },
+  {
+    "id": "16",
+    "name": "Oranges",
+    "description": "The fruit of the citrus species Citrus × sinensis in the family Rutaceae.",
+    "image": "./orange.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin C", "Calcium", "Potassium"]
+  },
+  {
+    "id": "17",
+    "name": "Pears",
+    "description": "Any of several tree and shrub species of genus Pyrus /ˈpaɪrəs/, in the family Rosaceae.",
+    "image": "./pear.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin C", "Fiber", "Potassium"]
+  },
+  {
+    "id": "18",
+    "name": "Pineapple",
+    "description": "A tropical plant with edible multiple fruit consisting of coalesced berries, also called pineapples, and the most economically significant plant in the Bromeliaceae family.",
+    "image": "./pineapple.png",
+    "favorite": "false",
+    "addedToShoppingCart": "false",
+    "nutrition": ["Vitamin C", "Fiber", "Potassium", "Calcium", "Vitamin A", "Iron", "Vitamin B-6", "Magnesium"]
+  }
+]
