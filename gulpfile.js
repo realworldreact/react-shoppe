@@ -31,7 +31,7 @@ var syncPort = yargs.argv['sync-port'] || process.env.SYNC_PORT || '3000';
 // make sure sync ui port does not interfere with proxy port
 var syncUIPort = yargs.argv['sync-ui-port'] ||
   process.env.SYNC_UI_PORT ||
-  syncPort + 2;
+  (0 + syncPort + 2);
 
 var paths = {
   server: pckg.main,
@@ -73,7 +73,8 @@ gulp.task('serve', function(cb) {
     // exec: path.join(__dirname, 'node_modules/.bin/babel-node'),
     env: {
       NODE_ENV: process.env.NODE_ENV || 'development',
-      DEBUG: process.env.DEBUG || 'ar:*'
+      DEBUG: process.env.DEBUG || 'ar:*',
+      PORT: port
     }
   })
     .on('start', function() {
