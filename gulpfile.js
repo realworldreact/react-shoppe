@@ -96,10 +96,7 @@ gulp.task('stylus', function() {
     .pipe(stylus({
       use: swiss()
     }))
-    .pipe(sourcemaps.write({
-      includeContent: false,
-      sourceRoot: '/stylus'
-    }))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.public + '/css'))
     .pipe(reload({ stream: true }));
 });
