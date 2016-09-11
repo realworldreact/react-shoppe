@@ -7,9 +7,21 @@ export default class Products extends Component {
   constructor(...args) {
     super(...args);
   }
+  renderProducts(products) {
+    if (!Array.isArray(products)) {
+      return null;
+    }
+    return products.map(item => (
+      <Product
+        item={ item }
+        key={ item.id }
+      />
+    )
+    );
+  }
   render() {
     const {
-      products: [ product ]
+      products
     } = this.props;
     return (
       <div className='products'>
@@ -17,7 +29,7 @@ export default class Products extends Component {
           <input className='products-search_input' />
         </div>
         <div className='products-lists'>
-          <Product item={ product } />
+          { this.renderProducts(products) }
         </div>
       </div>
     );
