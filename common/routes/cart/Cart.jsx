@@ -4,7 +4,7 @@ export default class Chart extends Component {
   render() {
     return (
       <div>
-        hello chart
+        hello cart
       </div>
     );
   }
