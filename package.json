@@ -4,8 +4,9 @@
   "main": "server/server.js",
   "scripts": {
     "lint": "eslint .",
-    "start": "node .",
-    "posttest": "npm run lint && nsp check"
+    "start": "npm run create-env && gulp",
+    "posttest": "npm run lint && nsp check",
+    "create-env": "node -e \"var fs = require('fs'); fs.access('./.env', function(err) { if (err) { console.log('\\n\\ncreating .env file\\n\\n'); return fs.writeFileSync('./.env', ''); } console.log('\\n\\n.env file present\\n\\n'); });\""
   },
   "dependencies": {
     "babel-core": "^6.14.0",
