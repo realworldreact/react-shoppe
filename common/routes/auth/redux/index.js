@@ -1,4 +1,4 @@
-import * as fromApi from '../auth-api';
+import * as fromApi from '../api';
 import { addUser } from '../../../redux';
 import createTypes from '../../../utils/create-types';
 
