@@ -1,3 +1,4 @@
+process.env.DEBUG = process.env.DEBUG || 'ar:*';
 require('dotenv').load();
 var gulp = require('gulp');
 // var gutil = require('gulp-util');
@@ -20,7 +21,7 @@ var yargs = require('yargs');
 var pckg = require('./package.json');
 var webpackConfig = require('./webpack.config');
 
-var debug = debugFactory('ar:gulpfile');
+var debug = debugFactory('ar:gulp');
 
 var sync = browserSync.create('ar-sync-server');
 var reload = sync.reload.bind(sync);
@@ -37,7 +38,8 @@ var paths = {
   server: pckg.main,
   serverIgnore: [
     './common/**/*',
-    './client/**/*'
+    './client/**/*',
+    './package.json'
   ],
   stylus: './client/index.styl',
   stylusFiles: [
@@ -68,7 +70,7 @@ gulp.task('serve', function(cb) {
   var called = false;
   nodemon({
     script: paths.server,
-    ext: '.jsx .js',
+    ext: '.jsx .js .json',
     ignore: paths.serverIgnore,
     // exec: path.join(__dirname, 'node_modules/.bin/babel-node'),
     env: {
