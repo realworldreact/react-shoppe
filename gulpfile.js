@@ -127,7 +127,7 @@ gulp.task('dev-server', syncDependents, function() {
     middleware: [
       webpackDevMiddleware(bundler, {
         publicPath: webpackConfig.output.publicPath,
-        stats: { colors: true }
+        stats: 'errors-only'
       }),
       webpackHotMiddleware(bundler)
     ]
