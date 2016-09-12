@@ -13,7 +13,7 @@ const adjustUrlOnReplay = !!window.devToolsExtension;
 
 const storeEnhancers = compose(
   applyMiddleware(
-    routerMiddleware
+    routerMiddleware(browserHistory)
   ),
   devTools
 );
