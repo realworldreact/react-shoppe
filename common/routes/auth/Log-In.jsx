@@ -1,13 +1,24 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 
-export default class LogIn extends React.Component {
+import { logIn } from './redux';
+
+const actions = {
+  logIn
+};
+
+const propTypes = {
+  logIn: PropTypes.func.isRequired
+};
+
+export class LogIn extends React.Component {
   render() {
+    const { logIn } = this.props;
     return (
       <div className='auth-login'>
         <form
-          action='/api/users/login'
-          method='POST'
           name='login'
+          onSubmit={ logIn }
           >
           <label>
             Email
@@ -36,5 +47,9 @@ export default class LogIn extends React.Component {
 }
 
 LogIn.displayName = 'LogIn';
-LogIn.propTypes = {
-};
+LogIn.propTypes = propTypes;
+
+export default connect(
+  null,
+  actions
+)(LogIn);

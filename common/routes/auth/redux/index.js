@@ -5,7 +5,7 @@ import createTypes from '../../../utils/create-types';
 export const types = createTypes(
   [
     'signUp',
-    'loginIn'
+    'logIn'
   ],
   'auth'
 );
@@ -19,6 +19,17 @@ export const signUp = e => dispatch => {
   })
     .then(() => fromApi.signUp(form))
     .then(addUser)
-    .then(dispatch)
-    .then(null);
+    .then(dispatch);
+};
+
+export const logIn = e => dispatch => {
+  e.preventDefault();
+  const form = e.target;
+  return dispatch({
+    type: types.logIn,
+    payload: Promise.resolve()
+  })
+    .then(() => fromApi.logIn(form))
+    .then(addUser)
+    .then(dispatch);
 };
