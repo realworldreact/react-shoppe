@@ -38,5 +38,10 @@ export function logIn(form) {
     ...defaultOptions,
     body: serializeForm(form)
   };
-  return makeFetch(api + '/login', options);
+  return makeFetch(api + '/login?include=user', options)
+    // normalize loopbacks response
+    .then(res => ({
+      ...res.user,
+      accessToken: res.id
+    }));
 }
