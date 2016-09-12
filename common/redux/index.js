@@ -1,5 +1,26 @@
-// import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
+import createTypes from '../utils/create-types';
 
-const initialState = {};
+const initialState = {
+  user: null
+};
+
+export const types = createTypes(
+  [
+    'addUser'
+  ],
+  'app'
+);
+
+export const addUser = createAction(types.addUser);
+
 // for now this does nothing
-export default (state = initialState) => state;
+export default handleActions(
+  {
+    [addUser]: (state, { payload: user }) => ({
+      ...state,
+      user
+    })
+  },
+  initialState
+);
