@@ -1,3 +1,5 @@
+import { push } from 'react-router-redux';
+
 import * as fromApi from '../api';
 import { addUser } from '../../../redux';
 import createTypes from '../../../utils/create-types';
@@ -19,7 +21,10 @@ export const signUp = e => dispatch => {
   })
     .then(() => fromApi.signUp(form))
     .then(addUser)
-    .then(dispatch);
+    .then(addUserAction => {
+      dispatch(addUserAction);
+      dispatch(push('/cart'));
+    });
 };
 
 export const logIn = e => dispatch => {
@@ -31,5 +36,8 @@ export const logIn = e => dispatch => {
   })
     .then(() => fromApi.logIn(form))
     .then(addUser)
-    .then(dispatch);
+    .then(addUserAction => {
+      dispatch(addUserAction);
+      dispatch(push('/cart'));
+    });
 };

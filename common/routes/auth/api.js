@@ -7,6 +7,14 @@ const defaultOptions = {
   }
 };
 
+export function makeFetch(uri, options) {
+  return fetch(uri, options).then(res => {
+    if (!res.ok) {
+      return Promise.reject(new Error(res.statusText));
+    }
+    return res.json();
+  });
+}
 export function serializeForm(form) {
   const data = [].filter.call(form.elements, node => !!node.name)
     .reduce((data, node) => {
@@ -22,7 +30,7 @@ export function signUp(form) {
     ...defaultOptions,
     body: serializeForm(form)
   };
-  return fetch(api, options).then(res => res.json());
+  return makeFetch(api, options);
 }
 
 export function logIn(form) {
@@ -30,5 +38,5 @@ export function logIn(form) {
     ...defaultOptions,
     body: serializeForm(form)
   };
-  return fetch(api + '/login', options).then(res => res.json());
+  return makeFetch(api + '/login', options);
 }
