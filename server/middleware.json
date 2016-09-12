@@ -4,6 +4,9 @@
   },
   "initial": {
     "compression": {},
+    "morgan": {
+      "params": ":status :method :response-time ms - :url"
+    },
     "cors": {
       "params": {
         "origin": true,
