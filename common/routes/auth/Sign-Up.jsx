@@ -20,6 +20,13 @@ export class SignUp extends React.Component {
           onSubmit={ signUp }
           >
           <label>
+            Name
+            <input
+              name='username'
+              type='text'
+            />
+          </label>
+          <label>
             Email
             <input
               name='email'
