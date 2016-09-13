@@ -1,40 +1,67 @@
 .products {
-  col(8);
-  offset(2);
+  margin: 0 auto;
+  max-width: 1200px;
 }
 
 .products-search {
   row();
+  display: flex;
+  justify-content: center;
+  margin: 50px 0;
 }
 
-.products-search_input {
-  margin: 0 20px;
-}
+.products-search_input
+  width 400px
+  border none
+  border-bottom 1px solid blue
+  font-size 28px
+  font-weight 100
+  padding 12px 0 14px 50px
+  color blue
+  background url(/images/SearchIcon.png) no-repeat 0 12px
+  &:focus
+    box-shadow none
+    outline none
+    background url(/images/SearchIconActive.png) no-repeat 0 12px
+    border-bottom 1px solid purple-dark
+
+
 
 .products-lists {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: space-around;
+  margin-bottom: 100px;
 }
 
-.products-item {
-  border: 2px solid blue;
-  margin: 20px 20px;
-  overflow: hidden;
-  width: 250px;
-}
+.products-item
+  border 1px solid blue
+  border-radius 2px
+  margin 40px 20px
+  overflow hidden
+  width 300px
+  height 375px
 
-.products-item-description {
-  margin: 10px 5px;
-}
+.products-item-name
+  padding 5px 5px 0 10px
+  color blue
+  font-size 26px
 
-.products-item-footer {
-  display: flex;
-  justify-content: space-between;
-  div {
-    padding: 10px 5px;
-  }
-}
+.products-item-description
+  margin 10px 5px
+  padding 5px
+  color fontGray
+  font-weight 300
+
+
+.products-item-footer
+  display flex
+  justify-content space-between
+  align-items flex-end
+  a
+    padding 10px 12px
+  img
+    width 35px
 
 .products-item-stock-photo {
   overflow: hidden;

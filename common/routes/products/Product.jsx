@@ -15,12 +15,12 @@ export default class Product extends Component {
           { item.description }
         </div>
         <div className='products-item-footer'>
-          <div className='products-item-favorite'>
-            <img src='/images/HeartItemSelected.png' />
-          </div>
-          <div className='products-item-chart'>
-            <img src='/images/AddToCartSelected.png' />
-          </div>
+          <a className='products-item-favorite' href="" title="Favorite this item">
+            <img src='/images/HeartItemUnselected.png' />
+          </a>
+          <a className='products-item-cart' href="" title="Add to Cart">
+            <img src='/images/AddToCartUnselected.png' />
+          </a>
         </div>
       </div>
     );

@@ -3,32 +3,45 @@
   padding-top: 10px;
   padding-left: 20px;
   padding-right: 20px;
-  row();
-  border-bottom: 2px solid blue;
+  border-bottom: 1px solid blue;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
   clearfix();
 }
 
-.nav-logo {
-  col(4);
-  img {
-    size: 300px 50px;
-  }
-}
+.nav-logo
+  img
+    height: 50px
+    min-width: 100%
+    margin-top: 10px
+    +below(800px)
+      height 100%
+      width 100%
 
-.nav-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  col(3);
-  offset(9);
-  li {
-    display: inline;
-    padding: 30px;
-  }
-}
+.nav-list
+  align-self flex-end
+  list-style-type none
+  margin -50px 0 0 0
+  padding 20px
+  li
+    display inline
+    padding 30px
+    color blue
+    &:hover
+      color purple-dark
 
-.nav-list-login {
-}
+.nav-list-login
+  a
+    color blue
+    text-decoration none
+    &:hover
+      color purple-dark
 
-.nav-list-sign-up {
-}
+.nav-list-sign-up
+  a
+    color blue
+    text-decoration none
+    &:hover
+      color purple-dark

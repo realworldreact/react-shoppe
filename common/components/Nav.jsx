@@ -6,7 +6,9 @@ export default class Nav extends Component {
     return (
       <nav className='nav'>
         <div className='nav-logo'>
-          <img src='/images/navbar/Logo.png' />
+          <Link to='/'>
+            <img src='/images/navbar/Logo.png' />
+          </Link>
         </div>
         <ul className='nav-list'>
           <li className='nav-list-login'>
