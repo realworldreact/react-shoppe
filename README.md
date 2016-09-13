@@ -1,6 +1,12 @@
 # Advance Redux
 
 ## To start development
+To seed the database for the first time
+
+```
+npm run seed
+```
+then run
 
 ```bash
 npm start

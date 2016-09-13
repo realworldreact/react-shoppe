@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint .",
     "start": "npm run create-env && gulp",
+    "seed": "node seed",
     "posttest": "npm run lint && nsp check",
     "create-env": "node -e \"var fs = require('fs'); fs.access('./.env', function(err) { if (err) { console.log('\\n\\ncreating .env file\\n\\n'); return fs.writeFileSync('./.env', ''); } console.log('\\n\\n.env file present\\n\\n'); });\""
   },
@@ -36,6 +37,7 @@
     "redux-actions": "^0.12.0",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
+    "rxjs": "^5.0.0-beta.12",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^1.0.1"
   },

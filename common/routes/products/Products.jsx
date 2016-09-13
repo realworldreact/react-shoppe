@@ -1,11 +1,25 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 import Product from './Product.jsx';
-import products from './products.json';
+import { fetchProducts } from './redux';
 
-export default class Products extends Component {
-  constructor(...args) {
-    super(...args);
+const mapStateToProps = state => ({
+  products: state.productsApp.products || []
+});
+
+const actions = {
+  fetchProducts
+};
+
+const propTypes = {
+  products: PropTypes.array,
+  fetchProducts: PropTypes.func.isRequired
+};
+
+export class Products extends Component {
+  componentDidMount() {
+    this.props.fetchProducts();
   }
   renderProducts(products) {
     if (!Array.isArray(products)) {
@@ -37,7 +51,9 @@ export default class Products extends Component {
 }
 
 Products.displayName = 'Products';
-Products.defaultProps = { products };
-Products.propTypes = {
-  products: PropTypes.array
-};
+Products.propTypes = propTypes;
+
+export default connect(
+  mapStateToProps,
+  actions
+)(Products);

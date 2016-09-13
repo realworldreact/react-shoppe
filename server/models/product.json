@@ -6,22 +6,47 @@
     "validateUpsert": true
   },
   "properties": {
-    "type": {
+    "name": {
       "type": "string",
-      "required": true
-    },
-    "quantity": {
-      "type": "number",
       "required": true
     },
     "price": {
       "type": "number",
       "required": true,
       "default": 0
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "string",
+      "required": true
+    },
+    "nutrition": {
+      "type": [
+        "string"
+      ],
+      "default": [
+        "[]"
+      ]
     }
   },
   "validations": [],
   "relations": {},
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }
