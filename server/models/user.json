@@ -2,18 +2,25 @@
   "name": "user",
   "base": "User",
   "idInjection": true,
+  "strict": true,
   "options": {
     "validateUpsert": true
   },
-  "properties": {},
-  "validations": [],
-  "relations": {
-    "carts": {
-      "type": "hasOne",
-      "model": "cart",
-      "foreignKey": ""
+  "properties": {
+    "username": {
+      "type": "string",
+      "required": true
+    },
+    "cart": {
+      "type": "object",
+      "required": true,
+      "default": {
+        "items": []
+      }
     }
   },
+  "validations": [],
+  "relations": {},
   "acls": [],
   "methods": {}
 }
