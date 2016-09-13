@@ -1,6 +1,6 @@
 const reactRoutes = [
   '/',
-  '/chart',
+  '/cart',
   '/sign-up',
   '/log-in'
 ];
