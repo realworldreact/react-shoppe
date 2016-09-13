@@ -12,11 +12,11 @@
       "required": true
     },
     "cart": {
-      "type": "object",
+      "type": [
+        "object"
+      ],
       "required": true,
-      "default": {
-        "items": []
-      }
+      "default": []
     }
   },
   "validations": [],

@@ -14,12 +14,15 @@ export const types = createTypes(
 
 export const addUser = createAction(types.addUser);
 
-// for now this does nothing
+export const userSelector = state => ({ user: state.app.user || {} });
+export const cartSelector = state => ({ cart: state.app.cart || [] });
+
 export default handleActions(
   {
-    [addUser]: (state, { payload: user }) => ({
+    [addUser]: (state, { payload: user = {} }) => ({
       ...state,
-      user
+      user,
+      cart: user.cart
     })
   },
   initialState

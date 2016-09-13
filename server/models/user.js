@@ -34,23 +34,18 @@ module.exports = function(User) {
       })
       .then(product => {
         console.log('item: ', product._id);
-        const newItems = [ ...user.cart.items ];
-        const index = _.findIndex(newItems, item => item.id === product.id);
+        const newCart = [ ...user.cart ];
+        const index = _.findIndex(newCart, item => item.id === product.id);
         if (index !== -1) {
-          const oldItem = newItems[index];
-          newItems[index] = { ...oldItem, count: oldItem.count + count };
+          const oldItem = newCart[index];
+          newCart[index] = { ...oldItem, count: oldItem.count + count };
         } else {
-          newItems.push({
+          newCart.push({
             id: product.getId(),
             count
           });
         }
-        const updateData = {
-          cart: {
-            ...user.cart,
-            items: newItems
-          }
-        };
+        const updateData = { cart: newCart };
         return user.updateTo(updateData)
           .then(() => {
             return updateData;
@@ -71,26 +66,21 @@ module.exports = function(User) {
       })
       .then(product => {
         console.log('item: ', product._id);
-        const newItems = [ ...user.cart.items ];
-        const index = _.findIndex(newItems, item => item.id === product.id);
+        const newCart = [ ...user.cart ];
+        const index = _.findIndex(newCart, item => item.id === product.id);
         if (index !== -1) {
-          const oldItem = newItems[index];
-          newItems[index] = {
+          const oldItem = newCart[index];
+          newCart[index] = {
             ...oldItem,
             count: Math.max(oldItem.count - count, 0)
           };
         } else {
-          newItems.push({
+          newCart.push({
             id: product.getId(),
             count
           });
         }
-        const updateData = {
-          cart: {
-            ...user.cart,
-            items: newItems
-          }
-        };
+        const updateData = { cart: newCart};
         return user.updateTo(updateData)
           .then(() => {
             return updateData;

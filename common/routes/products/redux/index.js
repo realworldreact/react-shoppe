@@ -28,6 +28,10 @@ export const fetchProducts = () => dispatch => {
     .then(dispatch);
 };
 
+export const productsSelector = state => ({
+  products: state.productsApp.products || []
+});
+
 export default handleActions(
   {
     [types.fetchProductsCompleted]: (state, { payload = [] }) => ({

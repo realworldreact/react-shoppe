@@ -2,11 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import Product from './Product.jsx';
-import { fetchProducts } from './redux';
+import { productsSelector, fetchProducts } from './redux';
 
-const mapStateToProps = state => ({
-  products: state.productsApp.products || []
-});
+const mapStateToProps = productsSelector;
 
 const actions = {
   fetchProducts
