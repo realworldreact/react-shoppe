@@ -1,6 +1,6 @@
 [
   {
-    "id": "01",
+    "id": "1",
     "name": "Apples",
     "description": "The apple tree is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. Don't accept from snakes.",
     "image": "apple.png",
@@ -8,7 +8,7 @@
     "price": 0.50
   },
   {
-    "id": "02",
+    "id": "2",
     "name": "Apricots",
     "description": "An apricot is a fruit or the tree that bears the fruit of several species in the genus Prunus. Grind the pits for a facial exfoliant.",
     "image": "apricot.png",
@@ -16,7 +16,7 @@
     "price": 1.50
   },
   {
-    "id": "03",
+    "id": "3",
     "name": "Bananas",
     "description": "The banana is an edible fruit, botanically a berry, produced by several kinds of large herbaceous flowering plants in the genus Musa.",
     "image": "banana.png",
@@ -24,7 +24,7 @@
     "price": 2.50
   },
   {
-    "id": "04",
+    "id": "4",
     "name": "Broccoli",
     "description": "Broccoli is an edible green plant in the cabbage family whose large flowering head is eaten as a vegetable. Try with cheese.",
     "image": "broccoli.png",
@@ -32,7 +32,7 @@
     "price": 1.75
   },
   {
-    "id": "05",
+    "id": "5",
     "name": "Carrots",
     "description": "The carrot is a root vegetable, usually orange in colour, though purple, black, red, white, and yellow varieties exist. Carrots are a domesticated form...",
     "image": "carrot.png",
@@ -40,7 +40,7 @@
     "price": 0.15
   },
   {
-    "id": "06",
+    "id": "6",
     "name": "Cherries",
     "description": "A cherry is the fruit of many plants of the genus Prunus, and is a fleshy drupe. Try eating the seeds, they're delicious.",
     "image": "cherry.png",
@@ -48,7 +48,7 @@
     "price": 2.05
   },
   {
-    "id": "07",
+    "id": "7",
     "name": "Dill",
     "description": "Dill is an annual herb in the celery family Apiaceae. A great addition to soups. Not to be confused with pickles.",
     "image": "dill.png",
@@ -56,7 +56,7 @@
     "price": 0.99
   },
   {
-    "id": "08",
+    "id": "8",
     "name": "Eggplant",
     "description": "Eggplant or aubergine is a species of nightshade grown for its edible fruit. Eggplant is the common name in North American and Australian English but..",
     "image": "eggplant.png",
@@ -64,7 +64,7 @@
     "price": 3.50
   },
   {
-    "id": "09",
+    "id": "9",
     "name": "Garlic",
     "description": "Allium sativum, commonly known as garlic, is a species in the onion genus, Allium. Its close relatives include the onion, shallot, leek, chive, and...",
     "image": "garlic.png",
