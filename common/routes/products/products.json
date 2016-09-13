@@ -2,7 +2,7 @@
   {
     "id": "01",
     "name": "Apples",
-    "description": "The apple tree is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple.",
+    "description": "The apple tree is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. Don't accept from snakes.",
     "image": "apple.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -11,7 +11,7 @@
   {
     "id": "02",
     "name": "Apricots",
-    "description": "An apricot is a fruit or the tree that bears the fruit of several species in the genus Prunus.",
+    "description": "An apricot is a fruit or the tree that bears the fruit of several species in the genus Prunus. Grind the pits for a facial exfoliant.",
     "image": "apricot.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -20,7 +20,7 @@
   {
     "id": "03",
     "name": "Bananas",
-    "description": "The banana plant is the largest herbaceous flowering plant.",
+    "description": "The banana is an edible fruit, botanically a berry, produced by several kinds of large herbaceous flowering plants in the genus Musa.",
     "image": "banana.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -29,7 +29,7 @@
   {
     "id": "04",
     "name": "Broccoli",
-    "description": "Broccoli is an edible green plant in the cabbage family whose large flowering head is eaten as a vegetable.",
+    "description": "Broccoli is an edible green plant in the cabbage family whose large flowering head is eaten as a vegetable. Try with cheese.",
     "image": "broccoli.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -38,7 +38,7 @@
   {
     "id": "05",
     "name": "Carrots",
-    "description": "Rich in Vitamin A. Great for vision. Adored by wabbits.",
+    "description": "The carrot is a root vegetable, usually orange in colour, though purple, black, red, white, and yellow varieties exist. Carrots are a domesticated form...",
     "image": "carrot.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -47,7 +47,7 @@
   {
     "id": "06",
     "name": "Cherries",
-    "description": "A cherry is the fruit of many plants of the genus Prunus, and is a fleshy drupe.",
+    "description": "A cherry is the fruit of many plants of the genus Prunus, and is a fleshy drupe. Try eating the seeds, they're delicious.",
     "image": "cherry.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -56,7 +56,7 @@
   {
     "id": "07",
     "name": "Dill",
-    "description": "Dill is an annual herb in the celery family Apiaceae.",
+    "description": "Dill is an annual herb in the celery family Apiaceae. A great addition to soups. Not to be confused with pickles.",
     "image": "dill.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -65,7 +65,7 @@
   {
     "id": "08",
     "name": "Eggplant",
-    "description": "Eggplant or aubergine is a species of nightshade grown for its edible fruit.",
+    "description": "Eggplant or aubergine is a species of nightshade grown for its edible fruit. Eggplant is the common name in North American and Australian English but..",
     "image": "eggplant.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -74,7 +74,7 @@
   {
     "id": "09",
     "name": "Garlic",
-    "description": "A species in the onion genus, Allium.",
+    "description": "Allium sativum, commonly known as garlic, is a species in the onion genus, Allium. Its close relatives include the onion, shallot, leek, chive, and...",
     "image": "garlic.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -83,7 +83,7 @@
   {
     "id": "10",
     "name": "Grapes",
-    "description": "A fruiting berry of the deciduous woody vines of the botanical genus Vitis.",
+    "description": "A grape is a fruiting berry of the deciduous woody vines of the botanical genus Vitis. Grapes can be eaten fresh as table grapes or they can be...",
     "image": "grape.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -128,7 +128,7 @@
   {
     "id": "15",
     "name": "Nectarines",
-    "description": "A deciduous tree native to the region of Northwest China between the Tarim Basin and the north slopes of the Kunlun Shan mountains, where it was first domesticated and cultivated.",
+    "description": "A deciduous tree native to the region of Northwest China between the Tarim Basin and the north slopes of the Kunlun Shan mountains, where...",
     "image": "nectarine.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -137,7 +137,7 @@
   {
     "id": "16",
     "name": "Oranges",
-    "description": "The fruit of the citrus species Citrus × sinensis in the family Rutaceae.",
+    "description": "The orange is the fruit of the citrus species Citrus × sinensis in the family Rutaceae. The fruit of the Citrus × sinensis is considered a sweet...",
     "image": "orange.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -146,7 +146,7 @@
   {
     "id": "17",
     "name": "Pears",
-    "description": "Any of several tree and shrub species of genus Pyrus /ˈpaɪrəs/, in the family Rosaceae.",
+    "description": "Pears are broadly classified based up on their place of origin as Asian-pears and European-pears. Asian varieties feature crispy texture and firm...",
     "image": "pear.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
@@ -155,7 +155,7 @@
   {
     "id": "18",
     "name": "Pineapple",
-    "description": "A tropical plant with edible multiple fruit consisting of coalesced berries, also called pineapples, and the most economically significant plant in the Bromeliaceae family.",
+    "description": "A tropical plant with edible multiple fruit consisting of coalesced berries, also called pineapples, and the most economically significant plant...",
     "image": "pineapple.png",
     "favorite": "false",
     "addedToShoppingCart": "false",
