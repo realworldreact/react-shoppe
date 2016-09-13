@@ -20,22 +20,22 @@ export class SignUp extends React.Component {
           onSubmit={ signUp }
           >
           <label>
-            Name
             <input
+              placeholder='Name'
               name='username'
               type='text'
             />
           </label>
           <label>
-            Email
             <input
+              placeholder='Email'
               name='email'
               type='email'
             />
           </label>
           <label>
-            password
             <input
+              placeholder='Password'
               name='password'
               type='password'
             />

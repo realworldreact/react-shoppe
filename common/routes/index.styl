@@ -1,1 +1,61 @@
 @import './products';
+
+
+.auth-login, .auth-signup
+  display flex
+  justify-content center
+  margin-top 160px
+
+  form
+    color blue
+
+  label
+    display inline
+    font-size 18px
+    font-weight 300
+    &:after
+      content "\a"
+      white-space pre
+
+  input
+    width 400px
+    border none
+    border-bottom 1px solid blue
+    font-size 28px
+    font-weight 100
+    padding 12px 0 14px 20px
+    color purple-dark
+    &:focus
+      box-shadow none
+      outline none
+
+  ::-webkit-input-placeholder {
+     color: blue;
+  }
+
+  :-moz-placeholder { /* Firefox 18- */
+     color: blue;
+  }
+
+  ::-moz-placeholder {  /* Firefox 19+ */
+     color: blue;
+  }
+
+  :-ms-input-placeholder {
+     color: blue;
+  }
+
+  button
+    background-color purple
+    color white
+    border-top none
+    border-left none
+    border-right 3px solid purple-dark
+    border-bottom 3px solid purple-dark
+    border-radius 2px
+    margin 25px 0
+    padding 8px 20px
+    font-size 24px
+    font-weight 300
+    &:hover
+      background-color purple-dark

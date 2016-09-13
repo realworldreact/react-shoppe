@@ -21,15 +21,15 @@ export class LogIn extends React.Component {
           onSubmit={ logIn }
           >
           <label>
-            Email
             <input
+              placeholder='Email'
               name='email'
               type='email'
             />
           </label>
           <label>
-            password
             <input
+              placeholder='Password'
               name='password'
               type='password'
             />
