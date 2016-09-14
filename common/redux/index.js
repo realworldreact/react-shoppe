@@ -5,7 +5,8 @@ import * as api from '../api';
 const initialState = {
   user: null,
   products: [],
-  cart: []
+  cart: [],
+  favs: []
 };
 
 export const userSelector = state => ({ user: state.app.user || {} });
@@ -13,6 +14,7 @@ export const cartSelector = state => ({ cart: state.app.cart || [] });
 export const productsSelector = state => ({
   products: state.app.products || []
 });
+export const favsSelector = state => ({ favs: state.app.favs || [] });
 
 export const types = createTypes(
   [
@@ -29,9 +31,7 @@ export const types = createTypes(
     'deleteItemCompleted',
 
     'fav',
-    'favCompleted',
-    'unfav',
-    'unfavCompleted'
+    'favCompleted'
   ],
   'app'
 );
@@ -114,7 +114,8 @@ export default handleActions(
     [types.addUser]: (state, { payload: user = {} }) => ({
       ...state,
       user,
-      cart: user.cart
+      cart: user.cart,
+      favs: user.favs
     }),
     [types.fetchProductsCompleted]: (state, { payload = [] }) => ({
       ...state,
@@ -123,6 +124,10 @@ export default handleActions(
     [updateCartActions]: (state, { payload: { cart } }) => ({
       ...state,
       cart
+    }),
+    [favCompleted]: (state, { payload: { favs } }) => ({
+      ...state,
+      favs
     })
   },
   initialState

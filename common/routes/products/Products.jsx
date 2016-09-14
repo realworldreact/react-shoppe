@@ -1,15 +1,31 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import includes from 'lodash/includes';
 
 import Product from './Product.jsx';
 import {
-  productsSelector,
   fetchProducts,
   addItemToCart,
-  fav
+  fav,
+  productsSelector,
+  favsSelector
 } from '../../redux';
 
-const mapStateToProps = productsSelector;
+const mapStateToProps = state => {
+  const { products } = productsSelector(state);
+  const { favs } = favsSelector(state);
+  return {
+    products: products.map(item => {
+      if (includes(favs, item.id)) {
+        return {
+          ...item,
+          fav: true
+        };
+      }
+      return item;
+    })
+  };
+};
 
 const actions = {
   fetchProducts,
