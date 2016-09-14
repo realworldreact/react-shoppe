@@ -42,7 +42,7 @@ module.exports = function(User) {
         } else {
           newCart.push({
             id: product.getId(),
-            count
+            count: 1
           });
         }
         const updateData = { cart: newCart };

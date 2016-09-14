@@ -22,8 +22,10 @@ export class Nav extends Component {
             { name }
           </li>
           <li className='nav-list-cart'>
-            <img src='/images/navbar/CartIcon.png' />
-            { 0 }
+            <Link to='/cart'>
+              <img src='/images/navbar/CartIcon.png' />
+              { 0 }
+            </Link>
           </li>
         </ul>
       );
