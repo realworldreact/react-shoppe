@@ -24,11 +24,13 @@ module.exports = function(User) {
   User.prototype.fav = function fav(itemId) {
     const user = this;
     const favs = this.favs;
-    console.log('favs: ', favs);
     if (_.includes(favs, itemId)) {
       // item already in favs
-      // no update required
-      return Promise.resolve(favs);
+      // remove it
+      const newFavs = [ ...favs ];
+      const index = _.sortedIndexOf(favs, itemId);
+      newFavs.splice(index, 1);
+      return user.updateTo({ favs: newFavs }).then(() => newFavs);
     }
 
     const { Product } = User.app.models;
@@ -142,7 +144,7 @@ module.exports = function(User) {
     'fav',
     {
       isStatic: false,
-      description: 'updates the users cart with item',
+      description: 'toggle item in favs array',
       accepts: [
         {
           arg: 'itemId',
