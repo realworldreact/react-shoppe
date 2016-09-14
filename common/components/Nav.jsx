@@ -2,16 +2,24 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import { cartSelector, userSelector } from '../redux';
+
 const propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string,
+  numOfItems: PropTypes.number
 };
 
-const mapStateToProps = state => ({
-  name: state.app.user && state.app.user.username
-});
+const mapStateToProps = state => {
+  const { user } = userSelector(state);
+  const { cart } = cartSelector(state);
+  return {
+    name: user.username,
+    numOfItems: cart.length
+  };
+};
 
 export class Nav extends Component {
-  renderRightBar(name) {
+  renderRightBar(name, numOfItems) {
     if (name) {
       return (
         <ul className='nav-list nav-list-named'>
@@ -24,7 +32,7 @@ export class Nav extends Component {
           <li className='nav-list-cart'>
             <Link to='/cart'>
               <img src='/images/navbar/CartIcon.png' />
-              { 0 }
+              { numOfItems }
             </Link>
           </li>
         </ul>
@@ -48,7 +56,8 @@ export class Nav extends Component {
 
   render() {
     const {
-      name
+      name,
+      numOfItems
     } = this.props;
     return (
       <nav className='nav'>
@@ -58,7 +67,7 @@ export class Nav extends Component {
           >
           <img src='/images/navbar/Logo.png' />
         </Link>
-        { this.renderRightBar(name) }
+        { this.renderRightBar(name, numOfItems) }
       </nav>
     );
   }
