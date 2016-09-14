@@ -1,6 +1,6 @@
-import Chart from './Cart.jsx';
+import Cart from './Cart.jsx';
 
 export default {
   path: 'cart',
-  component: Chart
+  component: Cart
 };
