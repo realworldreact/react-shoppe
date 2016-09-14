@@ -17,11 +17,25 @@
       ],
       "required": true,
       "default": []
+    },
+    "favs": {
+      "type": [
+        "string"
+      ],
+      "required": true,
+      "default": []
     }
   },
   "validations": [],
   "relations": {},
   "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "fav"
+    },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",

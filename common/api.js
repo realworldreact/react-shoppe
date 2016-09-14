@@ -11,6 +11,17 @@ export function fetchProducts() {
   return makeFetch('/api/products');
 }
 
+export function fav(userId, token, itemId) {
+  const options = {
+    ...defaultOptions,
+    body: JSON.stringify({ itemId })
+  };
+  return makeFetch(
+    `${api}/${userId}/fav?access_token=${token}`,
+    options
+  );
+}
+
 export function addToCart(userId, token, itemId) {
   const options = {
     ...defaultOptions,

@@ -21,6 +21,37 @@ module.exports = function(User) {
     return this.constructor.updateAll({ id }, updateData, updateOptions);
   };
 
+  User.prototype.fav = function fav(itemId) {
+    const user = this;
+    const favs = this.favs;
+    console.log('favs: ', favs);
+    if (_.includes(favs, itemId)) {
+      // item already in favs
+      // no update required
+      return Promise.resolve(favs);
+    }
+
+    const { Product } = User.app.models;
+    // validate item is actual product
+    return Product.find({ fields: [ 'id' ]})
+      .then(products => {
+        if (!products.length) {
+          throw new Error('no products found.');
+        }
+        if (_.find(products, ({ id }) => id === itemId) === -1) {
+          throw new Error(`no product found with id ${itemId}.`);
+        }
+        return products.map(({ id }) => id).sort();
+      })
+      .then(() => {
+        const newFavs = [ ...favs ];
+        const index = _.sortedIndex(favs, itemId);
+        newFavs.splice(index, 0, itemId);
+        const updateData = { favs: newFavs };
+        return user.updateTo(updateData).then(() => newFavs);
+      });
+  };
+
   User.prototype.addToCart = function addToCart(itemId) {
     const user = this;
     const { Product } = User.app.models;
@@ -105,10 +136,33 @@ module.exports = function(User) {
       });
   };
 
-  const getItemId = ({ req }) => {
-    console.log('body: ', req.body);
-    return req.body.itemId;
-  };
+  const getItemId = ({ req }) => req.body.itemId;
+
+  User.remoteMethod(
+    'fav',
+    {
+      isStatic: false,
+      description: 'updates the users cart with item',
+      accepts: [
+        {
+          arg: 'itemId',
+          type: 'string',
+          required: true,
+          http: getItemId
+        }
+      ],
+      returns: [
+        {
+          arg: 'favs',
+          type: 'object'
+        }
+      ],
+      http: {
+        path: '/fav',
+        verb: 'POST'
+      }
+    }
+  );
 
   User.remoteMethod(
     'addToCart',

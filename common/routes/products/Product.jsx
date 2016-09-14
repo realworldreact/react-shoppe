@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 export default class Product extends Component {
   render() {
-    const { addItem, item } = this.props;
+    const { addItem, item, fav } = this.props;
     return (
       <div className='products-item'>
         <div className='products-item-stock-photo'>
@@ -17,6 +17,7 @@ export default class Product extends Component {
         <div className='products-item-footer'>
           <button
             className='products-item-favorite'
+            onClick={ () => fav(item.id) }
             title='Favorite this item'
             >
             <img src='/images/HeartItemUnselected.png' />
@@ -37,5 +38,6 @@ export default class Product extends Component {
 Product.displayName = 'Product';
 Product.propTypes = {
   item: PropTypes.object,
-  addItem: PropTypes.func.isRequired
+  addItem: PropTypes.func.isRequired,
+  fav: PropTypes.func.isRequired
 };

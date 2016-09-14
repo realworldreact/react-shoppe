@@ -26,7 +26,12 @@ export const types = createTypes(
     'removeItemCompleted',
 
     'deleteItemFromCart',
-    'deleteItemCompleted'
+    'deleteItemCompleted',
+
+    'fav',
+    'favCompleted',
+    'unfav',
+    'unfavCompleted'
   ],
   'app'
 );
@@ -45,6 +50,19 @@ export const fetchProducts = () => dispatch => {
     .then(() => api.fetchProducts())
     .then(fetchProductsCompleted)
     .then(dispatch);
+};
+
+export const favCompleted = createAction(types.favCompleted);
+export const fav = itemId => (dispatch, getState) => {
+  const { user } = userSelector(getState());
+  if (!user.id || !user.accessToken || !itemId) {
+    return null;
+  }
+  dispatch({ type: types.fav });
+  api.fav(user.id, user.accessToken, itemId)
+    .then(favCompleted)
+    .then(dispatch);
+  return null;
 };
 
 export const addItemCompleted = createAction(types.addItemCompleted);

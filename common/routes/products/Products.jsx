@@ -5,33 +5,37 @@ import Product from './Product.jsx';
 import {
   productsSelector,
   fetchProducts,
-  addItemToCart
+  addItemToCart,
+  fav
 } from '../../redux';
 
 const mapStateToProps = productsSelector;
 
 const actions = {
   fetchProducts,
-  addItemToCart
+  addItemToCart,
+  fav
 };
 
 const propTypes = {
   products: PropTypes.array,
   fetchProducts: PropTypes.func.isRequired,
-  addItemToCart: PropTypes.func.isRequired
+  addItemToCart: PropTypes.func.isRequired,
+  fav: PropTypes.func.isRequired
 };
 
 export class Products extends Component {
   componentDidMount() {
     this.props.fetchProducts();
   }
-  renderProducts(products, addItemToCart) {
+  renderProducts(products, addItemToCart, fav) {
     if (!Array.isArray(products)) {
       return null;
     }
     return products.map(item => (
       <Product
         addItem={ addItemToCart }
+        fav={ fav }
         item={ item }
         key={ item.id }
       />
@@ -41,7 +45,8 @@ export class Products extends Component {
   render() {
     const {
       products,
-      addItemToCart
+      addItemToCart,
+      fav
     } = this.props;
     return (
       <div className='products'>
@@ -49,7 +54,7 @@ export class Products extends Component {
           <input className='products-search_input' />
         </div>
         <div className='products-lists'>
-          { this.renderProducts(products, addItemToCart) }
+          { this.renderProducts(products, addItemToCart, fav) }
         </div>
       </div>
     );
