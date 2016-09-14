@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import Product from './Product.jsx';
-import { productsSelector, fetchProducts } from './redux';
+import { productsSelector, fetchProducts } from '../../redux';
 
 const mapStateToProps = productsSelector;
 
@@ -38,7 +38,7 @@ export class Products extends Component {
     return (
       <div className='products'>
         <div className='products-search'>
-          <input className='products-search_input'/>
+          <input className='products-search_input' />
         </div>
         <div className='products-lists'>
           { this.renderProducts(products) }
