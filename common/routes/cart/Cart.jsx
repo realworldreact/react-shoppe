@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
+import EmptyCart from './Empty-Cart.jsx';
 import {
   fetchProducts,
   addItemToCart,
@@ -14,6 +15,7 @@ import {
 const propTypes = {
   user: PropTypes.object,
   cart: PropTypes.array,
+  cartEmpty: PropTypes.bool,
   total: PropTypes.string,
   fetchProducts: PropTypes.func.isRequired,
   addItemToCart: PropTypes.func.isRequired,
@@ -53,6 +55,7 @@ const mapStateToProps = state => {
   return {
     ...userSelector(state),
     cart: filledCart,
+    cartEmpty: filledCart.length === 0,
     total: filledCart
       .reduce(
         (total, { count, price }) => total + count * price,
@@ -132,11 +135,17 @@ export class Cart extends Component {
   render() {
     const {
       cart,
+      cartEmpty,
       total,
       addItemToCart,
       removeItemFromCart,
       deleteItemFromCart
     } = this.props;
+    if (cartEmpty) {
+      return (
+        <EmptyCart />
+      );
+    }
     return (
       <div className='cart'>
         <div className='cart-title'>
