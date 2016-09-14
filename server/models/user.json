@@ -15,14 +15,14 @@
       "type": [
         "object"
       ],
-      "required": true,
+      "required": false,
       "default": []
     },
     "favs": {
       "type": [
         "string"
       ],
-      "required": true,
+      "required": false,
       "default": []
     }
   },

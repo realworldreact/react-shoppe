@@ -124,10 +124,10 @@ export class Cart extends Component {
           </div>
         </div>
         <div
-          className='cart-list-item'
+          className='cart-list-item cart-delete-item'
           onClick={ () => deleteItem(+item.id) }
           >
-          x
+          <img src='/images/cart/DeleteItem.png' />
         </div>
       </div>
     ));
@@ -174,13 +174,13 @@ export class Cart extends Component {
           }
           <div className='cart-list-row'>
             <div className='cart-list-item' />
-            <div className='cart-list-item' />
             <div className='cart-list-item'>
               Total
             </div>
             <div className='cart-list-item'>
               $ { total }
             </div>
+            <div className='cart-list-item' />
           </div>
         </div>
       </div>
