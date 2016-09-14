@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 
 import {
   fetchProducts,
+  addItemToCart,
+  removeItemFromCart,
+  deleteItemFromCart,
   userSelector,
   cartSelector,
   productsSelector
@@ -12,7 +15,17 @@ const propTypes = {
   user: PropTypes.object,
   cart: PropTypes.array,
   total: PropTypes.string,
-  fetchProducts: PropTypes.func.isRequired
+  fetchProducts: PropTypes.func.isRequired,
+  addItemToCart: PropTypes.func.isRequired,
+  removeItemFromCart: PropTypes.func.isRequired,
+  deleteItemFromCart: PropTypes.func.isRequired
+};
+
+const actions = {
+  fetchProducts,
+  addItemToCart,
+  removeItemFromCart,
+  deleteItemFromCart
 };
 
 const mapStateToProps = state => {
@@ -49,10 +62,6 @@ const mapStateToProps = state => {
   };
 };
 
-const actions = {
-  fetchProducts
-};
-
 export class Cart extends Component {
   componentDidMount() {
     this.props.fetchProducts();
@@ -77,7 +86,7 @@ export class Cart extends Component {
       </div>
     );
   }
-  renderItems(items) {
+  renderItems(items, addItem, removeItem, deleteItem) {
     if (!items.length) {
       return null;
     }
@@ -90,13 +99,19 @@ export class Cart extends Component {
           { this.renderItemBox(item) }
         </div>
         <div className='cart-list-item cart-list-count'>
-          <div className='cart-count-item cart-count-up'>
+          <div
+            className='cart-count-item cart-count-up'
+            onClick={ () => addItem(+item.id) }
+            >
             <img src='/images/cart/AddOneItem.png' />
           </div>
           <div className='cart-count-item cart-count-count'>
             { item.count }
           </div>
-          <div className='cart-count-item cart-count-down'>
+          <div
+            className='cart-count-item cart-count-down'
+            onClick={ () => removeItem(+item.id) }
+            >
             <img src='/images/cart/SubtractOneItem.png' />
           </div>
         </div>
@@ -105,7 +120,10 @@ export class Cart extends Component {
             $ { (item.count * item.price).toFixed(2) }
           </div>
         </div>
-        <div className='cart-list-item'>
+        <div
+          className='cart-list-item'
+          onClick={ () => deleteItem(+item.id) }
+          >
           x
         </div>
       </div>
@@ -114,7 +132,10 @@ export class Cart extends Component {
   render() {
     const {
       cart,
-      total
+      total,
+      addItemToCart,
+      removeItemFromCart,
+      deleteItemFromCart
     } = this.props;
     return (
       <div className='cart'>
@@ -134,7 +155,14 @@ export class Cart extends Component {
             </div>
             <div className='cart-list-item' />
           </div>
-          { this.renderItems(cart) }
+          {
+            this.renderItems(
+              cart,
+              addItemToCart,
+              removeItemFromCart,
+              deleteItemFromCart
+            )
+          }
           <div className='cart-list-row'>
             <div className='cart-list-item' />
             <div className='cart-list-item' />
