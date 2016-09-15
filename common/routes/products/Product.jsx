@@ -3,9 +3,13 @@ import React, { Component, PropTypes } from 'react';
 export default class Product extends Component {
   render() {
     const { addItem, item, fav } = this.props;
-    const favImage = item.fav ?
+    const favImage = item.isFav ?
       'HeartItemSelected' :
       'HeartItemUnselected';
+    const cartImage = item.isInCart ?
+      'AddToCartSelected' :
+      'AddToCartUnselected';
+
     return (
       <div className='products-item'>
         <div className='products-item-stock-photo'>
@@ -30,7 +34,7 @@ export default class Product extends Component {
             onClick={ () => addItem(item.id) }
             title='Add to Cart'
             >
-            <img src='/images/AddToCartUnselected.png' />
+            <img src={ `/images/${cartImage}.png` } />
           </button>
         </div>
       </div>

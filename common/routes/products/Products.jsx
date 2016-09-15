@@ -7,22 +7,25 @@ import {
   fetchProducts,
   addItemToCart,
   fav,
+  favsSelector,
   productsSelector,
-  favsSelector
+  cartSelector
 } from '../../redux';
 
 const mapStateToProps = state => {
   const { products } = productsSelector(state);
   const { favs } = favsSelector(state);
+  const { cart } = cartSelector(state);
   return {
     products: products.map(item => {
+      let newItem = { ...item };
       if (includes(favs, item.id)) {
-        return {
-          ...item,
-          fav: true
-        };
+        newItem.isFav = true;
       }
-      return item;
+      if (includes(cart.map(({ id }) => id), item.id)) {
+        newItem.isInCart = true;
+      }
+      return newItem;
     })
   };
 };
