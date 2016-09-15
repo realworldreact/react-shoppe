@@ -243,4 +243,13 @@ module.exports = function(User) {
       }
     }
   );
+
+  User.afterRemote('create', function afterRemoteCreate(ctx, user, next) {
+    return user.createAccessToken()
+      .then(token => {
+        user.accessToken = token.id;
+        return next();
+      })
+      .catch(next);
+  });
 };
