@@ -9,6 +9,7 @@
 * search the products
 * favorite specific products
 * add products to my cart
+* see the product count in the cart icon
 * view my cart
 * increase the item quantity of a specific product from my cart
 * see price changes reactively with quantity changes in my cart
