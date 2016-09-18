@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint .",
     "start": "npm run create-env && gulp",
-    "seed": "node seed",
+    "seed": "npm run create-env && node seed",
     "posttest": "npm run lint && nsp check",
     "create-env": "node -e \"var fs = require('fs'); fs.access('./.env', function(err) { if (err) { console.log('\\n\\ncreating .env file\\n\\n'); return fs.writeFileSync('./.env', ''); } console.log('\\n\\n.env file present\\n\\n'); });\""
   },
