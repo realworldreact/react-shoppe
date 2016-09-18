@@ -1,5 +1,20 @@
 # Advance Redux
 
+## User Stories
+
+#### As a user, I can...
+* sign up
+* log in
+* view all the products on one page
+* search the products
+* favorite specific products
+* add products to my cart
+* view my cart
+* increase the item quantity of a specific product from my cart
+* see price changes reactively with quantity changes in my cart
+* remove an item from my cart
+
+
 ## To start development
 To seed the database for the first time
 
