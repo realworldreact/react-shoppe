@@ -185,3 +185,11 @@ The default gulp task will
 * Launch nodemon which will intern manage the LoopBack server
 * Launch `webpack-dev-server` with Hot Reloading and React Hot Loader
 * Launch BrowserSync which will manage injecting css and webpack build
+
+
+## Useful docs
+
+* [loopback user docs](https://docs.strongloop.com/display/APIC/User+REST+API)
+* [Redux Docs](http://redux.js.org/docs/)
+* [Redux-thunk](https://github.com/gaearon/redux-thunk)
+* [react-redux-router](https://github.com/reactjs/react-router-redux)
