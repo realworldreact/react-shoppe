@@ -1,4 +1,4 @@
-export function serializeForm(form) {
+export default function serializeForm(form) {
   const data = [].filter.call(form.elements, node => !!node.name)
     .reduce((data, node) => {
       data[node.name] = node.value;
