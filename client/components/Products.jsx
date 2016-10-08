@@ -8,8 +8,7 @@ const propTypes = {
   favs: PropTypes.array,
   cart: PropTypes.array,
   products: PropTypes.array,
-  accessToken: PropTypes.string,
-  userId: PropTypes.string,
+  user: PropTypes.object,
   updateCart: PropTypes.func,
   updateFavs: PropTypes.func
 };
@@ -65,8 +64,7 @@ export default class Products extends Component {
       favs,
       cart,
       products,
-      userId,
-      accessToken
+      user: { id: userId, accessToken }
     } = this.props;
     return (
       <div className='products'>
