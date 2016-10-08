@@ -1,28 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 
-/* eslint-disable */
-const items = [
-  {
-    "id": "2",
-    "name": "Apricots",
-    "description": "An apricot is a fruit or the tree that bears the fruit of several species in the genus Prunus. Grind the pits for a facial exfoliant.",
-    "image": "apricot.png",
-    "nutrition": ["Vitamin A", "Vitamin C"],
-    "price": 1.50,
-    "quantity": 3
-  },
-  {
-    "id": "4",
-    "name": "Broccoli",
-    "description": "Broccoli is an edible green plant in the cabbage family whose large flowering head is eaten as a vegetable. Try with cheese.",
-    "image": "broccoli.png",
-    "nutrition": ["Potassium", "Vitamin C", "Fiber"],
-    "price": 1.75,
-    "quantity": 6
-  }
-];
-/* eslint-enable */
-
 const propTypes = {
   cart: PropTypes.array,
   updateCart: PropTypes.func,
@@ -33,10 +10,12 @@ const propTypes = {
 export default class Cart extends Component {
 
   render() {
-    const totalSum = items.reduce((sum, item) => {
+    const { cart } = this.props;
+    const totalSum = cart.reduce((sum, item) => {
       return sum + item.price * item.quantity;
     }, 0);
-    if (items.length < 1) {
+
+    if (cart.length === 0) {
       return (
         <div className='cart cart-empty'>
           <div className='cart-title'>
@@ -66,7 +45,7 @@ export default class Cart extends Component {
             <div className='cart-list-item' />
           </div>
           {
-            items.map(item => (
+            cart.map(item => (
               <div
                 className='cart-list-row'
                 key={ item.id }

@@ -8,9 +8,11 @@ export default class App extends Component {
     super(...props);
     this.state = {
       user: {},
+      cart: [],
       products: []
     };
     this.addUser = this.addUser.bind(this);
+    this.updateCart = this.updateCart.bind(this);
   }
 
   componentDidMount() {
@@ -18,7 +20,7 @@ export default class App extends Component {
       const userId = localStorage.getItem('userId');
       const accessToken = localStorage.getItem('accessToken');
       fetchUser(userId, accessToken)
-        .then(user => this.addUser(user));
+        .then(user => this.addUser({ ...user, accessToken }));
     }
     fetchProducts().then(products => this.setState({ products }));
   }
@@ -28,11 +30,22 @@ export default class App extends Component {
       localStorage.setItem('userId', user.id);
       localStorage.setItem('accessToken', user.accessToken);
     }
-    this.setState({ user });
+    this.setState({
+      user,
+      cart: user.cart || []
+    });
+  }
+
+  updateCart(cart = []) {
+    this.setState({ cart });
   }
 
   render() {
-    const { user, products } = this.state;
+    const {
+      user,
+      cart,
+      products
+    } = this.state;
     const { username } = user;
     return (
       <div className='app'>
@@ -44,8 +57,11 @@ export default class App extends Component {
             cloneElement(
               this.props.children,
               {
+                user: user,
+                cart: cart,
+                products: products,
                 addUser: this.addUser,
-                products: products
+                updateCart: this.updateCart
               }
             )
           }

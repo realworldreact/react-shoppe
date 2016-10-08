@@ -1,10 +1,22 @@
 import React, { Component, PropTypes } from 'react';
 
+import { addToCart } from '../api.js';
+
 const propTypes = {
-  products: PropTypes.array
+  user: PropTypes.object,
+  products: PropTypes.array,
+  updateCart: PropTypes.func
 };
 
 export default class Products extends Component {
+  addItemToCart(itemId) {
+    const { user } = this.props;
+    if (user.id && user.accessToken) {
+      addToCart(user.id, user.accessToken, itemId)
+        .then(({ cart }) => this.props.updateCart(cart));
+    }
+  }
+
   render() {
     const { products } = this.props;
     return (
@@ -34,7 +46,10 @@ export default class Products extends Component {
                   <div className='products-item-favorite'>
                     <img src={ '/images/HeartItemUnselected.png' } />
                   </div>
-                  <div className='products-item-cart'>
+                  <div
+                    className='products-item-cart'
+                    onClick={ () => this.addItemToCart(item.id) }
+                    >
                     <img src={ '/images/AddToCartUnselected.png' } />
                   </div>
                 </div>
