@@ -10,12 +10,28 @@ const propTypes = {
 export default class Cart extends Component {
 
   render() {
-    const { cart } = this.props;
-    const totalSum = cart.reduce((sum, item) => {
+    const { products, cart } = this.props;
+    const productsById = products.reduce((byId, prod) => {
+      byId[prod.id] = prod;
+      return byId;
+    }, {});
+
+    const finalCart = cart.map(item => {
+      if (productsById[item.id]) {
+        return {
+          ...productsById[item.id],
+          quantity: item.count
+        };
+      } else {
+        return false;
+      }
+    }).filter(item => !!item);
+
+    const totalSum = finalCart.reduce((sum, item) => {
       return sum + item.price * item.quantity;
     }, 0);
 
-    if (cart.length === 0) {
+    if (finalCart.length === 0) {
       return (
         <div className='cart cart-empty'>
           <div className='cart-title'>
@@ -45,7 +61,7 @@ export default class Cart extends Component {
             <div className='cart-list-item' />
           </div>
           {
-            cart.map(item => (
+            finalCart.map(item => (
               <div
                 className='cart-list-row'
                 key={ item.id }
