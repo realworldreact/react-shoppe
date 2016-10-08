@@ -9,10 +9,12 @@ export default class App extends Component {
     this.state = {
       user: {},
       cart: [],
-      products: []
+      products: [],
+      favs: []
     };
     this.addUser = this.addUser.bind(this);
     this.updateCart = this.updateCart.bind(this);
+    this.updateFavs = this.updateFavs.bind(this);
   }
 
   componentDidMount() {
@@ -32,7 +34,8 @@ export default class App extends Component {
     }
     this.setState({
       user,
-      cart: user.cart || []
+      cart: user.cart || [],
+      favs: user.favs || []
     });
   }
 
@@ -40,11 +43,16 @@ export default class App extends Component {
     this.setState({ cart });
   }
 
+  updateFavs(favs = []) {
+    this.setState({ favs });
+  }
+
   render() {
     const {
       user,
       cart,
-      products
+      products,
+      favs
     } = this.state;
     const { username } = user;
     return (
@@ -59,9 +67,11 @@ export default class App extends Component {
               {
                 user: user,
                 cart: cart,
+                favs: favs,
                 products: products,
                 addUser: this.addUser,
-                updateCart: this.updateCart
+                updateCart: this.updateCart,
+                updateFavs: this.updateFavs
               }
             )
           }

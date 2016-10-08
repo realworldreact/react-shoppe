@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 
-import { addToCart } from '../api.js';
+import { fav, addToCart } from '../api.js';
 
 const propTypes = {
   user: PropTypes.object,
   products: PropTypes.array,
-  updateCart: PropTypes.func
+  updateCart: PropTypes.func,
+  updateFavs: PropTypes.func
 };
 
 export default class Products extends Component {
@@ -14,6 +15,14 @@ export default class Products extends Component {
     if (user.id && user.accessToken) {
       addToCart(user.id, user.accessToken, itemId)
         .then(({ cart }) => this.props.updateCart(cart));
+    }
+  }
+
+  favItem(itemId) {
+    const { user } = this.props;
+    if (user.id && user.accessToken) {
+      fav(user.id, user.accessToken, itemId)
+        .then(({ favs }) => this.props.updateFavs(favs));
     }
   }
 
@@ -43,7 +52,10 @@ export default class Products extends Component {
                   { item.description }
                 </div>
                 <div className='products-item-footer'>
-                  <div className='products-item-favorite'>
+                  <div
+                    className='products-item-favorite'
+                    onClick={ () => this.favItem(item.id) }
+                    >
                     <img src={ '/images/HeartItemUnselected.png' } />
                   </div>
                   <div
