@@ -56,6 +56,14 @@ export function deleteFromCart(userId, token, itemId) {
   );
 }
 
+export function fetchUser(id, token) {
+  const options = {
+    ...defaultOptions,
+    method: 'GET'
+  };
+  return makeFetch(api + `/${id}?access_token=${token}`, options);
+}
+
 export function signUp(form) {
   const options = {
     ...defaultOptions,

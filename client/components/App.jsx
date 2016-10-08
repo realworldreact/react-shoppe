@@ -1,8 +1,8 @@
 import React, { cloneElement, PropTypes, Component } from 'react';
 import Nav from './Nav.jsx';
-import { fetchProducts } from '../api.js';
+import { fetchUser, fetchProducts } from '../api.js';
 
-
+const store = typeof localStorage !== 'undefined' ? localStorage : false;
 export default class App extends Component {
   constructor(...props) {
     super(...props);
@@ -19,6 +19,11 @@ export default class App extends Component {
   }
 
   addUser(user = {}) {
+    if (user.id && user.accessToken) {
+      store.setItem('id', user.id);
+      store.setItem('accessToken', user.accessToken);
+    }
+
     this.setState({
       user,
       cart: user.cart,
@@ -39,6 +44,10 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    const { id, accessToken } = store;
+    if (id && accessToken) {
+      fetchUser(id, accessToken).then(this.addUser);
+    }
     fetchProducts().then(this.fetchProductsCompleted);
   }
 
