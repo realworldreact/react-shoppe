@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import { browserHistory } from 'react-router';
+
 import { signUp } from '../api.js';
 
 const propTypes = {
@@ -14,7 +16,9 @@ export default class SignUp extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
-    signUp(form).then(user => this.props.addUser(user));
+    signUp(form)
+      .then(user => this.props.addUser(user))
+      .then(() => browserHistory.push('/'));
   }
 
   render() {
