@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react';
 import { fav, addToCart } from '../api.js';
 
 const propTypes = {
+  favs: PropTypes.array,
+  cart: PropTypes.array,
   user: PropTypes.object,
   products: PropTypes.array,
   updateCart: PropTypes.func,
@@ -27,7 +29,7 @@ export default class Products extends Component {
   }
 
   render() {
-    const { products } = this.props;
+    const { favs, cart, products } = this.props;
     return (
       <div className='products'>
         <div className='products-search'>
@@ -56,13 +58,25 @@ export default class Products extends Component {
                     className='products-item-favorite'
                     onClick={ () => this.favItem(item.id) }
                     >
-                    <img src={ '/images/HeartItemUnselected.png' } />
+                    <img
+                      src={
+                        favs.some(id => item.id === id) ?
+                        '/images/HeartItemSelected.png' :
+                        '/images/HeartItemUnselected.png'
+                      }
+                    />
                   </div>
                   <div
                     className='products-item-cart'
                     onClick={ () => this.addItemToCart(item.id) }
                     >
-                    <img src={ '/images/AddToCartUnselected.png' } />
+                    <img
+                      src={
+                        cart.some(({ id }) => id === item.id) ?
+                        '/images/AddToCartSelected.png' :
+                        '/images/AddToCartUnselected.png'
+                      }
+                    />
                   </div>
                 </div>
               </div>
