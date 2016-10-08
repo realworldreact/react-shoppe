@@ -44,7 +44,15 @@ export default class Products extends Component {
   render() {
     const { favs, cart, products } = this.props;
     const { filter } = this.state;
-    const filterReg = new RegExp(filter, 'i');
+    // replace spaces with any key to match dashes
+    // makes search more fuzzy (thanks @xRahul)
+    const filterReg = new RegExp(
+      filter
+        .replace(/ /g, '.')
+        .split('')
+        .join('.*'),
+      'i'
+    );
     return (
       <div className='products'>
         <div className='products-search'>
