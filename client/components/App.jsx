@@ -30,11 +30,11 @@ export default class App extends Component {
     this.setState({ products });
   }
 
-  updateCart(cart = []) {
+  updateCart({ cart = [] }) {
     this.setState({ cart });
   }
 
-  updateFavs(favs = []) {
+  updateFavs({ favs = [] }) {
     this.setState({ favs });
   }
 

@@ -1,68 +1,43 @@
 import React, { PropTypes, Component } from 'react';
-import { connect } from 'react-redux';
 
+import { addToCart, removeFromCart, deleteFromCart } from '../api.js';
 import EmptyCart from './Empty-Cart.jsx';
-import {
-  addItemToCart,
-  removeItemFromCart,
-  deleteItemFromCart,
-  userSelector,
-  cartSelector,
-  productsSelector
-} from '../redux';
 
 const propTypes = {
-  user: PropTypes.object,
   cart: PropTypes.array,
-  cartEmpty: PropTypes.bool,
-  total: PropTypes.string,
-  addItemToCart: PropTypes.func.isRequired,
-  removeItemFromCart: PropTypes.func.isRequired,
-  deleteItemFromCart: PropTypes.func.isRequired
+  updateCart: PropTypes.func,
+  user: PropTypes.object,
+  products: PropTypes.array
 };
 
-const actions = {
-  addItemToCart,
-  removeItemFromCart,
-  deleteItemFromCart
-};
+export default class Cart extends Component {
+  addItem(itemId) {
+    const { id: userId, accessToken } = this.props.user;
+    if (!userId || !accessToken || !itemId) {
+      return null;
+    }
+    addToCart(userId, accessToken, itemId).then(this.props.updateCart);
+    return null;
+  }
 
-const mapStateToProps = state => {
-  const { products } = productsSelector(state);
-  const productsById = products
-    .reduce((productMap, product) => {
-      productMap[product.id] = product;
-      return productMap;
-    }, {});
+  removeItem(itemId) {
+    const { id: userId, accessToken } = this.props.user;
+    if (!userId || !accessToken || !itemId) {
+      return null;
+    }
+    removeFromCart(userId, accessToken, itemId).then(this.props.updateCart);
+    return null;
+  }
 
-  const { cart } = cartSelector(state);
-  const filledCart = cart
-    .map(({ id, count })=> {
-      const product = productsById[id];
-      if (!product) {
-        return false;
-      }
-      return {
-        ...product,
-        count
-      };
-    })
-    .filter(Boolean);
+  deleteItem(itemId) {
+    const { id: userId, accessToken } = this.props.user;
+    if (!userId || !accessToken || !itemId) {
+      return null;
+    }
+    deleteFromCart(userId, accessToken, itemId).then(this.props.updateCart);
+    return null;
+  }
 
-  return {
-    ...userSelector(state),
-    cart: filledCart,
-    cartEmpty: filledCart.length === 0,
-    total: filledCart
-      .reduce(
-        (total, { count, price }) => total + count * price,
-        0
-      )
-      .toFixed(2)
-  };
-};
-
-export class Cart extends Component {
   renderItemBox(item) {
     if (!item) {
       return null;
@@ -83,7 +58,8 @@ export class Cart extends Component {
       </div>
     );
   }
-  renderItems(items, addItem, removeItem, deleteItem) {
+
+  renderItems(items) {
     if (!items.length) {
       return null;
     }
@@ -98,7 +74,7 @@ export class Cart extends Component {
         <div className='cart-list-item cart-list-count'>
           <div
             className='cart-count-item cart-count-up'
-            onClick={ () => addItem(+item.id) }
+            onClick={ () => this.addItem(+item.id) }
             >
             <img src='/images/cart/AddOneItem.png' />
           </div>
@@ -107,7 +83,7 @@ export class Cart extends Component {
           </div>
           <div
             className='cart-count-item cart-count-down'
-            onClick={ () => removeItem(+item.id) }
+            onClick={ () => this.removeItem(+item.id) }
             >
             <img src='/images/cart/SubtractOneItem.png' />
           </div>
@@ -119,23 +95,44 @@ export class Cart extends Component {
         </div>
         <div
           className='cart-list-item cart-delete-item'
-          onClick={ () => deleteItem(+item.id) }
+          onClick={ () => this.deleteItem(+item.id) }
           >
           <img src='/images/cart/DeleteItem.png' />
         </div>
       </div>
     ));
   }
+
   render() {
     const {
       cart,
-      cartEmpty,
-      total,
-      addItemToCart,
-      removeItemFromCart,
-      deleteItemFromCart
+      user,
+      products
     } = this.props;
-    if (cartEmpty) {
+
+    const productsById = products.reduce((productMap, product) => {
+      productMap[product.id] = product;
+      return productMap;
+    }, {});
+
+    const filledCart = cart
+      .map(({ id, count })=> {
+        const product = productsById[id];
+        if (!product) {
+          return false;
+        }
+        return {
+          ...product,
+          count
+        };
+      })
+      .filter(Boolean);
+
+    const total = filledCart
+      .reduce((total, { count, price }) => total + count * price, 0)
+      .toFixed(2);
+
+    if (filledCart.length === 0) {
       return (
         <EmptyCart />
       );
@@ -158,14 +155,7 @@ export class Cart extends Component {
             </div>
             <div className='cart-list-item' />
           </div>
-          {
-            this.renderItems(
-              cart,
-              addItemToCart,
-              removeItemFromCart,
-              deleteItemFromCart
-            )
-          }
+          { this.renderItems(filledCart, user) }
           <div className='cart-list-row'>
             <div className='cart-list-item' />
             <div className='cart-list-item'>
@@ -184,8 +174,3 @@ export class Cart extends Component {
 
 
 Cart.propTypes = propTypes;
-
-export default connect(
-  mapStateToProps,
-  actions
-)(Cart);

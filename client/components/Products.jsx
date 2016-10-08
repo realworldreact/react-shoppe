@@ -1,22 +1,37 @@
 import React, { Component, PropTypes } from 'react';
 import includes from 'lodash/includes';
+import { addToCart, fav } from '../api.js';
 
 import Product from './Product.jsx';
 
 const propTypes = {
   favs: PropTypes.array,
   cart: PropTypes.array,
-  products: PropTypes.array
+  products: PropTypes.array,
+  accessToken: PropTypes.string,
+  userId: PropTypes.string,
+  updateCart: PropTypes.func,
+  updateFavs: PropTypes.func
 };
 
 export default class Products extends Component {
-  addItemToCart() {
+  addItemToCart(userId, accessToken, itemId) {
+    if (!userId || !accessToken || !itemId) {
+      return null;
+    }
+    addToCart(userId, accessToken, itemId).then(this.props.updateCart);
+    return null;
   }
 
-  favItem() {
+  favItem(userId, accessToken, itemId) {
+    if (!userId || !accessToken || !itemId) {
+      return null;
+    }
+    fav(userId, accessToken, itemId).then(this.props.updateFavs);
+    return null;
   }
 
-  renderProducts(favs, cart, products) {
+  renderProducts(favs, cart, products, userId, accessToken) {
     if (!Array.isArray(products)) {
       return null;
     }
@@ -33,8 +48,12 @@ export default class Products extends Component {
       })
       .map(item => (
         <Product
-          addItem={ this.addItemToCart }
-          fav={ this.favItem }
+          addItem={
+            itemId => this.addItemToCart(userId, accessToken, itemId)
+          }
+          fav={
+            itemId => this.favItem(userId, accessToken, itemId)
+          }
           item={ item }
           key={ item.id }
         />
@@ -45,7 +64,9 @@ export default class Products extends Component {
     const {
       favs,
       cart,
-      products
+      products,
+      userId,
+      accessToken
     } = this.props;
     return (
       <div className='products'>
@@ -57,7 +78,9 @@ export default class Products extends Component {
             this.renderProducts(
               favs,
               cart,
-              products
+              products,
+              userId,
+              accessToken
             )
           }
         </div>
