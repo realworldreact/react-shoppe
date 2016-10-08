@@ -1,24 +1,32 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
-import { logIn } from '../redux';
-
-const actions = {
-  logIn
-};
+import { logIn } from '../api.js';
 
 const propTypes = {
-  logIn: PropTypes.func.isRequired
+  addUser: PropTypes.func.isRequired
 };
 
-export class LogIn extends React.Component {
+export default class LogIn extends React.Component {
+  constructor(...props) {
+    super(...props);
+    this.logIn = this.logIn.bind(this);
+  }
+
+  logIn(e) {
+    e.preventDefault();
+    const form = e.target;
+    logIn(form)
+      .then(this.props.addUser)
+      .then(() => browserHistory.push('/cart'));
+  }
+
   render() {
-    const { logIn } = this.props;
     return (
       <div className='auth-login'>
         <form
           name='login'
-          onSubmit={ logIn }
+          onSubmit={ this.logIn }
           >
           <label>
             <input
@@ -48,8 +56,3 @@ export class LogIn extends React.Component {
 
 LogIn.displayName = 'LogIn';
 LogIn.propTypes = propTypes;
-
-export default connect(
-  null,
-  actions
-)(LogIn);

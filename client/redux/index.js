@@ -1,5 +1,4 @@
 import { combineActions, createAction, handleActions } from 'redux-actions';
-import { push } from 'react-router-redux';
 
 import createTypes from '../utils/create-types';
 import * as api from '../api';
@@ -20,9 +19,6 @@ export const favsSelector = state => ({ favs: state.app.favs || [] });
 
 export const types = createTypes(
   [
-    'addUser',
-    'fetchProducts',
-    'fetchProductsCompleted',
     'addItemToCart',
     'addItemCompleted',
 
@@ -33,15 +29,10 @@ export const types = createTypes(
     'deleteItemCompleted',
 
     'fav',
-    'favCompleted',
-
-    'signUp',
-    'logIn'
+    'favCompleted'
   ],
   'app'
 );
-
-export const addUser = createAction(types.addUser);
 
 export const favCompleted = createAction(types.favCompleted);
 export const fav = itemId => (dispatch, getState) => {
@@ -95,36 +86,6 @@ export const deleteItemFromCart = itemId => (dispatch, getState) => {
   return null;
 };
 
-export const signUp = e => dispatch => {
-  e.preventDefault();
-  const form = e.target;
-  return dispatch({
-    type: types.signUp,
-    payload: Promise.resolve()
-  })
-    .then(() => api.signUp(form))
-    .then(addUser)
-    .then(addUserAction => {
-      dispatch(addUserAction);
-      dispatch(push('/cart'));
-    });
-};
-
-export const logIn = e => dispatch => {
-  e.preventDefault();
-  const form = e.target;
-  return dispatch({
-    type: types.logIn,
-    payload: Promise.resolve()
-  })
-    .then(() => api.logIn(form))
-    .then(addUser)
-    .then(addUserAction => {
-      dispatch(addUserAction);
-      dispatch(push('/cart'));
-    });
-};
-
 const updateCartActions = combineActions(
   types.addItemCompleted,
   types.removeItemCompleted,
@@ -132,16 +93,6 @@ const updateCartActions = combineActions(
 );
 export default handleActions(
   {
-    [types.addUser]: (state, { payload: user = {} }) => ({
-      ...state,
-      user,
-      cart: user.cart,
-      favs: user.favs
-    }),
-    [types.fetchProductsCompleted]: (state, { payload = [] }) => ({
-      ...state,
-      products: payload
-    }),
     [updateCartActions]: (state, { payload: { cart } }) => ({
       ...state,
       cart
