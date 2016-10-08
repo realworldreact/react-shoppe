@@ -20,9 +20,28 @@ export default class Products extends Component {
         {
           products.map(item => (
             <div
+              className='products-item'
               key={ item.id }
               >
-              { item.name }
+              <div>
+                <img src={ '/images/products/' + item.image } />
+              </div>
+              <div
+                className='products-item-name'
+                >
+                { item.name }
+              </div>
+              <div className='products-item-description'>
+                { item.description }
+              </div>
+              <div>
+                <div>
+                  <img src={ '/images/HeartItemUnselected.png' } />
+                </div>
+                <div>
+                  <img src={ '/images/AddToCartUnselected.png' } />
+                </div>
+              </div>
             </div>
           ))
         }
