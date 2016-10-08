@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import EmptyCart from './Empty-Cart.jsx';
 import {
-  fetchProducts,
   addItemToCart,
   removeItemFromCart,
   deleteItemFromCart,
@@ -17,14 +16,12 @@ const propTypes = {
   cart: PropTypes.array,
   cartEmpty: PropTypes.bool,
   total: PropTypes.string,
-  fetchProducts: PropTypes.func.isRequired,
   addItemToCart: PropTypes.func.isRequired,
   removeItemFromCart: PropTypes.func.isRequired,
   deleteItemFromCart: PropTypes.func.isRequired
 };
 
 const actions = {
-  fetchProducts,
   addItemToCart,
   removeItemFromCart,
   deleteItemFromCart
@@ -66,9 +63,6 @@ const mapStateToProps = state => {
 };
 
 export class Cart extends Component {
-  componentDidMount() {
-    this.props.fetchProducts();
-  }
   renderItemBox(item) {
     if (!item) {
       return null;
