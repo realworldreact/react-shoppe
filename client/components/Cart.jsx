@@ -9,7 +9,16 @@ const items = [
     "image": "apricot.png",
     "nutrition": ["Vitamin A", "Vitamin C"],
     "price": 1.50,
-    "quantity": 2
+    "quantity": 3
+  },
+  {
+    "id": "4",
+    "name": "Broccoli",
+    "description": "Broccoli is an edible green plant in the cabbage family whose large flowering head is eaten as a vegetable. Try with cheese.",
+    "image": "broccoli.png",
+    "nutrition": ["Potassium", "Vitamin C", "Fiber"],
+    "price": 1.75,
+    "quantity": 6
   }
 ];
 /* eslint-enable */
@@ -24,6 +33,9 @@ const propTypes = {
 export default class Cart extends Component {
 
   render() {
+    const totalSum = items.reduce((sum, item) => {
+      return sum + item.price * item.quantity;
+    }, 0);
     if (items.length < 1) {
       return (
         <div className='cart cart-empty'>
@@ -41,9 +53,24 @@ export default class Cart extends Component {
           <h2>My Cart</h2>
         </div>
         <div className='cart-list'>
+          <div className='cart-list-row'>
+            <div className='cart-list-item'>
+              Item
+            </div>
+            <div className='cart-list-item'>
+              Qty
+            </div>
+            <div className='cart-list-item'>
+              Price
+            </div>
+            <div className='cart-list-item' />
+          </div>
           {
             items.map(item => (
-              <div className='cart-list-row'>
+              <div
+                className='cart-list-row'
+                key={ item.id }
+                >
                 <div className='cart-list-item'>
                   <div className='cart-list-product'>
                     <div className='cart-list-stock-photo' >
@@ -56,7 +83,7 @@ export default class Cart extends Component {
                         { item.name }
                       </div>
                       <div className='cart-list-info-price'>
-                        $ { item.price }
+                        ${ item.price }
                       </div>
                     </div>
                   </div>
@@ -73,7 +100,7 @@ export default class Cart extends Component {
                   </div>
                 </div>
                 <div className='cart-list-item'>
-                  $ { item.price }
+                  ${ item.quantity * item.price }
                 </div>
                 <div className='cart-list-item cart-delete-item'>
                   <img src='/images/cart/DeleteItem.png' />
@@ -87,8 +114,9 @@ export default class Cart extends Component {
              Total
             </div>
             <div className='cart-list-item'>
-              $ 19.99
+              ${ totalSum }
             </div>
+            <div className='cart-list-item' />
           </div>
         </div>
       </div>
