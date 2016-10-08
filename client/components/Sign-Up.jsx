@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router';
 import { signUp } from '../api.js';
 
 const propTypes = {
-  addUser: PropTypes.func.isRequired
+  addUser: PropTypes.func
 };
 
 export default class SignUp extends React.Component {

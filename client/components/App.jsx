@@ -7,7 +7,7 @@ export default class App extends Component {
   constructor(...props) {
     super(...props);
     this.state = {
-      user: null,
+      user: {},
       products: [],
       cart: [],
       favs: []
@@ -51,7 +51,10 @@ export default class App extends Component {
     } = this.state;
     return (
       <div className='app'>
-        <Nav />
+        <Nav
+          name={ user.username }
+          numOfItems={ cart.length }
+        />
         <div className='app-child'>
           {
             cloneElement(

@@ -1,24 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
-
-import { cartSelector, userSelector } from '../redux';
 
 const propTypes = {
   name: PropTypes.string,
   numOfItems: PropTypes.number
 };
 
-const mapStateToProps = state => {
-  const { user } = userSelector(state);
-  const { cart } = cartSelector(state);
-  return {
-    name: user.username,
-    numOfItems: cart.length
-  };
-};
-
-export class Nav extends Component {
+export default class Nav extends Component {
   renderRightBar(name, numOfItems) {
     if (name) {
       return (
@@ -74,7 +62,4 @@ export class Nav extends Component {
 }
 
 Nav.propTypes = propTypes;
-
-export default connect(
-  mapStateToProps
-)(Nav);
+Nav.displayName = 'Nav';
