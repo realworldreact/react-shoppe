@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
+import Input from './Input.jsx';
 import { fav, addToCart } from '../api.js';
 
 const propTypes = {
@@ -36,8 +37,7 @@ export default class Products extends Component {
     }
   }
 
-  handleFilter(e) {
-    const filter = e.target.value;
+  handleFilter(filter) {
     this.setState({ filter: filter.length < 3 ? '' : filter });
   }
 
@@ -56,10 +56,7 @@ export default class Products extends Component {
     return (
       <div className='products'>
         <div className='products-search'>
-          <input
-            className='products-search_input'
-            onChange={ this.handleFilter }
-          />
+          <Input handleInput={ this.handleFilter } />
         </div>
         <div className='products-lists'>
           {

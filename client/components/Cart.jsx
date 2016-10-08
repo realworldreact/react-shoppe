@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 
+import Input from './Input.jsx';
+
 const propTypes = {
   cart: PropTypes.array,
   updateCart: PropTypes.func,
@@ -47,6 +49,7 @@ export default class Cart extends Component {
         <div className='cart-title'>
           <h2>My Cart</h2>
         </div>
+        <Input handleInput={ () => {} } />
         <div className='cart-list'>
           <div className='cart-list-row'>
             <div className='cart-list-item'>
