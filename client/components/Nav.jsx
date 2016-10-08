@@ -33,8 +33,12 @@ export default class Nav extends Component {
                     { name }
                   </li>
                   <li className='nav-list-cart'>
-                    <img src={ '/images/navbar/CartIcon.png' } />
-                    { numOfItems }
+                    <Link
+                      to='/cart'
+                      >
+                      <img src={ '/images/navbar/CartIcon.png' } />
+                      { numOfItems }
+                    </Link>
                   </li>
                 </div>
               ) :
