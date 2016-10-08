@@ -1,4 +1,24 @@
 @import "kouto-swiss"
 normalize();
 box-sizing-reset();
-@import '../common';
+
+body {
+  width: 100vw;
+  font-family: roboto;
+}
+
+.app {
+  gs('fluid');
+}
+
+.app-child {
+  row();
+}
+
+a {
+  text-decoration: none;
+}
+
+@import './vars.styl';
+@import './components/nav';
+@import './routes';

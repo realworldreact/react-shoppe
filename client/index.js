@@ -7,8 +7,8 @@ import { routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 import promiseMiddleware from 'redux-promise';
 import thunkMiddleware from 'redux-thunk';
 
-import routes from '../common';
-import createReducer from '../common/create-reducer';
+import createReducer from './create-reducer';
+import routes from './routes.jsx';
 
 const devTools = window.devToolsExtension ? window.devToolsExtension() : f => f;
 const adjustUrlOnReplay = !!window.devToolsExtension;

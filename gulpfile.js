@@ -37,14 +37,12 @@ var syncUIPort = yargs.argv['sync-ui-port'] ||
 var paths = {
   server: pckg.main,
   serverIgnore: [
-    './common/**/*',
     './client/**/*',
     './package.json'
   ],
   stylus: './client/index.styl',
   stylusFiles: [
-    './client/**/*.styl',
-    './common/**/*.styl'
+    './client/**/*.styl'
   ],
   public: './public',
   syncWatch: [
