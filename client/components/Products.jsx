@@ -12,6 +12,14 @@ const propTypes = {
 };
 
 export default class Products extends Component {
+  constructor(...props) {
+    super(...props);
+    this.handleFilter = this.handleFilter.bind(this);
+    this.state = {
+      filter: ''
+    };
+  }
+
   addItemToCart(itemId) {
     const { user } = this.props;
     if (user.id && user.accessToken) {
@@ -28,58 +36,74 @@ export default class Products extends Component {
     }
   }
 
+  handleFilter(e) {
+    const filter = e.target.value;
+    this.setState({ filter: filter.length < 3 ? '' : filter });
+  }
+
   render() {
     const { favs, cart, products } = this.props;
+    const { filter } = this.state;
+    const filterReg = new RegExp(filter, 'i');
     return (
       <div className='products'>
         <div className='products-search'>
           <input
             className='products-search_input'
+            onChange={ this.handleFilter }
           />
         </div>
         <div className='products-lists'>
           {
-            products.map(item => (
-              <div
-                className='products-item'
-                key={ item.id }
-                >
-                <div>
-                  <img src={ '/images/products/' + item.image } />
-                </div>
-                <div className='products-item-name'>
-                  { item.name }
-                </div>
-                <div className='products-item-description'>
-                  { item.description }
-                </div>
-                <div className='products-item-footer'>
-                  <div
-                    className='products-item-favorite'
-                    onClick={ () => this.favItem(item.id) }
-                    >
-                    <img
-                      src={
-                        favs.some(id => item.id === id) ?
-                        '/images/HeartItemSelected.png' :
-                        '/images/HeartItemUnselected.png'
-                      }
-                    />
+            products
+              .filter(({ name }) => {
+                if (filter < 3) {
+                  return true;
+                } else {
+                  return filterReg.test(name);
+                }
+              })
+              .map(item => (
+                <div
+                  className='products-item'
+                  key={ item.id }
+                  >
+                  <div>
+                    <img src={ '/images/products/' + item.image } />
                   </div>
-                  <div
-                    className='products-item-cart'
-                    onClick={ () => this.addItemToCart(item.id) }
-                    >
-                    <img
-                      src={
-                        cart.some(({ id }) => id === item.id) ?
-                        '/images/AddToCartSelected.png' :
-                        '/images/AddToCartUnselected.png'
-                      }
-                    />
+                  <div className='products-item-name'>
+                    { item.name }
+                  </div>
+                  <div className='products-item-description'>
+                    { item.description }
+                  </div>
+                  <div className='products-item-footer'>
+                    <div
+                      className='products-item-favorite'
+                      onClick={ () => this.favItem(item.id) }
+                      >
+                      <img
+                        src={
+                          favs.some(id => item.id === id) ?
+                          '/images/HeartItemSelected.png' :
+                          '/images/HeartItemUnselected.png'
+                        }
+                      />
+                    </div>
+                    <div
+                      className='products-item-cart'
+                      onClick={ () => this.addItemToCart(item.id) }
+                      >
+                      <img
+                        src={
+                          cart.some(({ id }) => id === item.id) ?
+                          '/images/AddToCartSelected.png' :
+                          '/images/AddToCartUnselected.png'
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
             ))
           }
         </div>
