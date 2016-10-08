@@ -1,4 +1,6 @@
 import { combineActions, createAction, handleActions } from 'redux-actions';
+import { push } from 'react-router-redux';
+
 import createTypes from '../utils/create-types';
 import * as api from '../api';
 
@@ -31,7 +33,10 @@ export const types = createTypes(
     'deleteItemCompleted',
 
     'fav',
-    'favCompleted'
+    'favCompleted',
+
+    'signUp',
+    'logIn'
   ],
   'app'
 );
@@ -102,6 +107,36 @@ export const deleteItemFromCart = itemId => (dispatch, getState) => {
     .then(deleteItemCompleted)
     .then(dispatch);
   return null;
+};
+
+export const signUp = e => dispatch => {
+  e.preventDefault();
+  const form = e.target;
+  return dispatch({
+    type: types.signUp,
+    payload: Promise.resolve()
+  })
+    .then(() => api.signUp(form))
+    .then(addUser)
+    .then(addUserAction => {
+      dispatch(addUserAction);
+      dispatch(push('/cart'));
+    });
+};
+
+export const logIn = e => dispatch => {
+  e.preventDefault();
+  const form = e.target;
+  return dispatch({
+    type: types.logIn,
+    payload: Promise.resolve()
+  })
+    .then(() => api.logIn(form))
+    .then(addUser)
+    .then(addUserAction => {
+      dispatch(addUserAction);
+      dispatch(push('/cart'));
+    });
 };
 
 const updateCartActions = combineActions(

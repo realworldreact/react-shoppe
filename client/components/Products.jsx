@@ -10,7 +10,7 @@ import {
   favsSelector,
   productsSelector,
   cartSelector
-} from '../../redux';
+} from '../redux';
 
 const mapStateToProps = state => {
   const { products } = productsSelector(state);

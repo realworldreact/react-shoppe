@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Nav from './components/Nav.jsx';
+import Nav from './Nav.jsx';
 
 export default class App extends Component {
   render() {

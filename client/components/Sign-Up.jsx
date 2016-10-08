@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { signUp } from './redux';
+import { signUp } from '../redux';
 
 const actions = {
   signUp
@@ -21,22 +21,22 @@ export class SignUp extends React.Component {
           >
           <label>
             <input
-              placeholder='Name'
               name='username'
+              placeholder='Name'
               type='text'
             />
           </label>
           <label>
             <input
-              placeholder='Email'
               name='email'
+              placeholder='Email'
               type='email'
             />
           </label>
           <label>
             <input
-              placeholder='Password'
               name='password'
+              placeholder='Password'
               type='password'
             />
           </label>

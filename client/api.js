@@ -1,4 +1,5 @@
-import makeFetch from './utils/make-fetch';
+import makeFetch from './utils/make-fetch.js';
+import serializeForm from './utils/serialize-form.js';
 
 const api = '/api/users';
 const defaultOptions = {
@@ -53,4 +54,25 @@ export function deleteFromCart(userId, token, itemId) {
     `${api}/${userId}/delete-from-cart?access_token=${token}`,
     options
   );
+}
+
+export function signUp(form) {
+  const options = {
+    ...defaultOptions,
+    body: serializeForm(form)
+  };
+  return makeFetch(api, options);
+}
+
+export function logIn(form) {
+  const options = {
+    ...defaultOptions,
+    body: serializeForm(form)
+  };
+  return makeFetch(api + '/login?include=user', options)
+    // normalize loopbacks response
+    .then(res => ({
+      ...res.user,
+      accessToken: res.id
+    }));
 }

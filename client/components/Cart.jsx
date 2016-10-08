@@ -10,7 +10,7 @@ import {
   userSelector,
   cartSelector,
   productsSelector
-} from '../../redux';
+} from '../redux';
 
 const propTypes = {
   user: PropTypes.object,
