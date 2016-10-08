@@ -1,28 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 
-/* eslint-disable */
-const products = [
-  {
-    "id": "1",
-    "name": "Apples",
-    "description": "The apple tree is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. Don't accept from snakes.",
-    "image": "apple.png",
-    "nutrition": ["Vitamin C", "Fiber"],
-    "price": 0.50
-  },
-  {
-    "id": "2",
-    "name": "Apricots",
-    "description": "An apricot is a fruit or the tree that bears the fruit of several species in the genus Prunus. Grind the pits for a facial exfoliant.",
-    "image": "apricot.png",
-    "nutrition": ["Vitamin A", "Vitamin C"],
-    "price": 1.50
-  }
-];
-/* eslint-enable */
+const propTypes = {
+  products: PropTypes.array
+};
 
 export default class Products extends Component {
   render() {
+    const { products } = this.props;
     return (
       <div className='products'>
         <div className='products-search'>
@@ -64,4 +48,4 @@ export default class Products extends Component {
 }
 
 Products.displayName = 'Products';
-// Products.propTypes = propTypes;
+Products.propTypes = propTypes;

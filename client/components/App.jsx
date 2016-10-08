@@ -1,13 +1,14 @@
 import React, { cloneElement, PropTypes, Component } from 'react';
 
 import Nav from './Nav.jsx';
-import { fetchUser } from '../api.js';
+import { fetchProducts, fetchUser } from '../api.js';
 
 export default class App extends Component {
   constructor(...props) {
     super(...props);
     this.state = {
-      user: {}
+      user: {},
+      products: []
     };
     this.addUser = this.addUser.bind(this);
   }
@@ -19,6 +20,7 @@ export default class App extends Component {
       fetchUser(userId, accessToken)
         .then(user => this.addUser(user));
     }
+    fetchProducts().then(products => this.setState({ products }));
   }
 
   addUser(user = {}) {
@@ -30,7 +32,8 @@ export default class App extends Component {
   }
 
   render() {
-    const { username } = this.state.user;
+    const { user, products } = this.state;
+    const { username } = user;
     return (
       <div className='app'>
         <Nav
@@ -41,7 +44,8 @@ export default class App extends Component {
             cloneElement(
               this.props.children,
               {
-                addUser: this.addUser
+                addUser: this.addUser,
+                products: products
               }
             )
           }
