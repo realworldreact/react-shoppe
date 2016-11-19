@@ -16,6 +16,18 @@ export default class Nav extends Component {
           >
           <img src='/images/navbar/Logo.png' />
         </Link>
+        <ul className='nav-list'>
+          <li>
+            <Link to='/sign-up'>
+              Sign Up
+            </Link>
+          </li>
+          <li>
+            <Link to='/log-in'>
+              Log In
+            </Link>
+          </li>
+        </ul>
       </nav>
     );
   }
