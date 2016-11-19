@@ -6,8 +6,19 @@ export default class App extends Component {
   constructor(...args) {
     super(...args);
     this.state = {
-      products: []
+      products: [],
+      token: null,
+      isSignedIn: false
     };
+    this.updateUser = this.updateUser.bind(this);
+  }
+
+  updateUser(user = {}) {
+    this.setState({
+      user,
+      token: user.accessToken,
+      isSignedIn: !!user.username
+    });
   }
 
   componentDidMount() {
@@ -25,7 +36,10 @@ export default class App extends Component {
           {
             cloneElement(
               this.props.children,
-              { products }
+              {
+                updateUser: this.updateUser,
+                products
+              }
             )
           }
         </div>
