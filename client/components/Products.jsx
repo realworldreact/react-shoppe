@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Product from './Product.jsx';
+import { fetchProducts } from '../api.js';
 
 const propTypes = {
   favs: PropTypes.array,
@@ -10,33 +11,10 @@ const propTypes = {
   updateFavs: PropTypes.func
 };
 
-const products = [
-  {
-    name: 'Apples',
-    price: 0.5,
-    description: 'The apple tree is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. Don\'t accept from snakes.',
-    image: 'apple.png',
-    nutrition: [
-      'Vitamin C',
-      'Fiber'
-    ],
-    id: '1'
-  },
-  {
-    "name": "Oranges",
-    "price": 0.5,
-    "description": "The orange is the fruit of the citrus species Citrus × sinensis in the family Rutaceae. The fruit of the Citrus × sinensis is considered a sweet...",
-    "image": "orange.png",
-    "nutrition": [
-      "Vitamin C",
-      "Calcium",
-      "Potassium"
-    ],
-    "id": "16"
-  }
-];
-
 export default class Products extends Component {
+  componentDidMount() {
+    fetchProducts().then(products => console.log('foo: ', products));
+  }
   renderProducts(products) {
     if (!Array.isArray(products)) {
       return <div>Loading...</div>;
@@ -50,6 +28,9 @@ export default class Products extends Component {
   }
 
   render() {
+    const {
+      products
+    } = this.props;
     return (
       <div className='products'>
         <div className='products-search'>
