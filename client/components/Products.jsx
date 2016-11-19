@@ -12,11 +12,23 @@ const propTypes = {
 };
 
 export default class Products extends Component {
-  componentDidMount() {
-    fetchProducts().then(products => console.log('foo: ', products));
+  constructor(...args) {
+    super(...args);
+    this.state = {
+      products: []
+    };
   }
+
+  componentDidMount() {
+    setTimeout(() => {
+      fetchProducts()
+        .then(products => this.setState({ products }))
+        .catch(err => console.error(err));
+    }, 2000);
+  }
+
   renderProducts(products) {
-    if (!Array.isArray(products)) {
+    if (!products.length) {
       return <div>Loading...</div>;
     }
     return products.map(item => (
@@ -28,9 +40,7 @@ export default class Products extends Component {
   }
 
   render() {
-    const {
-      products
-    } = this.props;
+    const { products } = this.state;
     return (
       <div className='products'>
         <div className='products-search'>
