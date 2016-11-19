@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Product from './Product.jsx';
-import { fetchProducts } from '../api.js';
 
 const propTypes = {
   favs: PropTypes.array,
@@ -12,23 +11,8 @@ const propTypes = {
 };
 
 export default class Products extends Component {
-  constructor(...args) {
-    super(...args);
-    this.state = {
-      products: []
-    };
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      fetchProducts()
-        .then(products => this.setState({ products }))
-        .catch(err => console.error(err));
-    }, 2000);
-  }
-
   renderProducts(products) {
-    if (!products.length) {
+    if (!Array.isArray(products)) {
       return <div>Loading...</div>;
     }
     return products.map(item => (
@@ -40,7 +24,7 @@ export default class Products extends Component {
   }
 
   render() {
-    const { products } = this.state;
+    const { products } = this.props;
     return (
       <div className='products'>
         <div className='products-search'>
