@@ -1,6 +1,11 @@
 import React, { PropTypes, Component, cloneElement } from 'react';
 import Nav from './Nav.jsx';
-import { addToCart, deleteFromCart, fetchProducts } from '../api.js';
+import {
+  addToCart,
+  removeFromCart,
+  deleteFromCart,
+  fetchProducts
+} from '../api.js';
 import find from 'lodash/find';
 
 export default class App extends Component {
@@ -16,6 +21,7 @@ export default class App extends Component {
     this.updateUser = this.updateUser.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.deleteFromCart = this.deleteFromCart.bind(this);
+    this.removeFromCart = this.removeFromCart.bind(this);
   }
 
   updateUser(user = {}) {
@@ -38,6 +44,13 @@ export default class App extends Component {
     deleteFromCart(id, token, itemId)
       .then(cart => this.setState(cart));
   }
+
+  removeFromCart(itemId) {
+    const { token, user: { id } } = this.state;
+    removeFromCart(id, token, itemId)
+      .then(cart => this.setState(cart));
+  }
+
 
   componentDidMount() {
     fetchProducts()
@@ -92,7 +105,8 @@ export default class App extends Component {
                 }),
                 updateUser: this.updateUser,
                 addToCart: this.addToCart,
-                deleteFromCart: this.deleteFromCart
+                deleteFromCart: this.deleteFromCart,
+                removeFromCart: this.removeFromCart
               }
             )
           }
