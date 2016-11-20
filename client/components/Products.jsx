@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Product from './Product.jsx';
+import { updateFilter } from '../redux.js';
 
 const propTypes = {
   search: PropTypes.string.isRequired,
@@ -10,26 +11,11 @@ const propTypes = {
   products: PropTypes.array,
   user: PropTypes.object,
   addToCart: PropTypes.func,
-  updateFavs: PropTypes.func
+  updateFavs: PropTypes.func,
+  updateFilter: PropTypes.func
 };
 
 export class Products extends Component {
-  constructor(...props) {
-    super(...props);
-    this.state = {
-      search: ''
-    };
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
-
-  handleKeyDown(e) {
-    const { value } = e.target;
-    console.log('foo: ', e.target.value);
-    this.props.dispatch({
-      type: 'UPDATE_PRODUCTS_FILTER',
-      search: value
-    });
-  }
 
   renderProducts(filter, products) {
     if (!Array.isArray(products)) {
@@ -69,7 +55,7 @@ export class Products extends Component {
         <div className='products-search'>
           <input
             className='products-search_input'
-            onChange={ this.handleKeyDown }
+            onChange={ this.props.updateFilter }
             value={ search }
           />
         </div>
@@ -89,6 +75,10 @@ const mapStateToProps = state => {
     search: state.search
   };
 };
-const productsCreator = connect(mapStateToProps);
+
+const mapDispatchToProps = {
+  updateFilter
+};
+const productsCreator = connect(mapStateToProps, mapDispatchToProps);
 
 export default productsCreator(Products);
