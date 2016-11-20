@@ -1,6 +1,7 @@
 import React, { PropTypes, Component, cloneElement } from 'react';
 import Nav from './Nav.jsx';
-import { addToCart, fetchProducts } from '../api.js';
+import { addToCart, deleteFromCart, fetchProducts } from '../api.js';
+import find from 'lodash/find';
 
 export default class App extends Component {
   constructor(...args) {
@@ -14,6 +15,7 @@ export default class App extends Component {
     };
     this.updateUser = this.updateUser.bind(this);
     this.addToCart = this.addToCart.bind(this);
+    this.deleteFromCart = this.deleteFromCart.bind(this);
   }
 
   updateUser(user = {}) {
@@ -28,6 +30,12 @@ export default class App extends Component {
   addToCart(itemId) {
     const { token, user: { id } } = this.state;
     addToCart(id, token, itemId)
+      .then(cart => this.setState(cart));
+  }
+
+  deleteFromCart(itemId) {
+    const { token, user: { id } } = this.state;
+    deleteFromCart(id, token, itemId)
       .then(cart => this.setState(cart));
   }
 
@@ -59,6 +67,16 @@ export default class App extends Component {
               this.props.children,
               {
                 cart,
+                fullCart: cart.map(item => {
+                  const product = find(
+                    products,
+                    product => product.id === item.id
+                  );
+                  return {
+                    ...product,
+                    ...item
+                  };
+                }),
                 token,
                 products: products.map(item => {
                   const isInCart = cart.some(
@@ -73,7 +91,8 @@ export default class App extends Component {
                   return item;
                 }),
                 updateUser: this.updateUser,
-                addToCart: this.addToCart
+                addToCart: this.addToCart,
+                deleteFromCart: this.deleteFromCart
               }
             )
           }
