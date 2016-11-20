@@ -8,7 +8,8 @@ export default class App extends Component {
     this.state = {
       products: [],
       token: null,
-      isSignedIn: false
+      isSignedIn: false,
+      user: {}
     };
     this.updateUser = this.updateUser.bind(this);
   }
@@ -28,17 +29,26 @@ export default class App extends Component {
   }
 
   render() {
-    const { products } = this.state;
+    const {
+      products,
+      isSignedIn,
+      token,
+      user: { username: name }
+    } = this.state;
     return (
       <div className='app'>
-        <Nav />
+        <Nav
+          isSignedIn={ isSignedIn }
+          name={ name }
+        />
         <div className='app-child'>
           {
             cloneElement(
               this.props.children,
               {
                 updateUser: this.updateUser,
-                products
+                products,
+                token
               }
             )
           }
