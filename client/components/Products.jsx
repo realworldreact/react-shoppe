@@ -6,7 +6,7 @@ const propTypes = {
   cart: PropTypes.array,
   products: PropTypes.array,
   user: PropTypes.object,
-  updateCart: PropTypes.func,
+  addToCart: PropTypes.func,
   updateFavs: PropTypes.func
 };
 
@@ -15,10 +15,12 @@ export default class Products extends Component {
     if (!Array.isArray(products)) {
       return <div>Loading...</div>;
     }
+    const { addToCart } = this.props;
     return products.map(item => (
       <Product
-        key={ item.id }
         { ...item }
+        addToCart={ addToCart }
+        key={ item.id }
       />
     ));
   }

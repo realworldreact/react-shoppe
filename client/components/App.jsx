@@ -1,25 +1,34 @@
 import React, { PropTypes, Component, cloneElement } from 'react';
 import Nav from './Nav.jsx';
-import { fetchProducts } from '../api.js';
+import { addToCart, fetchProducts } from '../api.js';
 
 export default class App extends Component {
   constructor(...args) {
     super(...args);
     this.state = {
       products: [],
+      cart: [],
       token: null,
       isSignedIn: false,
       user: {}
     };
     this.updateUser = this.updateUser.bind(this);
+    this.addToCart = this.addToCart.bind(this);
   }
 
   updateUser(user = {}) {
     this.setState({
       user,
+      cart: user.cart || [],
       token: user.accessToken,
       isSignedIn: !!user.username
     });
+  }
+
+  addToCart(itemId) {
+    const { token, user: { id } } = this.state;
+    addToCart(id, token, itemId)
+      .then(cart => this.setState(cart));
   }
 
   componentDidMount() {
@@ -33,7 +42,10 @@ export default class App extends Component {
       products,
       isSignedIn,
       token,
-      user: { username: name }
+      user: {
+        username: name,
+        cart
+      }
     } = this.state;
     return (
       <div className='app'>
@@ -46,9 +58,11 @@ export default class App extends Component {
             cloneElement(
               this.props.children,
               {
-                updateUser: this.updateUser,
+                cart,
+                token,
                 products,
-                token
+                updateUser: this.updateUser,
+                addToCart: this.addToCart
               }
             )
           }

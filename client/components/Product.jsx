@@ -1,14 +1,26 @@
 import React, { PropTypes, PureComponent } from 'react';
 
 const propTypes = {
+  id: PropTypes.string,
   name: PropTypes.string,
   description: PropTypes.string,
-  image: PropTypes.string
+  image: PropTypes.string,
+  addToCart: PropTypes.func.isRequired
 };
 
 const imageBase = '/images/products/';
 
 export default class Product extends PureComponent {
+  constructor(...props) {
+    super(...props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const { id, addToCart } = this.props;
+    addToCart(id);
+  }
+
   render() {
     const {
       name,
@@ -27,7 +39,10 @@ export default class Product extends PureComponent {
           { description }
         </div>
         <div className='products-item-footer' >
-          <button className='products-item-favorite'>
+          <button
+            className='products-item-favorite'
+            onClick={ this.handleClick }
+            >
             <img src='/images/AddToCartUnSelected.png' />
           </button>
           <button className='products-item-cart'>

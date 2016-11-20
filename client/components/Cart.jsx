@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import EmptyCart from './Empty-Cart.jsx';
 
 const propTypes = {
   cart: PropTypes.array,
@@ -10,10 +11,18 @@ const propTypes = {
 export default class Cart extends Component {
 
   render() {
+    const {
+      cart
+    } = this.props;
+    if (cart && cart.length === 0) {
+      return (
+        <EmptyCart />
+      );
+    }
     return (
-      <div className='cart cart-empty'>
+      <div className='cart'>
         <div className='cart-title'>
-          <h2>Your cart is empty</h2>
+          My Cart
         </div>
       </div>
     );
