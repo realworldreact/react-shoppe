@@ -1,4 +1,17 @@
 import React, { PropTypes, PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { addToCart } from '../redux.js';
+
+const mapStateToProps = state => {
+  return {
+    userId: state.user.id,
+    token: state.token
+  };
+};
+
+const mapDispatchToProps = {
+  addToCart
+};
 
 const propTypes = {
   id: PropTypes.string,
@@ -11,15 +24,15 @@ const propTypes = {
 
 const imageBase = '/images/products/';
 
-export default class Product extends PureComponent {
+export class Product extends PureComponent {
   constructor(...props) {
     super(...props);
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    const { id, addToCart } = this.props;
-    addToCart(id);
+    const { id, token, userId, addToCart } = this.props;
+    this.props.addToCart(userId, token, id);
   }
 
   render() {
@@ -45,12 +58,12 @@ export default class Product extends PureComponent {
         </div>
         <div className='products-item-footer' >
           <button
-            className='products-item-favorite'
+            className='products-item-cart'
             onClick={ this.handleClick }
             >
             <img src={ `/images/${cartButtonClassName}.png` } />
           </button>
-          <button className='products-item-cart'>
+          <button className='products-item-favorite'>
             <img src='/images/HeartItemUnselected.png' />
           </button>
         </div>
@@ -60,3 +73,8 @@ export default class Product extends PureComponent {
 }
 Product.displayName = 'Product';
 Product.propTypes = propTypes;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Product);

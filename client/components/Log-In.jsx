@@ -1,31 +1,21 @@
 import React, { PropTypes } from 'react';
-import { browserHistory as history } from 'react-router';
-import { logIn } from '../api.js';
+import { connect } from 'react-redux';
+import { logIn } from '../redux.js';
 
-const propTypes = {
-  updateUser: PropTypes.func
+const mapDispatchToProps = {
+  logIn
 };
 
-export default class LogIn extends React.Component {
-  constructor(...props) {
-    super(...props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const propTypes = {
+  logIn: PropTypes.func
+};
 
-  handleSubmit(e) {
-    e.preventDefault();
-    logIn(e.target)
-      .then(this.props.updateUser)
-      .then(() => {
-        history.push('/');
-      });
-  }
-
+export class LogIn extends React.Component {
   render() {
     return (
       <div className='auth-login'>
         <form
-          onSubmit={ this.handleSubmit }
+          onSubmit={ this.props.logIn }
           >
           <label>
             <input
@@ -52,3 +42,8 @@ export default class LogIn extends React.Component {
 
 LogIn.displayName = 'LogIn';
 LogIn.propTypes = propTypes;
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(LogIn);

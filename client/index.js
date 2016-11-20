@@ -26,7 +26,6 @@ const store = createStore(
   reducer,
   finalStoreEnhancer
 );
-
 // <Provider store={ store }>
 //   <Router routes={ routes } history={ history } />
 // </Provider>

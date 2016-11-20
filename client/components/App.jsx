@@ -5,24 +5,23 @@ import Nav from './Nav.jsx';
 import {
   addToCart,
   removeFromCart,
-  deleteFromCart,
-  fetchProducts
+  deleteFromCart
 } from '../api.js';
 
-import { fetchProductsComplete } from '../redux.js';
+import { fetchProducts } from '../redux.js';
 
 const mapStateToProps = state => ({
   products: state.products
 });
 
 const mapDispatchToProps = {
-  fetchProductsComplete
+  fetchProducts
 };
 
 const propTypes = {
   products: PropTypes.array,
   children: PropTypes.element,
-  fetchProductsComplete: PropTypes.func
+  fetchProducts: PropTypes.func
 };
 
 export class App extends Component {
@@ -68,11 +67,8 @@ export class App extends Component {
       .then(cart => this.setState(cart));
   }
 
-
   componentDidMount() {
-    fetchProducts()
-      .then(products => this.props.fetchProductsComplete(products))
-      .catch(err => console.error(err));
+    this.props.fetchProducts();
   }
 
   render() {
