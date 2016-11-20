@@ -10,10 +10,21 @@ const devToolsExt = window.__REDUX_DEVTOOLS_EXTENSION__ &&
   window.__REDUX_DEVTOOLS_EXTENSION__() ||
   (x => x);
 
-function reducer(state = { count: 1 }, action) {
-  if (action.type === 'INC') {
-    state.count = state.count + 1;
-    return state;
+const initialState = {
+  search: '',
+  cart: [],
+  products: [],
+  token: null,
+  user: {},
+  isSignedIn: false
+};
+
+function reducer(state = initialState, action) {
+  if (action.type === 'UPDATE_PRODUCTS_FILTER') {
+    return {
+      ...state,
+      search: action.search
+    };
   }
   return state;
 }

@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import Product from './Product.jsx';
 
 const propTypes = {
+  search: PropTypes.string.isRequired,
+  dispatch: PropTypes.func,
   favs: PropTypes.array,
   cart: PropTypes.array,
   products: PropTypes.array,
@@ -10,7 +13,7 @@ const propTypes = {
   updateFavs: PropTypes.func
 };
 
-export default class Products extends Component {
+export class Products extends Component {
   constructor(...props) {
     super(...props);
     this.state = {
@@ -22,7 +25,10 @@ export default class Products extends Component {
   handleKeyDown(e) {
     const { value } = e.target;
     console.log('foo: ', e.target.value);
-    this.setState({ search: value });
+    this.props.dispatch({
+      type: 'UPDATE_PRODUCTS_FILTER',
+      search: value
+    });
   }
 
   renderProducts(filter, products) {
@@ -46,8 +52,7 @@ export default class Products extends Component {
   }
 
   render() {
-    const { products } = this.props;
-    const { search } = this.state;
+    const { products, search } = this.props;
     let filter;
     if (search.length > 3) {
       filter = new RegExp(
@@ -78,3 +83,12 @@ export default class Products extends Component {
 
 Products.displayName = 'Products';
 Products.propTypes = propTypes;
+
+const mapStateToProps = state => {
+  return {
+    search: state.search
+  };
+};
+const productsCreator = connect(mapStateToProps);
+
+export default productsCreator(Products);
