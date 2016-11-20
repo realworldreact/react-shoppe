@@ -8,7 +8,8 @@ const initialState = {
 };
 
 export const types = {
-  UPDATE_PRODUCTS_FILTER: 'UPDATE_PRODUCTS_FILTER'
+  UPDATE_PRODUCTS_FILTER: 'UPDATE_PRODUCTS_FILTER',
+  FETCH_PRODUCTS_COMPLETE: 'FETCH_PRODUCTS_COMPLETE'
 };
 
 export const updateFilter = e => {
@@ -18,12 +19,26 @@ export const updateFilter = e => {
   };
 };
 
+export function fetchProductsComplete(products) {
+  return {
+    type: types.FETCH_PRODUCTS_COMPLETE,
+    products
+  };
+}
+
 
 export default function reducer(state = initialState, action) {
   if (action.type === types.UPDATE_PRODUCTS_FILTER) {
     return {
       ...state,
       search: action.search
+    };
+  }
+
+  if (action.type === types.FETCH_PRODUCTS_COMPLETE) {
+    return {
+      ...state,
+      products: action.products
     };
   }
   return state;

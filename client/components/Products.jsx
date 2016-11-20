@@ -3,6 +3,33 @@ import { connect } from 'react-redux';
 import Product from './Product.jsx';
 import { updateFilter } from '../redux.js';
 
+const mapStateToProps = state => {
+  const {
+    search,
+    products,
+    cart
+  } = state;
+  return {
+    search,
+    products: products.map(item => {
+      const isInCart = cart.some(
+        cartItem => item.id === cartItem.id
+      );
+      if (isInCart) {
+        return {
+          ...item,
+          isInCart
+        };
+      }
+      return item;
+    })
+  };
+};
+
+const mapDispatchToProps = {
+  updateFilter
+};
+
 const propTypes = {
   search: PropTypes.string.isRequired,
   dispatch: PropTypes.func,
@@ -70,15 +97,7 @@ export class Products extends Component {
 Products.displayName = 'Products';
 Products.propTypes = propTypes;
 
-const mapStateToProps = state => {
-  return {
-    search: state.search
-  };
-};
-
-const mapDispatchToProps = {
-  updateFilter
-};
-const productsCreator = connect(mapStateToProps, mapDispatchToProps);
-
-export default productsCreator(Products);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Products);

@@ -1,4 +1,6 @@
 import React, { PropTypes, Component, cloneElement } from 'react';
+import { connect } from 'react-redux';
+import find from 'lodash/find';
 import Nav from './Nav.jsx';
 import {
   addToCart,
@@ -6,9 +8,24 @@ import {
   deleteFromCart,
   fetchProducts
 } from '../api.js';
-import find from 'lodash/find';
 
-export default class App extends Component {
+import { fetchProductsComplete } from '../redux.js';
+
+const mapStateToProps = state => ({
+  products: state.products
+});
+
+const mapDispatchToProps = {
+  fetchProductsComplete
+};
+
+const propTypes = {
+  products: PropTypes.array,
+  children: PropTypes.element,
+  fetchProductsComplete: PropTypes.func
+};
+
+export class App extends Component {
   constructor(...args) {
     super(...args);
     this.state = {
@@ -54,13 +71,12 @@ export default class App extends Component {
 
   componentDidMount() {
     fetchProducts()
-      .then(products => this.setState({ products }))
+      .then(products => this.props.fetchProductsComplete(products))
       .catch(err => console.error(err));
   }
 
   render() {
     const {
-      products,
       isSignedIn,
       token,
       cart,
@@ -68,6 +84,7 @@ export default class App extends Component {
         username: name
       }
     } = this.state;
+    const { products } = this.props;
     return (
       <div className='app'>
         <Nav
@@ -91,18 +108,6 @@ export default class App extends Component {
                   };
                 }),
                 token,
-                products: products.map(item => {
-                  const isInCart = cart.some(
-                    cartItem => item.id === cartItem.id
-                  );
-                  if (isInCart) {
-                    return {
-                      ...item,
-                      isInCart
-                    };
-                  }
-                  return item;
-                }),
                 updateUser: this.updateUser,
                 addToCart: this.addToCart,
                 deleteFromCart: this.deleteFromCart,
@@ -116,6 +121,10 @@ export default class App extends Component {
   }
 }
 
-App.propTypes = {
-  children: PropTypes.element
-};
+App.displayName = 'App';
+App.propTypes = propTypes;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
