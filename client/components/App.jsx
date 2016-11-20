@@ -42,9 +42,9 @@ export default class App extends Component {
       products,
       isSignedIn,
       token,
+      cart,
       user: {
-        username: name,
-        cart
+        username: name
       }
     } = this.state;
     return (
@@ -60,7 +60,18 @@ export default class App extends Component {
               {
                 cart,
                 token,
-                products,
+                products: products.map(item => {
+                  const isInCart = cart.some(
+                    cartItem => item.id === cartItem.id
+                  );
+                  if (isInCart) {
+                    return {
+                      ...item,
+                      isInCart
+                    };
+                  }
+                  return item;
+                }),
                 updateUser: this.updateUser,
                 addToCart: this.addToCart
               }

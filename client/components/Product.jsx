@@ -5,6 +5,7 @@ const propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
   image: PropTypes.string,
+  isInCart: PropTypes.bool,
   addToCart: PropTypes.func.isRequired
 };
 
@@ -25,8 +26,12 @@ export default class Product extends PureComponent {
     const {
       name,
       description,
-      image
+      image,
+      isInCart
     } = this.props;
+    const cartButtonClassName = isInCart ?
+      'AddToCartSelected' :
+      'AddToCartUnSelected';
     return (
       <div className='products-item'>
         <div className='products-item-stock-photo'>
@@ -43,7 +48,7 @@ export default class Product extends PureComponent {
             className='products-item-favorite'
             onClick={ this.handleClick }
             >
-            <img src='/images/AddToCartUnSelected.png' />
+            <img src={ `/images/${cartButtonClassName}.png` } />
           </button>
           <button className='products-item-cart'>
             <img src='/images/HeartItemUnselected.png' />
