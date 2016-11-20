@@ -84,28 +84,56 @@ export function logIn(e) {
   };
 }
 
-export function addToCart(id, token, itemId) {
-  return function(dispatch) {
-    api.addToCart(id, token, itemId)
-      .then(({ cart }) => dispatch({
-        type: types.UPDATE_CART,
-        cart
-      }));
+export function addToCart(itemId) {
+  return function(dispatch, getState) {
+    const {
+      user: { id },
+      token
+    } = getState();
+
+    if (id && token) {
+      api.addToCart(id, token, itemId)
+        .then(({ cart }) => dispatch({
+          type: types.UPDATE_CART,
+          cart
+        }));
+    }
   };
 }
 
-/*
-export function  deleteFromCart(itemId) {
-  // const { token, user: { id } } = this.state;
-  // api.deleteFromCart(id, token, itemId).then(cart => this.setState(cart));
+export function removeFromCart(itemId) {
+  return function(dispatch, getState) {
+    const {
+      user: { id },
+      token
+    } = getState();
+
+    if (id && token) {
+      api.removeFromCart(id, token, itemId)
+        .then(({ cart }) => dispatch({
+          type: types.UPDATE_CART,
+          cart
+        }));
+    }
+  };
 }
 
-export function  removeFromCart(itemId) {
-  // const { token, user: { id } } = this.state;
-  // api.removeFromCart(id, token, itemId).then(cart => this.setState(cart));
-}
-*/
+export function deleteFromCart(itemId) {
+  return function(dispatch, getState) {
+    const {
+      user: { id },
+      token
+    } = getState();
 
+    if (id && token) {
+      api.deleteFromCart(id, token, itemId)
+        .then(({ cart }) => dispatch({
+          type: types.UPDATE_CART,
+          cart
+        }));
+    }
+  };
+}
 
 export default function reducer(state = initialState, action) {
   if (action.type === types.UPDATE_USER_COMPLETE) {

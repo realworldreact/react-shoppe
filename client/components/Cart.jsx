@@ -1,19 +1,49 @@
 import React, { PropTypes, Component } from 'react';
+import find from 'lodash/find';
 import EmptyCart from './Empty-Cart.jsx';
+import { connect } from 'react-redux';
+import { addToCart, removeFromCart, deleteFromCart } from '../redux.js';
+
+const mapStateToProps = state => {
+  const { cart, products } = state;
+  const totalSum = cart.reduce((sum, item) => {
+    return sum + item.price * item.count;
+  }, 0);
+  return {
+    totalSum,
+    fullCart: cart.map(cartItem => {
+      const productItem = find(
+        products,
+        productItem => productItem.id === cartItem.id
+      );
+      return {
+        ...productItem,
+        ...cart
+      };
+    })
+  };
+};
+
+const mapDispatchToProps = {
+  addToCart,
+  removeFromCart,
+  deleteFromCart
+};
 
 const propTypes = {
+  totalSum: PropTypes.number,
   fullCart: PropTypes.array,
-  user: PropTypes.object,
   products: PropTypes.array,
   addToCart: PropTypes.func,
   removeFromCart: PropTypes.func,
   deleteFromCart: PropTypes.func
 };
 
-export default class Cart extends Component {
+export class Cart extends Component {
 
   render() {
     const {
+      totalSum,
       fullCart,
       addToCart,
       removeFromCart,
@@ -24,9 +54,6 @@ export default class Cart extends Component {
         <EmptyCart />
       );
     }
-    const totalSum = fullCart.reduce((sum, item) => {
-      return sum + item.price * item.count;
-    }, 0);
     return (
       <div className='cart'>
         <div className='cart-title'>
@@ -111,3 +138,8 @@ export default class Cart extends Component {
 
 
 Cart.propTypes = propTypes;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Cart);

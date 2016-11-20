@@ -48,7 +48,6 @@ export class Products extends Component {
     if (!Array.isArray(products)) {
       return <div>Loading...</div>;
     }
-    const { addToCart } = this.props;
     let finalProducts = products;
     if (filter) {
       finalProducts = products.filter(product => {
@@ -58,7 +57,6 @@ export class Products extends Component {
     return finalProducts.map(item => (
       <Product
         { ...item }
-        addToCart={ addToCart }
         key={ item.id }
       />
     ));

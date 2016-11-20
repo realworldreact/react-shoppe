@@ -2,13 +2,6 @@ import React, { PropTypes, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { addToCart } from '../redux.js';
 
-const mapStateToProps = state => {
-  return {
-    userId: state.user.id,
-    token: state.token
-  };
-};
-
 const mapDispatchToProps = {
   addToCart
 };
@@ -31,8 +24,8 @@ export class Product extends PureComponent {
   }
 
   handleClick() {
-    const { id, token, userId, addToCart } = this.props;
-    this.props.addToCart(userId, token, id);
+    const { id, addToCart } = this.props;
+    addToCart(id);
   }
 
   render() {
@@ -75,6 +68,6 @@ Product.displayName = 'Product';
 Product.propTypes = propTypes;
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(Product);
