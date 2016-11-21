@@ -1,28 +1,34 @@
 import React, { PropTypes, Component } from 'react';
-import find from 'lodash/find';
 import EmptyCart from './Empty-Cart.jsx';
 import { connect } from 'react-redux';
-import { addToCart, removeFromCart, deleteFromCart } from '../redux.js';
+import { createSelector } from 'reselect';
 
-const mapStateToProps = state => {
-  const { cart, products } = state;
-  const totalSum = cart.reduce((sum, item) => {
-    return sum + item.price * item.count;
-  }, 0);
-  return {
-    totalSum,
-    fullCart: cart.map(cartItem => {
-      const productItem = find(
-        products,
-        productItem => productItem.id === cartItem.id
-      );
-      return {
-        ...productItem,
-        ...cart
-      };
-    })
-  };
-};
+import {
+  addToCart,
+  removeFromCart,
+  deleteFromCart,
+  cartSelector
+} from '../redux.js';
+
+const mapStateToProps = createSelector(
+  cartSelector,
+  state => state.productsById,
+  (cart, productsById) => {
+    const totalSum = cart.reduce((sum, item) => {
+      return sum + item.price * item.count;
+    }, 0);
+    return {
+      totalSum,
+      fullCart: cart.map(cartItem => {
+        const productItem = productsById[cartItem.id];
+        return {
+          ...productItem,
+          ...cartItem
+        };
+      })
+    };
+  }
+);
 
 const mapDispatchToProps = {
   addToCart,

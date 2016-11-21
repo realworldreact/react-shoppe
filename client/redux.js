@@ -5,6 +5,7 @@ const initialState = {
   search: '',
   cart: [],
   products: [],
+  productsById: {},
   token: null,
   user: {},
   isSignedIn: false
@@ -135,6 +136,13 @@ export function deleteFromCart(itemId) {
   };
 }
 
+
+export const cartSelector = state => state.cart;
+// state => [...Product]
+export const productSelector = state => {
+  return state.products.map(id => state.productsById[id]);
+};
+
 export default function reducer(state = initialState, action) {
   if (action.type === types.UPDATE_USER_COMPLETE) {
     const { user } = action;
@@ -164,7 +172,11 @@ export default function reducer(state = initialState, action) {
   if (action.type === types.FETCH_PRODUCTS_COMPLETE) {
     return {
       ...state,
-      products: action.products
+      products: action.products.map(product => product.id),
+      productsById: action.products.reduce((productsById, product) => {
+        productsById[product.id] = product;
+        return productsById;
+      }, {})
     };
   }
   return state;

@@ -1,14 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Product from './Product.jsx';
-import { updateFilter } from '../redux.js';
+import { productSelector, updateFilter } from '../redux.js';
 
 const mapStateToProps = state => {
-  const {
-    search,
-    products,
-    cart
-  } = state;
+  const { search, cart } = state;
+  const products = productSelector(state);
   return {
     search,
     products: products.map(item => {

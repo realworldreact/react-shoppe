@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-// import find from 'lodash/find';
 import Nav from './Nav.jsx';
 
 import { fetchProducts } from '../redux.js';
