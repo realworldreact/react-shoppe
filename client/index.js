@@ -1,31 +1,17 @@
 import { createElement } from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory as history } from 'react-router';
-import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
-import ThunkMiddleware from 'redux-thunk';
 
-import reducer from './redux.js';
-import routes from './routes.jsx';
+import createAppStore from '../common/create-store.js';
+import routes from '../common/routes.jsx';
 
-const devToolsExt = window.__REDUX_DEVTOOLS_EXTENSION__ &&
+const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ &&
   window.__REDUX_DEVTOOLS_EXTENSION__() ||
   (x => x);
 
+const store = createAppStore(devTools);
 
-const middlewareStoreEnchance = applyMiddleware(
-  ThunkMiddleware
-);
-
-const finalStoreEnhancer = compose(
-  middlewareStoreEnchance,
-  devToolsExt
-);
-
-const store = createStore(
-  reducer,
-  finalStoreEnhancer
-);
 // <Provider store={ store }>
 //   <Router routes={ routes } history={ history } />
 // </Provider>

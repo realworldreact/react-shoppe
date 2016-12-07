@@ -40,9 +40,10 @@ var paths = {
     './client/**/*',
     './package.json'
   ],
-  stylus: './client/index.styl',
+  stylus: './common/index.styl',
   stylusFiles: [
-    './client/**/*.styl'
+    './client/**/*.styl',
+    './common/**/*.styl'
   ],
   public: './public',
   syncWatch: [
