@@ -61,26 +61,24 @@ export function fetchUser(id, token) {
     ...defaultOptions,
     method: 'GET'
   };
-  return makeFetch(api + `/${id}?access_token=${token}`, options);
+  return makeFetch(api + `/${id}?access_token=${token}`, options)
+    // normalize user data
+    .then(user => ({ ...user, accessToken: token }));
 }
 
-export function signUp(form) {
+export function auth(isSignUp, form) {
   const options = {
     ...defaultOptions,
     body: serializeForm(form)
   };
-  return makeFetch(api, options);
-}
-
-export function logIn(form) {
-  const options = {
-    ...defaultOptions,
-    body: serializeForm(form)
-  };
-  return makeFetch(api + '/login?include=user', options)
-    // normalize loopbacks response
-    .then(res => ({
-      ...res.user,
-      accessToken: res.id
-    }));
+  const url = isSignUp ?
+    api :
+    api + '/login?include=user';
+  return makeFetch(url, options)
+    .then(res => (
+      // normalize server response
+      isSignUp ?
+        res :
+        { ...res.user, accessToken: res.id }
+    ));
 }

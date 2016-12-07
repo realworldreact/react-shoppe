@@ -1,13 +1,12 @@
-import SignUp from './Sign-Up.jsx';
-import LogIn from './Log-In.jsx';
+import Auth from './Auth.jsx';
 
 export default [
   {
     path: '/sign-up',
-    component: SignUp
+    component: Auth
   },
   {
     path: '/log-in',
-    component: LogIn
+    component: Auth
   }
 ];

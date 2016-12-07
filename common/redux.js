@@ -53,38 +53,11 @@ export function fetchProductsComplete(products) {
 }
 
 
-export function signUp(e) {
+export function auth(isSignUp, e) {
   e.preventDefault();
   return (dispatch, getState, { storage }) => {
     dispatch({ type: types.UPDATE_USER });
-    api.signUp(e.target)
-      .then(user => {
-        if (user.id && user.accessToken) {
-          storage.setItem('userId', user.id);
-          storage.setItem('token', user.accessToken);
-        }
-        return user;
-      })
-      .then(user => dispatch({
-        type: types.UPDATE_USER_COMPLETE,
-        user
-      }))
-      .then(() => {
-        history.push('/');
-      })
-      .catch(err => dispatch({
-        type: types.UPDATE_USER_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
-}
-
-export function logIn(e) {
-  e.preventDefault();
-  return (dispatch, getState, { storage }) => {
-    dispatch({ type: types.UPDATE_USER });
-    api.logIn(e.target)
+    api.auth(isSignUp, e.target)
       .then(user => {
         if (user.id && user.accessToken) {
           storage.setItem('userId', user.id);
