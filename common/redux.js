@@ -17,6 +17,8 @@ export const types = {
   FETCH_PRODUCTS: 'FETCH_PRODUCTS',
   FETCH_PRODUCTS_COMPLETE: 'FETCH_PRODUCTS_COMPLETE',
   FETCH_PRODUCTS_ERROR: 'FETCH_PRODUCTS_ERROR',
+  AUTO_LOGIN: 'AUTO_LOGIN',
+  AUTO_LOGIN_NO_USER: 'AUTO_LOGIN_NO_USER',
   UPDATE_USER: 'UPDATE_USER',
   UPDATE_USER_COMPLETE: 'UPDATE_USER_COMPLETE',
   UPDATE_USER_ERROR: 'UPDATE_USER_ERROR',
@@ -35,7 +37,11 @@ export function fetchProducts() {
     dispatch({ type: types.FETCH_PRODUCTS });
     api.fetchProducts()
       .then(products => dispatch(fetchProductsComplete(products)))
-      .catch(err => dispatch({ type: types.FETCH_PRODUCTS_ERROR, err }));
+      .catch(err => dispatch({
+        type: types.FETCH_PRODUCTS_ERROR,
+        error: true,
+        payload: err
+      }));
   };
 }
 
@@ -49,9 +55,16 @@ export function fetchProductsComplete(products) {
 
 export function signUp(e) {
   e.preventDefault();
-  return dispatch => {
+  return (dispatch, getState, { storage }) => {
     dispatch({ type: types.UPDATE_USER });
     api.signUp(e.target)
+      .then(user => {
+        if (user.id && user.accessToken) {
+          storage.setItem('userId', user.id);
+          storage.setItem('token', user.accessToken);
+        }
+        return user;
+      })
       .then(user => dispatch({
         type: types.UPDATE_USER_COMPLETE,
         user
@@ -61,16 +74,24 @@ export function signUp(e) {
       })
       .catch(err => dispatch({
         type: types.UPDATE_USER_ERROR,
-        err
+        error: true,
+        payload: err
       }));
   };
 }
 
 export function logIn(e) {
   e.preventDefault();
-  return dispatch => {
+  return (dispatch, getState, { storage }) => {
     dispatch({ type: types.UPDATE_USER });
     api.logIn(e.target)
+      .then(user => {
+        if (user.id && user.accessToken) {
+          storage.setItem('userId', user.id);
+          storage.setItem('token', user.accessToken);
+        }
+        return user;
+      })
       .then(user => dispatch({
         type: types.UPDATE_USER_COMPLETE,
         user
@@ -80,8 +101,28 @@ export function logIn(e) {
       })
       .catch(err => dispatch({
         type: types.UPDATE_USER_ERROR,
-        err
+        error: true,
+        payload: err
       }));
+  };
+}
+
+export function autoLogin() {
+  return (dispatch, getState, { storage }) => {
+    dispatch({ type: types.AUTO_LOGIN });
+    if (!storage.userId || !storage.token) {
+      return dispatch({ type: types.AUTO_LOGIN_NO_USER });
+    }
+    return api.fetchUser(storage.userId, storage.token)
+      .then(user => dispatch({
+        type: types.UPDATE_USER_COMPLETE,
+        user
+      }))
+      .catch(err => dispatch({
+        type: types.UPDATE_USER_ERROR,
+        error: true,
+        payload: err
+    }));
   };
 }
 

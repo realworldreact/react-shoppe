@@ -1,12 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import ThunkMiddleware from 'redux-thunk';
+import thunk from 'redux-thunk';
 
 import reducer from './redux.js';
 
 
-export default function createAppStore(devTools = (f => f)) {
+export default function createAppStore(devTools = (f => f), deps) {
   const middleware = applyMiddleware(
-    ThunkMiddleware
+    thunk.withExtraArgument(deps)
   );
 
   const storeEnhancer = compose(

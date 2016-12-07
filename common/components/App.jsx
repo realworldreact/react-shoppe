@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Nav from './Nav.jsx';
 
-import { fetchProducts } from '../redux.js';
+import { autoLogin, fetchProducts } from '../redux.js';
 
 const mapStateToProps = state => ({
   isSignedIn: state.isSignedIn,
@@ -10,19 +10,22 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  fetchProducts
+  fetchProducts,
+  autoLogin
 };
 
 const propTypes = {
   children: PropTypes.element,
-  fetchProducts: PropTypes.func,
   isSignedIn: PropTypes.bool,
-  name: PropTypes.string
+  name: PropTypes.string,
+  fetchProducts: PropTypes.func.isRequired,
+  autoLogin: PropTypes.func.isRequired
 };
 
 export class App extends Component {
   componentDidMount() {
     this.props.fetchProducts();
+    this.props.autoLogin();
   }
 
   render() {
