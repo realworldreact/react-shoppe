@@ -8,7 +8,7 @@ import {
   removeFromCart,
   deleteFromCart,
   cartSelector
-} from '../redux.js';
+} from '../../redux.js';
 
 const mapStateToProps = createSelector(
   cartSelector,
