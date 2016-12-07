@@ -14,18 +14,19 @@ const mapStateToProps = createSelector(
   cartSelector,
   state => state.productsById,
   (cart, productsById) => {
-    const totalSum = cart.reduce((sum, item) => {
+    const finalCart = cart.map(cartItem => {
+      const productItem = productsById[cartItem.id];
+      return {
+        ...productItem,
+        ...cartItem
+      };
+    });
+    const totalSum = finalCart.reduce((sum, item) => {
       return sum + item.price * item.count;
     }, 0);
     return {
       totalSum,
-      fullCart: cart.map(cartItem => {
-        const productItem = productsById[cartItem.id];
-        return {
-          ...productItem,
-          ...cartItem
-        };
-      })
+      cart: finalCart
     };
   }
 );
@@ -38,7 +39,7 @@ const mapDispatchToProps = {
 
 const propTypes = {
   totalSum: PropTypes.number,
-  fullCart: PropTypes.array,
+  cart: PropTypes.array,
   products: PropTypes.array,
   addToCart: PropTypes.func,
   removeFromCart: PropTypes.func,
@@ -50,12 +51,12 @@ export class Cart extends Component {
   render() {
     const {
       totalSum,
-      fullCart,
+      cart,
       addToCart,
       removeFromCart,
       deleteFromCart
     } = this.props;
-    if (fullCart && fullCart.length === 0) {
+    if (cart && cart.length === 0) {
       return (
         <EmptyCart />
       );
@@ -79,7 +80,7 @@ export class Cart extends Component {
             <div className='cart-list-item' />
           </div>
           {
-            fullCart.map(item => (
+            cart.map(item => (
               <div
                 className='cart-list-row'
                 key={ item.id }
