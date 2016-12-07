@@ -1,4 +1,4 @@
-import Cart from './Empty-Cart.jsx';
+import Cart from './Cart.jsx';
 
 export default [
   {
