@@ -67,7 +67,7 @@ function errorHandler() {
 
 gulp.task('serve', function(cb) {
   var called = false;
-  nodemon({
+  const monitor = nodemon({
     script: paths.server,
     ext: '.jsx .js .json',
     ignore: paths.serverIgnore,
@@ -89,6 +89,16 @@ gulp.task('serve', function(cb) {
     .on('restart', function(files) {
       if (files) { debug('Files that changes: ', files); }
     });
+  // add clean hear to prevent nodemon from running after
+  // <C-c> exit
+  // see: JacksonGariety/gulp-nodemon/issues/77
+  process.once('SIGINT', () => {
+    monitor.once('exit', () => {
+      /* eslint-disable no-process-exit */
+      process.exit(0);
+      /* eslint-enable no-process-exit */
+    });
+  });
 });
 
 gulp.task('stylus', function() {
