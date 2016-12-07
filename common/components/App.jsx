@@ -6,7 +6,8 @@ import { autoLogin, fetchProducts } from '../redux.js';
 
 const mapStateToProps = state => ({
   isSignedIn: state.isSignedIn,
-  name: state.user.username
+  name: state.user.username,
+  numOfItems: state.cart.length
 });
 
 const mapDispatchToProps = {
@@ -18,6 +19,7 @@ const propTypes = {
   children: PropTypes.element,
   isSignedIn: PropTypes.bool,
   name: PropTypes.string,
+  numOfItems: PropTypes.number,
   fetchProducts: PropTypes.func.isRequired,
   autoLogin: PropTypes.func.isRequired
 };
@@ -31,13 +33,15 @@ export class App extends Component {
   render() {
     const {
       isSignedIn,
-      name
+      name,
+      numOfItems
     } = this.props;
     return (
       <div className='app'>
         <Nav
           isSignedIn={ isSignedIn }
           name={ name }
+          numOfItems={ numOfItems }
         />
         <div className='app-child'>
           { this.props.children }

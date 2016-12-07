@@ -8,7 +8,7 @@ const propTypes = {
 };
 
 export default class Nav extends Component {
-  renderUserNav(name) {
+  renderUserNav(name, numOfItems) {
     return (
       <div>
         <li className='nav-list-user-logo'>
@@ -18,6 +18,7 @@ export default class Nav extends Component {
         <li className='nav-list-cart'>
           <Link to='/cart'>
             <img src='/images/navbar/CartIcon.png' />
+            { numOfItems }
           </Link>
         </li>
       </div>
@@ -44,7 +45,8 @@ export default class Nav extends Component {
   render() {
     const {
       isSignedIn,
-      name
+      name,
+      numOfItems
     } = this.props;
     let listClassName = 'nav-list';
 
@@ -61,7 +63,10 @@ export default class Nav extends Component {
           <img src='/images/navbar/Logo.png' />
         </Link>
         <ul className={ listClassName }>
-          { isSignedIn ? this.renderUserNav(name) : this.renderButtons() }
+          { isSignedIn ?
+              this.renderUserNav(name, numOfItems) :
+              this.renderButtons()
+          }
         </ul>
       </nav>
     );
