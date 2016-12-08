@@ -1,5 +1,4 @@
-import { browserHistory as history } from 'react-router';
-import * as api from './api.js';
+import { createActions } from 'redux-actions';
 
 const initialState = {
   search: '',
@@ -14,168 +13,56 @@ const initialState = {
 
 
 export const types = {
-  UPDATE_PRODUCTS_FILTER: 'UPDATE_PRODUCTS_FILTER',
+
+  ADD_TO_CART: 'ADD_TO_CART',
+  DELETE_FROM_CART: 'DELETE_FROM_CART',
+  REMOVE_FROM_CART: 'REMOVE_FROM_CART',
+  UPDATE_CART: 'UPDATE_CART',
+  UPDATE_CART_ERROR: 'UPDATE_CART_ERROR',
+
+  AUTO_LOGIN: 'AUTO_LOGIN',
+  AUTO_LOGIN_NO_USER: 'AUTO_LOGIN_NO_USER',
+
   FETCH_PRODUCTS: 'FETCH_PRODUCTS',
   FETCH_PRODUCTS_COMPLETE: 'FETCH_PRODUCTS_COMPLETE',
   FETCH_PRODUCTS_ERROR: 'FETCH_PRODUCTS_ERROR',
-  AUTO_LOGIN: 'AUTO_LOGIN',
-  AUTO_LOGIN_NO_USER: 'AUTO_LOGIN_NO_USER',
+
   TOGGLE_FAV: 'TOGGLE_FAV',
   TOGGLE_FAV_ERROR: 'TOGGLE_FAV_ERROR',
   UPDATE_FAVS: 'UPDATE_FAVS',
-  UPDATE_USER: 'UPDATE_USER',
+
+  UPDATE_FILTER: 'UPDATE_FILTER',
+
+  AUTH: 'AUTH',
   UPDATE_USER_COMPLETE: 'UPDATE_USER_COMPLETE',
-  UPDATE_USER_ERROR: 'UPDATE_USER_ERROR',
-  UPDATE_CART: 'UPDATE_CART'
+  UPDATE_USER_ERROR: 'UPDATE_USER_ERROR'
 };
 
-export const updateFilter = e => {
-  return {
-    type: types.UPDATE_PRODUCTS_FILTER,
-    search: e.target.value
-  };
-};
+export const {
+  auth,
 
-export function fetchProducts() {
-  return dispatch => {
-    dispatch({ type: types.FETCH_PRODUCTS });
-    api.fetchProducts()
-      .then(products => dispatch(fetchProductsComplete(products)))
-      .catch(err => dispatch({
-        type: types.FETCH_PRODUCTS_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
-}
+  addToCart,
+  deleteFromCart,
+  removeFromCart,
+  updateCart,
+  updateCartError,
 
-export function fetchProductsComplete(products) {
-  return {
-    type: types.FETCH_PRODUCTS_COMPLETE,
-    products
-  };
-}
+  autoLogin,
+  autoLoginError,
 
+  fetchProducts,
+  fetchProductsComplete,
+  fetchProductsError,
 
-export function auth(isSignUp, e) {
-  e.preventDefault();
-  return (dispatch, getState, { storage }) => {
-    dispatch({ type: types.UPDATE_USER });
-    api.auth(isSignUp, e.target)
-      .then(user => {
-        if (user.id && user.accessToken) {
-          storage.setItem('userId', user.id);
-          storage.setItem('token', user.accessToken);
-        }
-        return user;
-      })
-      .then(user => dispatch({
-        type: types.UPDATE_USER_COMPLETE,
-        user
-      }))
-      .then(() => {
-        history.push('/');
-      })
-      .catch(err => dispatch({
-        type: types.UPDATE_USER_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
-}
+  toggleFav,
+  toggleFavError,
+  updateFavs,
 
-export function autoLogin() {
-  return (dispatch, getState, { storage }) => {
-    dispatch({ type: types.AUTO_LOGIN });
-    if (!storage.userId || !storage.token) {
-      return dispatch({ type: types.AUTO_LOGIN_NO_USER });
-    }
-    return api.fetchUser(storage.userId, storage.token)
-      .then(user => dispatch({
-        type: types.UPDATE_USER_COMPLETE,
-        user
-      }))
-      .catch(err => dispatch({
-        type: types.UPDATE_USER_ERROR,
-        error: true,
-        payload: err
-    }));
-  };
-}
+  updateFilter,
 
-export function toggleFav(itemId) {
-  return (dispatch, getState) => {
-    const {
-      user: { id },
-      token
-    } = getState();
-    if (!id || !token) {
-      return null;
-    }
-    return api.toggleFav(id, token, itemId)
-      .then(({ favs }) => dispatch({
-        type: types.UPDATE_FAVS,
-        favs
-      }))
-      .catch(err => dispatch({
-        type: types.TOGGLE_FAV_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
-}
-
-export function addToCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.addToCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
-  };
-}
-
-export function removeFromCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.removeFromCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
-  };
-}
-
-export function deleteFromCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.deleteFromCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
-  };
-}
-
+  updateUserComplete,
+  updateUserError
+} = createActions.apply(null, Object.keys(types));
 
 export const cartSelector = state => state.cart;
 // state => [...Product]
@@ -183,9 +70,16 @@ export const productSelector = state => {
   return state.products.map(id => state.productsById[id]);
 };
 
+export function accessSelector(state ) {
+  return {
+    userId: state.user.id,
+    token: state.token
+  };
+}
+
 export default function reducer(state = initialState, action) {
   if (action.type === types.UPDATE_USER_COMPLETE) {
-    const { user } = action;
+    const { payload: user } = action;
     return {
       ...state,
       user,
@@ -199,29 +93,29 @@ export default function reducer(state = initialState, action) {
   if (action.type === types.UPDATE_FAVS) {
     return {
       ...state,
-      favs: action.favs || []
+      favs: action.payload || []
     };
   }
 
   if (action.type === types.UPDATE_CART) {
     return {
       ...state,
-      cart: action.cart
+      cart: action.payload
     };
   }
 
   if (action.type === types.UPDATE_PRODUCTS_FILTER) {
     return {
       ...state,
-      search: action.search
+      search: action.payload
     };
   }
 
   if (action.type === types.FETCH_PRODUCTS_COMPLETE) {
     return {
       ...state,
-      products: action.products.map(product => product.id),
-      productsById: action.products.reduce((productsById, product) => {
+      products: action.payload.map(product => product.id),
+      productsById: action.payload.reduce((productsById, product) => {
         productsById[product.id] = product;
         return productsById;
       }, {})

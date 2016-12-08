@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
 import { auth } from '../../redux.js';
+import serializeForm from '../../utils/serialize-form.js';
 
 function mapStateToProps(state, { router }) {
   return {
@@ -14,7 +15,13 @@ function mapStateToProps(state, { router }) {
 function mapDispatchToProps(dispatch, { router }) {
   const isSignUp = router.isActive('/sign-up');
   return {
-    auth: e => dispatch(auth(isSignUp, e))
+    auth: e => {
+      e.preventDefault();
+      return dispatch(auth({
+        isSignUp,
+        form: serializeForm(e.target)
+      }));
+    }
   };
 }
 

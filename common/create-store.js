@@ -1,12 +1,19 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import { createEpicMiddleware } from 'redux-observable';
 
+import rootEpic from './epics.js';
 import reducer from './redux.js';
 
-
-export default function createAppStore(devTools = (f => f), deps) {
+export default function createAppStore(
+  devTools,
+  middlewares,
+  deps
+) {
   const middleware = applyMiddleware(
-    thunk.withExtraArgument(deps)
+    ...middlewares,
+    thunk.withExtraArgument(deps),
+    createEpicMiddleware((actions, store) => rootEpic(actions, store, deps))
   );
 
   const storeEnhancer = compose(
