@@ -30,9 +30,11 @@ Below are the main API endpoints you will use for this app
 ### Auth
 
 Create a new user (will also provide an access token)
-POST /api/users
+`POST /api/users`
+
 BODY
-```
+
+```js
 {
   username: String,
   email: String,
@@ -43,6 +45,7 @@ BODY
 returns the user object on success (see: [server/models/user.json](server/models/user.json) for the schema) with attached access token
 
 RETURNS
+
 ```
 {
   id: String,
@@ -54,15 +57,18 @@ RETURNS
 }
 ```
 
-sign in
+sign in `POST /api/users/login?include=user`
+BODY
 
-POST /api/users/login?include=user
-BODY {
+```js
+{
   email,
   password
 }
+```
 
 RETURNS
+
 ```js
 {
   user: User,
@@ -76,7 +82,8 @@ see [server/models/product.json](server/models/product.json) for Product schema
 
 Get the list of products available
 
-GET /api/products
+`GET /api/products`
+
 RETURNS
 
 ```js
@@ -89,8 +96,11 @@ RETURNS
 Access users cart through the users API
 
 **Add an item to the users cart**
-GET /api/users/:userId/add-to-cart?access_token=${accessToken}
+`GET /api/users/:userId/add-to-cart?access_token=${accessToken}`
+
 BODY
+
+
 ```js
 {
   itemId: String // the id of the product to add to the cart
@@ -98,6 +108,7 @@ BODY
 ```
 
 RETURNS
+
 ```js
 {
   cart: [ ...{ id: String, count: Number } ]
@@ -109,8 +120,10 @@ to date with your server
 
 
 **Remove an item from the users cart**
-GET /api/users/:userId/remove-from-cart?access_token=${accessToken}
+`GET /api/users/:userId/remove-from-cart?access_token=${accessToken}`
+
 BODY
+
 ```js
 {
   itemId: String // the id of the product
@@ -118,6 +131,7 @@ BODY
 ```
 
 RETURNS
+
 ```
 {
   cart: [ ...{ id: String, count: Number } ]
@@ -128,9 +142,10 @@ returns the updated cart. Use this information to ensure your clients cart is up
 to date with your server
 
 **delete an item from the users cart**
-GET /api/users/:userId/delete-form-cart?access_token=${accessToken}
+`GET /api/users/:userId/delete-form-cart?access_token=${accessToken}`
 
 BODY
+
 ```js
 {
   itemId: String // the id of the product
@@ -138,9 +153,12 @@ BODY
 ```
 
 RETURNS
+
+```js
 {
   cart: [ ...{ id: String, count: Number } ]
 }
+```
 
 returns the updated cart. Use this information to ensure your clients cart is up
 to date with your server
@@ -148,20 +166,24 @@ to date with your server
 ### Favorite
 Access users favs through the users API
 
-GET /api/users/:userId/fav?access_token=${accessToken}
+`GET /api/users/:userId/fav?access_token=${accessToken}`
+
 BODY
+
 ```js
 {
   itemId: String // the id of the product
 }
 ```
+
 RETURNS
 
-```
+```js
 {
   fav: [ itemId, itemId, ...itemId ]
 }
 ```
+
 Use this return to update clients favs.
 
 ## To start development
@@ -191,6 +213,9 @@ The default gulp task will
 ## Useful docs
 
 * [loopback user docs](https://docs.strongloop.com/display/APIC/User+REST+API)
-* [Redux Docs](http://redux.js.org/docs/)
-* [Redux-thunk](https://github.com/gaearon/redux-thunk)
+* [redux](http://redux.js.org/docs/)
+* [redux-thunk](https://github.com/gaearon/redux-thunk)
+* [learnrx (based on v4)](http://reactivex.io/learnrx/)
+* [rxjs@5](http://reactivex.io/rxjs/)
 * [react-redux-router](https://github.com/reactjs/react-router-redux)
+* [react-observable](https://redux-observable.js.org/)
