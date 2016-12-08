@@ -13,11 +13,14 @@ const devTools =
   win.__REDUX_DEVTOOLS_EXTENSION__() :
   (f => f);
 
-const store = createAppStore(
-  devTools,
-  [ routerMiddleware(history) ],
-  { storage: win.localStorage }
-);
+const preloadedState = win.__ar__ && win.__ar__.data;
+
+const { store } = createAppStore({
+  preloadedState,
+  enhancers: [ devTools ],
+  middlewares: [ routerMiddleware(history) ],
+  dependencies: { storage: win.localStorage }
+});
 
 // <Provider store={ store }>
 //   <Router routes={ routes } history={ history } />
