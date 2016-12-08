@@ -1,4 +1,4 @@
-import { browserHistory as history } from 'react-router';
+// import { browserHistory as history } from 'react-router';
 import * as api from './api.js';
 import { createActions } from 'redux-actions';
 
@@ -14,6 +14,7 @@ const initialState = {
 };
 
 export const types = {
+  AUTH: 'AUTH',
   UPDATE_PRODUCTS_FILTER: 'UPDATE_PRODUCTS_FILTER',
   FETCH_PRODUCTS: 'FETCH_PRODUCTS',
   FETCH_PRODUCTS_COMPLETE: 'FETCH_PRODUCTS_COMPLETE',
@@ -34,11 +35,14 @@ export const {
   fetchProductsComplete,
   fetchProductsError,
 
+  auth,
   autoLogin,
   autoLoginNoUser,
   updateUserComplete,
   updateUserError
-} = createActions(...Object.keys(types));
+} = createActions(
+  ...Object.keys(types)
+);
 
 export const updateFilter = e => {
   return {
@@ -47,6 +51,7 @@ export const updateFilter = e => {
   };
 };
 
+/*
 export function auth(isSignUp, e) {
   e.preventDefault();
   return (dispatch, getState, { storage }) => {
@@ -71,26 +76,6 @@ export function auth(isSignUp, e) {
         error: true,
         payload: err
       }));
-  };
-}
-
-/*
-export function autoLogin() {
-  return (dispatch, getState, { storage }) => {
-    dispatch({ type: types.AUTO_LOGIN });
-    if (!storage.userId || !storage.token) {
-      return dispatch({ type: types.AUTO_LOGIN_NO_USER });
-    }
-    return api.fetchUser(storage.userId, storage.token)
-      .then(user => dispatch({
-        type: types.UPDATE_USER_COMPLETE,
-        user
-      }))
-      .catch(err => dispatch({
-        type: types.UPDATE_USER_ERROR,
-        error: true,
-        payload: err
-    }));
   };
 }
 */

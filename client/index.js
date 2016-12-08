@@ -2,6 +2,7 @@ import { createElement } from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory as history } from 'react-router';
 import { Provider } from 'react-redux';
+import { routerMiddleware } from 'react-router-redux';
 
 import createAppStore from '../common/create-store.js';
 import routes from '../common/routes.jsx';
@@ -12,10 +13,13 @@ const devTools =
   win.__REDUX_DEVTOOLS_EXTENSION__() :
   (f => f);
 
-const store = createAppStore(
+const { store } = createAppStore({
+  middlewares: [
+    routerMiddleware(history)
+  ],
   devTools,
-  { storage: win.localStorage }
-);
+  dependencies: { storage: win.localStorage }
+});
 
 // <Provider store={ store }>
 //   <Router routes={ routes } history={ history } />

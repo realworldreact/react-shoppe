@@ -1,7 +1,6 @@
-import { ajaxGetJSON } from 'rxjs/observable/dom/AjaxObservable';
+import { ajaxGetJSON, ajaxPost } from 'rxjs/observable/dom/AjaxObservable';
 
 import makeFetch from './utils/make-fetch.js';
-import serializeForm from './utils/serialize-form.js';
 
 const api = '/api/users';
 const defaultOptions = {
@@ -77,15 +76,15 @@ export function fetchUser(id, token) {
 }
 
 export function auth(isSignUp, form) {
-  const options = {
-    ...defaultOptions,
-    body: serializeForm(form)
-  };
   const url = isSignUp ?
     api :
     api + '/login?include=user';
-  return makeFetch(url, options)
-    .then(res => (
+  return ajaxPost(
+    url,
+    form,
+    defaultHeaders
+  )
+    .map(res => (
       // normalize server response
       isSignUp ?
         res :

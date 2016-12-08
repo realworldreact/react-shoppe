@@ -1,4 +1,6 @@
 import { combineEpics } from 'redux-observable';
+import { push } from 'react-router-redux';
+
 import * as api from './api.js';
 import {
   types,
@@ -34,4 +36,26 @@ export function autoLoginEpic(actions, { getState }, { storage }) {
 }
 
 
-export default combineEpics(productsEpic, autoLoginEpic);
+        // .map(user => {
+          // if (user.id && user.accessToken) {
+            // storage.setItem('userId', user.id);
+            // storage.setItem('token', user.accessToken);
+          // }
+          // return user;
+        // })
+export function authEpic(actions) {
+  return actions.ofType(types.AUTH)
+    .switchMap(({ payload: { isSignUp, form }}) => {
+      return api.auth(isSignUp, form)
+        .mergeMap(user => {
+          return [
+            updateUserComplete(user),
+            push('/')
+          ];
+        })
+        .catch(err => [updateUserError(err)]);
+    });
+}
+
+
+export default combineEpics(authEpic, productsEpic, autoLoginEpic);
