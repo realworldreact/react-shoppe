@@ -4,6 +4,7 @@ import * as api from './api.js';
 const initialState = {
   search: '',
   cart: [],
+  favs: [],
   products: [],
   productsById: {},
   token: null,
@@ -19,6 +20,9 @@ export const types = {
   FETCH_PRODUCTS_ERROR: 'FETCH_PRODUCTS_ERROR',
   AUTO_LOGIN: 'AUTO_LOGIN',
   AUTO_LOGIN_NO_USER: 'AUTO_LOGIN_NO_USER',
+  TOGGLE_FAV: 'TOGGLE_FAV',
+  TOGGLE_FAV_ERROR: 'TOGGLE_FAV_ERROR',
+  UPDATE_FAVS: 'UPDATE_FAVS',
   UPDATE_USER: 'UPDATE_USER',
   UPDATE_USER_COMPLETE: 'UPDATE_USER_COMPLETE',
   UPDATE_USER_ERROR: 'UPDATE_USER_ERROR',
@@ -99,6 +103,28 @@ export function autoLogin() {
   };
 }
 
+export function toggleFav(itemId) {
+  return (dispatch, getState) => {
+    const {
+      user: { id },
+      token
+    } = getState();
+    if (!id || !token) {
+      return null;
+    }
+    return api.toggleFav(id, token, itemId)
+      .then(({ favs }) => dispatch({
+        type: types.UPDATE_FAVS,
+        favs
+      }))
+      .catch(err => dispatch({
+        type: types.TOGGLE_FAV_ERROR,
+        error: true,
+        payload: err
+      }));
+  };
+}
+
 export function addToCart(itemId) {
   return function(dispatch, getState) {
     const {
@@ -164,8 +190,16 @@ export default function reducer(state = initialState, action) {
       ...state,
       user,
       cart: user.cart || [],
+      favs: user.favs || [],
       token: user.accessToken,
       isSignedIn: !!user.username
+    };
+  }
+
+  if (action.type === types.UPDATE_FAVS) {
+    return {
+      ...state,
+      favs: action.favs || []
     };
   }
 

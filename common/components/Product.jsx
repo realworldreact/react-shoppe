@@ -1,10 +1,14 @@
 import React, { PropTypes, PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { addToCart } from '../redux.js';
+import { addToCart, toggleFav } from '../redux.js';
 
-const mapDispatchToProps = {
-  addToCart
-};
+function mapDispatchToProps(dispatch, { id }) {
+  const dispatchers = {
+    addToCart: () => dispatch(addToCart(id)),
+    toggleFav: () => dispatch(toggleFav(id))
+  };
+  return () => dispatchers;
+}
 
 const propTypes = {
   id: PropTypes.string,
@@ -12,32 +16,31 @@ const propTypes = {
   description: PropTypes.string,
   image: PropTypes.string,
   isInCart: PropTypes.bool,
-  addToCart: PropTypes.func.isRequired
+  isFav: PropTypes.bool,
+  addToCart: PropTypes.func.isRequired,
+  toggleFav: PropTypes.func.isRequired
 };
 
 const imageBase = '/images/products/';
 
 export class Product extends PureComponent {
-  constructor(...props) {
-    super(...props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    const { id, addToCart } = this.props;
-    addToCart(id);
-  }
-
   render() {
     const {
       name,
       description,
       image,
-      isInCart
+      isInCart,
+      isFav,
+      addToCart,
+      toggleFav
     } = this.props;
-    const cartButtonClassName = isInCart ?
+    const cartButtonImage = isInCart ?
       'AddToCartSelected' :
       'AddToCartUnSelected';
+    const favButtonImage = isFav ?
+      'HeartItemSelected' :
+      'HeartItemUnselected';
+
     return (
       <div className='products-item'>
         <div className='products-item-stock-photo'>
@@ -52,12 +55,15 @@ export class Product extends PureComponent {
         <div className='products-item-footer' >
           <button
             className='products-item-cart'
-            onClick={ this.handleClick }
+            onClick={ addToCart }
             >
-            <img src={ `/images/${cartButtonClassName}.png` } />
+            <img src={ `/images/${cartButtonImage}.png` } />
           </button>
-          <button className='products-item-favorite'>
-            <img src='/images/HeartItemUnselected.png' />
+          <button
+            className='products-item-favorite'
+            onClick={ toggleFav }
+            >
+            <img src={ `/images/${favButtonImage}.png` } />
           </button>
         </div>
       </div>

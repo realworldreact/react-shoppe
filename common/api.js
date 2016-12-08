@@ -12,7 +12,7 @@ export function fetchProducts() {
   return makeFetch('/api/products');
 }
 
-export function fav(userId, token, itemId) {
+export function toggleFav(userId, token, itemId) {
   const options = {
     ...defaultOptions,
     body: JSON.stringify({ itemId })
