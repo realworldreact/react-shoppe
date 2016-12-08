@@ -1,15 +1,8 @@
 import { ajaxGetJSON, ajaxPost } from 'rxjs/observable/dom/AjaxObservable';
 
-import makeFetch from './utils/make-fetch.js';
+import { types } from './redux.js';
 
 const api = '/api/users';
-const defaultOptions = {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-};
-
 const defaultHeaders = {
   'Content-Type': 'application/json'
 };
@@ -18,52 +11,31 @@ export function getProducts() {
   return ajaxGetJSON('/api/products');
 }
 
-export function fetchProducts() {
-  return makeFetch('/api/products');
-}
-
 export function toggleFav(userId, token, itemId) {
-  const options = {
-    ...defaultOptions,
-    body: JSON.stringify({ itemId })
-  };
-  return makeFetch(
+  return ajaxPost(
     `${api}/${userId}/fav?access_token=${token}`,
-    options
-  );
+    { itemId },
+    defaultHeaders
+  )
+    .map(({ response }) => response);
 }
 
-export function addToCart(userId, token, itemId) {
-  const options = {
-    ...defaultOptions,
-    body: JSON.stringify({ itemId })
-  };
-  return makeFetch(
-    `${api}/${userId}/add-to-cart?access_token=${token}`,
-    options
-  );
-}
 
-export function removeFromCart(userId, token, itemId) {
-  const options = {
-    ...defaultOptions,
-    body: JSON.stringify({ itemId })
-  };
-  return makeFetch(
-    `${api}/${userId}/remove-from-cart?access_token=${token}`,
-    options
-  );
-}
+const typesToApi = {
+  [types.ADD_TO_CART]: 'add-to-cart',
+  [types.REMOVE_FROM_CART]: 'remove-from-cart',
+  [types.DELETE_FROM_CART]: 'delete-from-cart'
+};
 
-export function deleteFromCart(userId, token, itemId) {
-  const options = {
-    ...defaultOptions,
-    body: JSON.stringify({ itemId })
-  };
-  return makeFetch(
-    `${api}/${userId}/delete-from-cart?access_token=${token}`,
-    options
-  );
+export function cartApi(type, id, token, itemId) {
+  const cartUri = typesToApi[type];
+  const uri = `${api}/${id}/${cartUri}?access_token=${token}`;
+  return ajaxPost(
+    uri,
+    { itemId },
+    defaultHeaders
+  )
+    .map(({ response }) => response);
 }
 
 export function fetchUser(id, token) {
@@ -84,6 +56,7 @@ export function auth(isSignUp, form) {
     form,
     defaultHeaders
   )
+    .map(({ response }) => response)
     .map(res => (
       // normalize server response
       isSignUp ?

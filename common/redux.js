@@ -1,5 +1,3 @@
-// import { browserHistory as history } from 'react-router';
-import * as api from './api.js';
 import { createActions } from 'redux-actions';
 
 const initialState = {
@@ -27,7 +25,12 @@ export const types = {
   UPDATE_USER: 'UPDATE_USER',
   UPDATE_USER_COMPLETE: 'UPDATE_USER_COMPLETE',
   UPDATE_USER_ERROR: 'UPDATE_USER_ERROR',
-  UPDATE_CART: 'UPDATE_CART'
+
+  ADD_TO_CART: 'ADD_TO_CART',
+  REMOVE_FROM_CART: 'REMOVE_FROM_CART',
+  DELETE_FROM_CART: 'DELETE_FROM_CART',
+  UPDATE_CART: 'UPDATE_CART',
+  UPDATE_CART_ERROR: 'UPDATE_CART_ERROR'
 };
 
 export const {
@@ -39,7 +42,17 @@ export const {
   autoLogin,
   autoLoginNoUser,
   updateUserComplete,
-  updateUserError
+  updateUserError,
+
+  addToCart,
+  removeFromCart,
+  deleteFromCart,
+  updateCart,
+  updateCartError,
+
+  toggleFav,
+  updateFavs,
+  updateFavsError
 } = createActions(
   ...Object.keys(types)
 );
@@ -50,109 +63,6 @@ export const updateFilter = e => {
     search: e.target.value
   };
 };
-
-/*
-export function auth(isSignUp, e) {
-  e.preventDefault();
-  return (dispatch, getState, { storage }) => {
-    dispatch({ type: types.UPDATE_USER });
-    api.auth(isSignUp, e.target)
-      .then(user => {
-        if (user.id && user.accessToken) {
-          storage.setItem('userId', user.id);
-          storage.setItem('token', user.accessToken);
-        }
-        return user;
-      })
-      .then(user => dispatch({
-        type: types.UPDATE_USER_COMPLETE,
-        user
-      }))
-      .then(() => {
-        history.push('/');
-      })
-      .catch(err => dispatch({
-        type: types.UPDATE_USER_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
-}
-*/
-
-export function toggleFav(itemId) {
-  return (dispatch, getState) => {
-    const {
-      user: { id },
-      token
-    } = getState();
-    if (!id || !token) {
-      return null;
-    }
-    return api.toggleFav(id, token, itemId)
-      .then(({ favs }) => dispatch({
-        type: types.UPDATE_FAVS,
-        favs
-      }))
-      .catch(err => dispatch({
-        type: types.TOGGLE_FAV_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
-}
-
-export function addToCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.addToCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
-  };
-}
-
-export function removeFromCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.removeFromCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
-  };
-}
-
-export function deleteFromCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.deleteFromCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
-  };
-}
-
 
 export const cartSelector = state => state.cart;
 // state => [...Product]
@@ -176,14 +86,14 @@ export default function reducer(state = initialState, action) {
   if (action.type === types.UPDATE_FAVS) {
     return {
       ...state,
-      favs: action.favs || []
+      favs: action.payload || []
     };
   }
 
   if (action.type === types.UPDATE_CART) {
     return {
       ...state,
-      cart: action.cart
+      cart: action.payload
     };
   }
 
