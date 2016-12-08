@@ -12,7 +12,7 @@ export default function rootScript(app) {
   });
 
   function renderHome(req, res) {
-    return res.render('index', { title: 'Advance Redux' });
+    return res.render('index', { title: 'react-shoppe' });
   }
 
   app.use(router);
