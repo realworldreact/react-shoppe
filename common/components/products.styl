@@ -29,12 +29,20 @@
 
 
 
-.products-lists {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  margin-bottom: 100px;
-}
+.products-lists
+  display flex
+  flex-flow row wrap
+  justify-content space-around
+  margin-bottom 100px
+
+  .empty
+    display flex
+    & h2
+      padding-top 20px
+      margin 0 auto
+      font-weight 300x
+      color blue
+      font-size 36px
 
 .products-item
   border 1px solid blue

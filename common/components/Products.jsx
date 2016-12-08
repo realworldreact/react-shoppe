@@ -60,7 +60,21 @@ export class Products extends Component {
 
   renderProducts(products) {
     if (!Array.isArray(products)) {
-      return <div>Loading...</div>;
+      return (
+        <div className='empty'>
+          <h2>
+            Loading...
+          </h2>
+        </div>
+      );
+    }
+
+    if (!products.length) {
+      return (
+        <div className='empty'>
+          <h2>No products found</h2>
+        </div>
+      );
     }
     return products.map(item => (
       <Product
