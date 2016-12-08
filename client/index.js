@@ -1,3 +1,4 @@
+import Fetcher from 'fetchr';
 import { createElement } from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory as history } from 'react-router';
@@ -13,13 +14,16 @@ const devTools =
   win.__REDUX_DEVTOOLS_EXTENSION__() :
   (f => f);
 
-const preloadedState = win.__ar__ && win.__ar__.data;
+const preloadedState = win.__ar__ && win.__ar__.preloadedState;
 
 const { store } = createAppStore({
   preloadedState,
   enhancers: [ devTools ],
   middlewares: [ routerMiddleware(history) ],
-  dependencies: { storage: win.localStorage }
+  dependencies: {
+    fetcher: new Fetcher({ xhrPath: '/services' }),
+    storage: win.localStorage
+  }
 });
 
 // <Provider store={ store }>

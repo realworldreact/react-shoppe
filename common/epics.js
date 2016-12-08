@@ -32,10 +32,11 @@ const defaultHeaders = {
   'Content-Type': 'application/json'
 };
 
-export function productsEpic(actions) {
+export function productsEpic(actions, _, { fetcher }) {
   return actions.ofType(types.FETCH_PRODUCTS)
     .switchMap(() => (
-      ajaxGetJSON('/api/products')
+      Observable.fromPromise(fetcher.read('products').end())
+        .map(({ data }) => data)
         .map(fetchProductsComplete)
         .catch(err => [fetchProductsError(err)])
     ));

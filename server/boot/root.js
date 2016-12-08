@@ -1,3 +1,4 @@
+import Fetcher from 'fetchr';
 import { createElement } from 'react';
 import { Router, match } from 'react-router';
 import { Provider } from 'react-redux';
@@ -20,7 +21,9 @@ export default function rootScript(app) {
   });
 
   function renderHome(req, res, next) {
-    const { epic, store } = createStore();
+    const { epic, store } = createStore({
+      dependencies: { fetcher: new Fetcher({ req }) }
+    });
     match({ location: req.originalUrl, routes }, (err, redirect, props) => {
       if (err) {
         return next(err);
@@ -37,7 +40,7 @@ export default function rootScript(app) {
         })
         .subscribe(
           ({ markup, data }) => {
-            res.expose(data, 'preloadState');
+            res.expose(data, 'preloadedState');
             epic.unsubscribe();
             return res.render(
               'index',
