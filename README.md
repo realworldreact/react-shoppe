@@ -14,11 +14,8 @@
 * increase the item quantity of a specific product from my cart
 * see price changes reactively with quantity changes in my cart
 * remove an item from my cart
+* As a user, I should see a fully hydrated page on first load
 
-Auth Bonus
-
-* if I have previously signed in on page refresh I am still logged in
-* Sign out (with corresponding UI elements)
 
 ## Backend API
 
@@ -219,3 +216,5 @@ The default gulp task will
 * [rxjs@5](http://reactivex.io/rxjs/)
 * [react-redux-router](https://github.com/reactjs/react-router-redux)
 * [react-observable](https://redux-observable.js.org/)
+* [express-state](https://github.com/yahoo/express-state)
+* [fetchr](https://github.com/yahoo/fetchr)
