@@ -1,5 +1,6 @@
 import { browserHistory as history } from 'react-router';
 import * as api from './api.js';
+import { createActions } from 'redux-actions';
 
 const initialState = {
   search: '',
@@ -11,7 +12,6 @@ const initialState = {
   user: {},
   isSignedIn: false
 };
-
 
 export const types = {
   UPDATE_PRODUCTS_FILTER: 'UPDATE_PRODUCTS_FILTER',
@@ -29,33 +29,23 @@ export const types = {
   UPDATE_CART: 'UPDATE_CART'
 };
 
+export const {
+  fetchProducts,
+  fetchProductsComplete,
+  fetchProductsError,
+
+  autoLogin,
+  autoLoginNoUser,
+  updateUserComplete,
+  updateUserError
+} = createActions(...Object.keys(types));
+
 export const updateFilter = e => {
   return {
     type: types.UPDATE_PRODUCTS_FILTER,
     search: e.target.value
   };
 };
-
-export function fetchProducts() {
-  return dispatch => {
-    dispatch({ type: types.FETCH_PRODUCTS });
-    api.fetchProducts()
-      .then(products => dispatch(fetchProductsComplete(products)))
-      .catch(err => dispatch({
-        type: types.FETCH_PRODUCTS_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
-}
-
-export function fetchProductsComplete(products) {
-  return {
-    type: types.FETCH_PRODUCTS_COMPLETE,
-    products
-  };
-}
-
 
 export function auth(isSignUp, e) {
   e.preventDefault();
@@ -84,6 +74,7 @@ export function auth(isSignUp, e) {
   };
 }
 
+/*
 export function autoLogin() {
   return (dispatch, getState, { storage }) => {
     dispatch({ type: types.AUTO_LOGIN });
@@ -102,6 +93,7 @@ export function autoLogin() {
     }));
   };
 }
+*/
 
 export function toggleFav(itemId) {
   return (dispatch, getState) => {
@@ -185,7 +177,7 @@ export const productSelector = state => {
 
 export default function reducer(state = initialState, action) {
   if (action.type === types.UPDATE_USER_COMPLETE) {
-    const { user } = action;
+    const { payload: user } = action;
     return {
       ...state,
       user,
@@ -218,10 +210,11 @@ export default function reducer(state = initialState, action) {
   }
 
   if (action.type === types.FETCH_PRODUCTS_COMPLETE) {
+    const { payload: products } = action;
     return {
       ...state,
-      products: action.products.map(product => product.id),
-      productsById: action.products.reduce((productsById, product) => {
+      products: products.map(product => product.id),
+      productsById: products.reduce((productsById, product) => {
         productsById[product.id] = product;
         return productsById;
       }, {})
