@@ -20,11 +20,11 @@ import {
   updateFavsError
 } from './redux.js';
 
-export function productsEpic(actions) {
+export function productsEpic(actions, _, { fetcher }) {
   return actions.ofType(types.FETCH_PRODUCTS)
     .switchMap(() => {
-      return api.getProducts()
-        .map(products => fetchProductsComplete(products))
+      return Observable.fromPromise(fetcher.read('products').end())
+        .map(({ data: products }) => fetchProductsComplete(products))
         .catch(err => [fetchProductsError(err)]);
     });
 }

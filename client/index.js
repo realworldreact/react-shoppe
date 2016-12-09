@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Router, browserHistory as history } from 'react-router';
 import { Provider } from 'react-redux';
 import { routerMiddleware } from 'react-router-redux';
+import Fetcher from 'fetchr';
 
 import createAppStore from '../common/create-store.js';
 import routes from '../common/routes.jsx';
@@ -13,12 +14,17 @@ const devTools =
   win.__REDUX_DEVTOOLS_EXTENSION__() :
   (f => f);
 
+const fetcher = new Fetcher({ xhrPath: '/services' });
+
 const { store } = createAppStore({
   middlewares: [
     routerMiddleware(history)
   ],
   devTools,
-  dependencies: { storage: win.localStorage }
+  dependencies: {
+    storage: win.localStorage,
+    fetcher
+  }
 });
 
 // <Provider store={ store }>
