@@ -7,14 +7,16 @@ var boot = require('loopback-boot');
 var path = require('path');
 
 var app = loopback();
+var expstate = require('express-state');
 
 // expressState.extend(app);
-app.set('state namespace', '__ar__');
+app.set('state namespace', '__rs__');
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(loopback.token());
 app.disable('x-powered-by');
+expstate.extend(app);
 
 app.start = function() {
   // start the web server

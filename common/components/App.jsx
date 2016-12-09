@@ -25,8 +25,10 @@ const propTypes = {
 };
 
 export class App extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchProducts();
+  }
+  componentDidMount() {
     this.props.autoLogin();
   }
 

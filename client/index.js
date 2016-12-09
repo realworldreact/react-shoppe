@@ -9,6 +9,7 @@ import createAppStore from '../common/create-store.js';
 import routes from '../common/routes.jsx';
 
 const win = typeof window !== 'undefined' ? window : {};
+const preloadedState = win.__rs__ && win.__rs__.preloadedState;
 const devTools =
   typeof win.__REDUX_DEVTOOLS_EXTENSION__ === 'function' ?
   win.__REDUX_DEVTOOLS_EXTENSION__() :
@@ -17,6 +18,7 @@ const devTools =
 const fetcher = new Fetcher({ xhrPath: '/services' });
 
 const { store } = createAppStore({
+  preloadedState,
   middlewares: [
     routerMiddleware(history)
   ],

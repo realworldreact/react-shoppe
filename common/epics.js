@@ -22,6 +22,7 @@ import {
 
 export function productsEpic(actions, _, { fetcher }) {
   return actions.ofType(types.FETCH_PRODUCTS)
+    .do(() => console.log('foo: '))
     .switchMap(() => {
       return Observable.fromPromise(fetcher.read('products').end())
         .map(({ data: products }) => fetchProductsComplete(products))
@@ -31,6 +32,7 @@ export function productsEpic(actions, _, { fetcher }) {
 
 export function autoLoginEpic(actions, { getState }, { storage }) {
   return actions.ofType(types.AUTO_LOGIN)
+    .do(() => console.log('foo: '))
     .switchMap(() => {
       if (!storage.userId || !storage.token) {
         return [autoLoginNoUser()];
@@ -44,6 +46,7 @@ export function autoLoginEpic(actions, { getState }, { storage }) {
 
 export function storeUserEpic(actions, _, { storage }) {
   return actions.ofType(types.UPDATE_USER_COMPLETE)
+    .do(() => console.log('foo: '))
     .do(({ payload: user })=> {
       if (user.id && user.accessToken) {
         storage.setItem('userId', user.id);
@@ -55,6 +58,7 @@ export function storeUserEpic(actions, _, { storage }) {
 
 export function authEpic(actions) {
   return actions.ofType(types.AUTH)
+    .do(() => console.log('foo: '))
     .switchMap(({ payload: { isSignUp, form }}) => {
       return api.auth(isSignUp, form)
         .mergeMap(user => {
@@ -73,13 +77,14 @@ export function cartEpic(actions, { getState }) {
     types.REMOVE_FROM_CART,
     types.DELETE_FROM_CART
   )
+    .do(() => console.log('foo: '))
     .switchMap(({ type, payload: itemId }) => {
       const {
         user: { id },
         token
       } = getState();
       if (!id || !token) {
-        return Observable.empty();
+        return null;
       }
       return api.cartApi(type, id, token, itemId)
         .map(({ cart }) => updateCart(cart))
@@ -90,13 +95,14 @@ export function cartEpic(actions, { getState }) {
 
 export function favEpic(actions, { getState }) {
   return actions.ofType(types.TOGGLE_FAV)
+    .do(() => console.log('foo: '))
     .switchMap(({ payload: itemId }) => {
       const {
         user: { id },
         token
       } = getState();
       if (!id || !token) {
-        return Observable.empty();
+        return null;
       }
       return api.toggleFav(id, token, itemId)
         .map(({ favs }) => updateFavs(favs))
