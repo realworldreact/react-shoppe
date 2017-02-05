@@ -1,6 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import {
+  addToCart,
+  removeFromCart,
+  deleteFromCart
+} from '../redux.js';
 
 const propTypes = {
   cart: PropTypes.array,
@@ -28,6 +33,12 @@ function mapStateToProps(state) {
   };
 }
 
+const mapDispatchToProps = {
+  addToCart,
+  removeFromCart,
+  deleteFromCart
+};
+
 export class Cart extends Component {
   render() {
     const { cart } = this.props;
@@ -44,7 +55,10 @@ export class Cart extends Component {
             <div className='cart-list-item' />
           </div>
           { cart.map(item => (
-            <div className='cart-list-row'>
+            <div
+              className='cart-list-row'
+              key={ item.id }
+              >
               <div className='cart-list-item'>
                 <div className='cart-list-product'>
                   <div className='cart-list-stock-photo'>
@@ -106,6 +120,6 @@ export class Cart extends Component {
 }
 
 
-export default connect(mapStateToProps)(Cart);
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
 
 Cart.propTypes = propTypes;
