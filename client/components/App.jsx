@@ -1,5 +1,6 @@
 import React, { cloneElement, PropTypes, Component } from 'react';
-import _ from 'lodash';
+import { connect } from 'react-redux';
+
 import Nav from './Nav.jsx';
 import {
   addToCart,
@@ -10,7 +11,14 @@ import {
   fav
 } from '../api.js';
 
-export default class App extends Component {
+import { updateProducts, updateUser } from '../redux.js';
+
+const mapDispatchToProps = {
+  updateUser,
+  updateProducts
+};
+
+export class App extends Component {
   constructor(...args) {
     super(...args);
     this.state = {
@@ -18,29 +26,22 @@ export default class App extends Component {
       products: [],
       accessToken: null,
       cart: [],
-      favs: [],
-      filter: ''
+      favs: []
     };
     this.updateUser = this.updateUser.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.addToFav = this.addToFav.bind(this);
     this.removeFromCart = this.removeFromCart.bind(this);
     this.deleteFromCart = this.deleteFromCart.bind(this);
-    this.updateFilter = this.updateFilter.bind(this);
   }
 
   componentDidMount() {
-    fetchProducts().then(products => this.setState({ products: products }));
+    fetchProducts().then(products => this.props.updateProducts(products));
     const id = localStorage.getItem('id');
     const accessToken = localStorage.getItem('accessToken');
     if (id && accessToken) {
       fetchUser(id, accessToken).then(user => {
-        this.setState({
-          user: user,
-          accessToken: accessToken,
-          cart: user.cart,
-          favs: user.favs
-        });
+        this.props.updateUser(user);
       });
     }
   }
@@ -50,12 +51,8 @@ export default class App extends Component {
       localStorage.setItem('id', user.id);
       localStorage.setItem('accessToken', user.accessToken);
     }
-    this.setState({
-      user: user,
-      accessToken: user.accessToken,
-      cart: user.cart,
-      favs: user.favs
-    });
+
+    this.props.updateUser(user);
   }
 
   addToCart(itemId) {
@@ -94,10 +91,6 @@ export default class App extends Component {
       .then(({ favs }) => this.setState({ favs }));
   }
 
-  updateFilter(filter) {
-    this.setState({ filter: filter.replace('e', 'f') });
-  }
-
   render() {
     return (
       <div className='app'>
@@ -105,46 +98,12 @@ export default class App extends Component {
         <div className='app-child'>
           {
             cloneElement(this.props.children, {
-              filter: this.state.filter,
               updateUser: this.updateUser,
               addProducts: this.addProducts,
               addToCart: this.addToCart,
               addToFav: this.addToFav,
               removeFromCart: this.removeFromCart,
-              deleteFromCart: this.deleteFromCart,
-              updateFilter: this.updateFilter,
-              products: this.state.products
-                .filter(
-                  ({ name }) => (new RegExp(this.state.filter)).test(name)
-                )
-                .map(product => {
-                  const isInCart = this.state.cart.some(item => {
-                    return item.id === product.id;
-                  });
-                  const isFav = this.state.favs.some(itemId => {
-                    return itemId === product.id;
-                  });
-                  if (isInCart || isFav) {
-                    return {
-                      ...product,
-                      isInCart,
-                      isFav
-                    };
-                  }
-                  return product;
-                }),
-              cart: this.state.cart.map(item => {
-                const productIndex = _.findIndex(
-                  this.state.products,
-                  (product) => {
-                    return product.id === item.id;
-                  }
-                );
-                return {
-                  ...item,
-                  ...this.state.products[productIndex]
-                };
-              })
+              deleteFromCart: this.deleteFromCart
             })
           }
         </div>
@@ -152,6 +111,11 @@ export default class App extends Component {
     );
   }
 }
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);
 
 App.propTypes = {
   children: PropTypes.element

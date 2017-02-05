@@ -1,17 +1,51 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { updateFilter } from '../redux.js';
 
 const propTypes = {
   favs: PropTypes.array,
   cart: PropTypes.array,
   products: PropTypes.array,
   user: PropTypes.object,
-  addToCart: PropTypes.func.isRequired,
+  addToCart: PropTypes.func,
   updateFilter: PropTypes.func,
   filter: PropTypes.string,
   addToFav: PropTypes.func
 };
 
-export default class Products extends Component {
+// products: this.state.products
+  // .filter(
+    // ({ name }) => (new RegExp(this.state.filter)).test(name)
+  // )
+
+function mapStateToProps(state) {
+  return {
+    filter: state.filter,
+    products: state.products
+      .map(product => {
+        const isInCart = state.cart.some(item => {
+          return item.id === product.id;
+        });
+        const isFav = state.favs.some(itemId => {
+          return itemId === product.id;
+        });
+        if (isInCart || isFav) {
+          return {
+            ...product,
+            isInCart,
+            isFav
+          };
+        }
+        return product;
+      })
+  };
+}
+
+const mapDispatchToProps = {
+  updateFilter
+};
+
+export class Products extends Component {
   render() {
     const { addToCart, addToFav, products } = this.props;
     return (
@@ -65,6 +99,11 @@ export default class Products extends Component {
     );
   }
 }
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Products);
 
 Products.displayName = 'Products';
 Products.propTypes = propTypes;

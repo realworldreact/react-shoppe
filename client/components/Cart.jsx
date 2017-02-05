@@ -1,4 +1,6 @@
 import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 
 const propTypes = {
   cart: PropTypes.array,
@@ -9,8 +11,24 @@ const propTypes = {
   products: PropTypes.array
 };
 
-export default class Cart extends Component {
+function mapStateToProps(state) {
+  return {
+    cart: state.cart.map(item => {
+      const productIndex = _.findIndex(
+        state.products,
+        (product) => {
+          return product.id === item.id;
+        }
+      );
+      return {
+        ...item,
+        ...state.products[productIndex]
+      };
+    })
+  };
+}
 
+export class Cart extends Component {
   render() {
     const { cart } = this.props;
     return (
@@ -37,7 +55,7 @@ export default class Cart extends Component {
                       { item.name }
                     </div>
                     <div className='cart-list-info-price'>
-                      ${ item.price.toFixed(2) }
+                      ${ (item.price || 0).toFixed(2) }
                     </div>
                   </div>
                 </div>
@@ -87,5 +105,7 @@ export default class Cart extends Component {
   }
 }
 
+
+export default connect(mapStateToProps)(Cart);
 
 Cart.propTypes = propTypes;
