@@ -1,16 +1,14 @@
 import React, { PropTypes } from 'react';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
-import { logIn } from '../api.js';
-import { updateUser } from '../redux.js';
+import { logIn } from '../redux.js';
 
 const propTypes = {
-  updateUser: PropTypes.func
+  logIn: PropTypes.func
 };
 
 const mapDispatchToProps = {
-  updateUser
+  logIn
 };
 
 export class LogIn extends React.Component {
@@ -20,10 +18,7 @@ export class LogIn extends React.Component {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            logIn(e.target).then(user => {
-              this.props.updateUser(user);
-              browserHistory.push('/');
-            });
+            this.props.logIn(e.target);
           }}
           >
           <label>

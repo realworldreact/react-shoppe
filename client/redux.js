@@ -1,3 +1,4 @@
+import { browserHistory } from 'react-router';
 import * as api from './api.js';
 
 const initialState = {
@@ -18,7 +19,8 @@ export const types = {
   REMOVE_FROM_CART: 'REMOVE_FROM_CART',
   DELETE_FROM_CART: 'DELETE_FROM_CART',
   FAVORITING: 'FAVORITING',
-  UPDATE_FAVS: 'UPDATE_FAVS'
+  UPDATE_FAVS: 'UPDATE_FAVS',
+  LOG_IN: 'LOG_IN'
 };
 
 export const updateFilter = (filter) => {
@@ -121,6 +123,16 @@ export const fetchProducts = () => {
       .then(
         products => dispatch(updateProducts(products))
       );
+  };
+};
+
+export const logIn = (form) => {
+  return (dispatch) => {
+    dispatch({ type: types.LOG_IN });
+    api.logIn(form).then(user => {
+      dispatch(updateUser(user));
+      browserHistory.push('/');
+    });
   };
 };
 
