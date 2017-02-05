@@ -2,7 +2,9 @@ import React, { PropTypes, Component } from 'react';
 
 const propTypes = {
   cart: PropTypes.array,
-  updateCart: PropTypes.func,
+  deleteFromCart: PropTypes.func,
+  removeFromCart: PropTypes.func,
+  addToCart: PropTypes.func,
   user: PropTypes.object,
   products: PropTypes.array
 };
@@ -42,12 +44,14 @@ export default class Cart extends Component {
               </div>
               <div className='cart-list-item'>
                 <div
+                  className='cart-count-up'
                   onClick={ () => this.props.addToCart(item.id) }
-                  className='cart-count-up'>
+                  >
                   <img src='/images/cart/AddOneItem.png'/>
                 </div>
                 <div className='cart-count-count'>{ item.count }</div>
-                <div className='cart-count-down'
+                <div
+                  className='cart-count-down'
                   onClick={ () => this.props.removeFromCart(item.id) }
                   >
                   <img src='/images/cart/SubtractOneItem.png'/>
@@ -57,23 +61,25 @@ export default class Cart extends Component {
                 ${ (item.price * item.count).toFixed(2) }
               </div>
               <div
+                className='cart-list-item cart-delete-item'
                 onClick={ () => this.props.deleteFromCart(item.id) }
-                className='cart-list-item cart-delete-item'>
+                >
                 <img src='/images/cart/DeleteItem.png' />
               </div>
             </div>
           ))}
           <div className='cart-list-row'>
-            <div className='cart-list-item'></div>
+            <div className='cart-list-item' />
             <div className='cart-list-item'>Total</div>
             <div className='cart-list-item'>
               {
                 cart.reduce((total, item) => {
-                  return total += item.price * item.count;
+                  total += item.price * item.count;
+                  return total;
                 }, 0)
               }
             </div>
-            <div className='cart-list-item'></div>
+            <div className='cart-list-item' />
           </div>
         </div>
       </div>

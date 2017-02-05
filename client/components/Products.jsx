@@ -6,6 +6,8 @@ const propTypes = {
   products: PropTypes.array,
   user: PropTypes.object,
   addToCart: PropTypes.func.isRequired,
+  updateFilter: PropTypes.func,
+  filter: PropTypes.string,
   addToFav: PropTypes.func
 };
 
@@ -16,49 +18,48 @@ export default class Products extends Component {
       <div className='products'>
         <div className='products-search'>
           <input
+            className='products-search_input'
             onChange={ (e) => this.props.updateFilter(e.target.value) }
             value={ this.props.filter }
-            className='products-search_input'
           />
         </div>
         <ul className='products-lists'>
-          { products.map((product) => (
-            <li
-              className='products-item'
-              key={ product.id }
-              >
-              <img
-                className='products-item-stock-photo'
-                src={ `/images/products/${product.image}` }
-              />
-              <div className='products-item-name'>
-                { product.name }
-              </div>
-              <div className='products-item-descriptions'>
-                { product.description }
-              </div>
-              <div className='products-item-footer'>
-                <div className='products-item-cart'>
-                  <button
-                    onClick={ () => addToCart(product.id) }
-                    >
-                    <img
-                      src={
-                        `/images/AddToCart${product.isInCart ? 'Selected' : 'Unselected' }.png`
-                      }
-                    />
-                  </button>
+          { products.map((product) => {
+            const cartImg = product.isInCart ? 'Selected' : 'Unselected';
+            const favImg = product.isFav ? 'Selected' : 'Unselected';
+            return (
+              <li
+                className='products-item'
+                key={ product.id }
+                >
+                <img
+                  className='products-item-stock-photo'
+                  src={ `/images/products/${product.image}` }
+                />
+                <div className='products-item-name'>
+                  { product.name }
                 </div>
-                <div className='products-item-favorite'>
-                  <button onClick={ () => addToFav(product.id) }>
-                    <img
-                      src={ `/images/HeartItem${product.isFav ? 'Selected' : 'Unselected' }.png`}
-                    />
-                  </button>
+                <div className='products-item-descriptions'>
+                  { product.description }
                 </div>
-              </div>
-            </li>
-          )) }
+                <div className='products-item-footer'>
+                  <div className='products-item-cart'>
+                    <button onClick={ () => addToCart(product.id) }>
+                      <img src={`/images/AddToCart${cartImg}.png`} />
+                    </button>
+                  </div>
+                  <div className='products-item-favorite'>
+                    <button onClick={ () => addToFav(product.id) }>
+                      <img
+                        src={ `/images/HeartItem${favImg}.png`}
+                      />
+                    </button>
+                  </div>
+                </div>
+              </li>
+            );
+          })
+          }
         </ul>
       </div>
     );

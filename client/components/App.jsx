@@ -108,33 +108,38 @@ export default class App extends Component {
               filter: this.state.filter,
               updateUser: this.updateUser,
               addProducts: this.addProducts,
-              products: this.state.products
-                .filter(({ name }) => (new RegExp(this.state.filter)).test(name))
-                .map(product => {
-                const isInCart = this.state.cart.some(item => {
-                  return item.id === product.id;
-                });
-                const isFav = this.state.favs.some(itemId => {
-                  return itemId === product.id;
-                });
-                if (isInCart || isFav) {
-                  return {
-                    ...product,
-                    isInCart,
-                    isFav
-                  };
-                }
-                return product;
-              }),
               addToCart: this.addToCart,
               addToFav: this.addToFav,
               removeFromCart: this.removeFromCart,
               deleteFromCart: this.deleteFromCart,
               updateFilter: this.updateFilter,
+              products: this.state.products
+                .filter(
+                  ({ name }) => (new RegExp(this.state.filter)).test(name)
+                )
+                .map(product => {
+                  const isInCart = this.state.cart.some(item => {
+                    return item.id === product.id;
+                  });
+                  const isFav = this.state.favs.some(itemId => {
+                    return itemId === product.id;
+                  });
+                  if (isInCart || isFav) {
+                    return {
+                      ...product,
+                      isInCart,
+                      isFav
+                    };
+                  }
+                  return product;
+                }),
               cart: this.state.cart.map(item => {
-                const productIndex = _.findIndex(this.state.products, (product) => {
-                  return product.id === item.id;
-                });
+                const productIndex = _.findIndex(
+                  this.state.products,
+                  (product) => {
+                    return product.id === item.id;
+                  }
+                );
                 return {
                   ...item,
                   ...this.state.products[productIndex]
