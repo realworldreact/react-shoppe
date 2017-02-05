@@ -1,12 +1,19 @@
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+
 import { logIn } from '../api.js';
+import { updateUser } from '../redux.js';
 
 const propTypes = {
   updateUser: PropTypes.func
 };
 
-export default class LogIn extends React.Component {
+const mapDispatchToProps = {
+  updateUser
+};
+
+export class LogIn extends React.Component {
   render() {
     return (
       <div className='auth-login'>
@@ -44,3 +51,5 @@ export default class LogIn extends React.Component {
 
 LogIn.displayName = 'LogIn';
 LogIn.propTypes = propTypes;
+
+export default connect(null, mapDispatchToProps)(LogIn);

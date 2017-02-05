@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import Nav from './Nav.jsx';
 import {
-  addToCart,
   removeFromCart,
   deleteFromCart,
   fetchProducts,
@@ -28,8 +27,6 @@ export class App extends Component {
       cart: [],
       favs: []
     };
-    this.updateUser = this.updateUser.bind(this);
-    this.addToCart = this.addToCart.bind(this);
     this.addToFav = this.addToFav.bind(this);
     this.removeFromCart = this.removeFromCart.bind(this);
     this.deleteFromCart = this.deleteFromCart.bind(this);
@@ -41,27 +38,9 @@ export class App extends Component {
     const accessToken = localStorage.getItem('accessToken');
     if (id && accessToken) {
       fetchUser(id, accessToken).then(user => {
-        this.props.updateUser(user);
+        this.props.updateUser({ ...user, accessToken });
       });
     }
-  }
-
-  updateUser(user) {
-    if (user.id && user.accessToken) {
-      localStorage.setItem('id', user.id);
-      localStorage.setItem('accessToken', user.accessToken);
-    }
-
-    this.props.updateUser(user);
-  }
-
-  addToCart(itemId) {
-    const { user, accessToken } = this.state;
-    if (!user.id || !accessToken) {
-      return null;
-    }
-    return addToCart(user.id, accessToken, itemId)
-      .then(({ cart }) => this.setState({ cart }));
   }
 
   removeFromCart(itemId) {
@@ -98,9 +77,7 @@ export class App extends Component {
         <div className='app-child'>
           {
             cloneElement(this.props.children, {
-              updateUser: this.updateUser,
               addProducts: this.addProducts,
-              addToCart: this.addToCart,
               addToFav: this.addToFav,
               removeFromCart: this.removeFromCart,
               deleteFromCart: this.deleteFromCart

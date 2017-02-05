@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updateFilter } from '../redux.js';
+import { addToCart, updateFilter } from '../redux.js';
 
 const propTypes = {
   favs: PropTypes.array,
@@ -42,7 +42,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  updateFilter
+  updateFilter,
+  addToCart
 };
 
 export class Products extends Component {

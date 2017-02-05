@@ -1,3 +1,5 @@
+import * as api from './api.js';
+
 const initialState = {
   user: {},
   products: [],
@@ -10,7 +12,9 @@ const initialState = {
 export const types = {
   UPDATE_FILTER: 'UPDATE_FILTER',
   UPDATE_USER: 'UPDATE_USER',
-  UPDATE_PRODUCTS: 'UPDATE_PRODUCTS'
+  UPDATE_PRODUCTS: 'UPDATE_PRODUCTS',
+  ADD_TO_CART: 'ADD_TO_CART',
+  UPDATE_CART: 'UPDATE_CART'
 };
 
 export const updateFilter = (filter) => {
@@ -21,15 +25,42 @@ export const updateFilter = (filter) => {
 };
 
 export const updateUser = (user) => {
-  return {
-    type: types.UPDATE_USER,
-    payload: {
-      user,
-      accessToken: user.accessToken,
-      id: user.id,
-      cart: user.cart,
-      favs: user.favs
+  return (dispatch, getState, { localStorage }) => {
+    if (user.id && user.accessToken) {
+      localStorage.setItem('id', user.id);
+      localStorage.setItem('accessToken', user.accessToken);
     }
+
+    dispatch({
+      type: types.UPDATE_USER,
+      payload: {
+        user,
+        accessToken: user.accessToken,
+        id: user.id,
+        cart: user.cart,
+        favs: user.favs
+      }
+    });
+  };
+};
+
+export const addToCart = (itemId) => {
+  return (dispatch, getState) => {
+    const { user, accessToken } = getState();
+    if (!user.id || !accessToken) {
+      return null;
+    }
+    dispatch({
+      type: 'ABOUT_TO_ADD_TO_CART'
+    });
+    return api.addToCart(user.id, accessToken, itemId)
+      .then(({ cart }) => dispatch({ type: types.UPDATE_CART, payload: cart }))
+      .catch(err => dispatch({
+        type: 'ERROR_ON_ADD_TO_CART',
+        error: true,
+        payload: err
+      }))
+      .finally(() => dispatch({ type: 'FINALLY' }));
   };
 };
 
@@ -51,6 +82,12 @@ export default function reducer(state = initialState, action) {
     return {
       ...state,
       products: action.payload
+    };
+  }
+  if (action.type === types.UPDATE_CART) {
+    return {
+      ...state,
+      cart: action.payload
     };
   }
   return state;
