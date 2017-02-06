@@ -1,7 +1,6 @@
-import { browserHistory } from 'react-router';
 import * as api from './api.js';
 
-const initialState = {
+export const initialState = {
   user: {},
   products: [],
   accessToken: null,
@@ -127,11 +126,11 @@ export const fetchProducts = () => {
 };
 
 export const logIn = (form) => {
-  return (dispatch) => {
+  return (dispatch, getState, { history }) => {
     dispatch({ type: types.LOG_IN });
     api.logIn(form).then(user => {
       dispatch(updateUser(user));
-      browserHistory.push('/');
+      history.push('/');
     });
   };
 };

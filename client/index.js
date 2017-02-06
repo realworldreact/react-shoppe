@@ -6,12 +6,20 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 
 import routes from './routes.jsx';
-import reducer from './redux.js';
+import reducer, { initialState } from './redux.js';
+
+const preState = (window.__ar__ && window.__ar__.initial_state) || initialState;
 
 const store = createStore(
   reducer,
+  preState,
   compose(
-    applyMiddleware(thunkMiddleware.withExtraArgument({ localStorage })),
+    applyMiddleware(
+      thunkMiddleware.withExtraArgument({
+        localStorage,
+        history
+      })
+    ),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
