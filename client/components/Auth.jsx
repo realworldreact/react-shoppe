@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
-import { browserHistory as history } from 'react-router';
-import { signUp } from '../api.js';
+import { withRouter, browserHistory as history } from 'react-router';
+import { logIn, signUp } from '../api.js';
 
 const propTypes = {
-  updateUser: PropTypes.func
+  updateUser: PropTypes.func,
+  router: PropTypes.object
 };
 
-export default class SignUp extends React.Component {
+export class Auth extends React.Component {
   constructor(...props) {
     super(...props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -16,8 +17,13 @@ export default class SignUp extends React.Component {
   }
 
   handleSubmit(e) {
+    const {
+      router
+    } = this.props;
+    const isLogin = router.isActive('log-in');
+    const submit = isLogin ? logIn : signUp;
     e.preventDefault();
-    signUp(e.target)
+    submit(e.target)
       .then(this.props.updateUser)
       .then(() => {
         history.push('/');
@@ -25,6 +31,10 @@ export default class SignUp extends React.Component {
   }
 
   render() {
+    const {
+      router
+    } = this.props;
+    const isLogin = router.isActive('log-in');
     return (
       <div className='auth-signup'>
         <form
@@ -37,13 +47,17 @@ export default class SignUp extends React.Component {
               type='email'
             />
           </label>
-          <label>
-            <input
-              name='username'
-              placeholder='name'
-              type='text'
-            />
-          </label>
+          {
+            isLogin ?
+              null :
+              <label>
+                <input
+                  name='username'
+                  placeholder='name'
+                  type='text'
+                />
+              </label>
+          }
           <label>
             <input
               name='password'
@@ -60,5 +74,7 @@ export default class SignUp extends React.Component {
   }
 }
 
-SignUp.displayName = 'SignUp';
-SignUp.propTypes = propTypes;
+Auth.displayName = 'Auth';
+Auth.propTypes = propTypes;
+
+export default withRouter(Auth);
