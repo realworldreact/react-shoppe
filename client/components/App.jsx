@@ -14,6 +14,7 @@ export default class App extends Component {
   constructor(...args) {
     super(...args);
     this.state = {
+      search: '',
       products: [],
       cart: [],
       favs: [],
@@ -92,6 +93,10 @@ export default class App extends Component {
     }
   }
 
+  updateFilter(search) {
+    this.setState({ search: search });
+  }
+
   render() {
     const {
       products,
@@ -99,10 +104,29 @@ export default class App extends Component {
       token,
       cart,
       favs,
+      search,
       user: {
         username: name
       }
     } = this.state;
+
+    let filter;
+    if (search.length > 3) {
+      filter = new RegExp(
+        search
+          .replace(' ', '.')
+          .split('')
+          .join('.*')
+        ,
+        'i'
+      );
+    }
+    let finalProducts = products;
+    if (filter) {
+      finalProducts = products.filter(product => {
+        return filter.test(product.name);
+      });
+    }
     return (
       <div className='app'>
         <Nav
@@ -115,6 +139,7 @@ export default class App extends Component {
               this.props.children,
               {
                 cart,
+                filter: this.state.search,
                 fullCart: cart.map(item => {
                   const product = find(
                     products,
@@ -126,7 +151,7 @@ export default class App extends Component {
                   };
                 }),
                 token,
-                products: products.map(item => {
+                products: finalProducts.map(item => {
                   const isInCart = cart.some(
                     cartItem => item.id === cartItem.id
                   );
