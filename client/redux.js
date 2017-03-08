@@ -1,4 +1,8 @@
+import * as api from './api.js';
+
 const types = {
+  FETCH_PRODUCTS: 'FETCH_PRODUCTS',
+  FETCH_PRODUCT_ERROR: 'FETCH_PRODUCT_ERROR',
   UPDATE_PRODUCTS: 'UPDATE_PRODUCTS',
   UPDATE_SEARCH: 'UPDATE_SEARCH',
   UPDATE_USER: 'UPDATE_USER'
@@ -34,6 +38,19 @@ export const updateUser = user => {
   return {
     type: types.UPDATE_USER,
     payload: user
+  };
+};
+
+export const fetchProducts = () => {
+  return (dispatch) => {
+    dispatch({ type: types.FETCH_PRODUCTS });
+    api.fetchProducts()
+      .then(products => {
+        return dispatch(updateProducts(products));
+      })
+      .catch(err => {
+        dispatch({ type: types.FETCH_PRODUCT_ERROR, payload: err });
+      });
   };
 };
 

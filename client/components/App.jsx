@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import Nav from './Nav.jsx';
 import {
   updateProducts,
-  updateUser
+  updateUser,
+  fetchProducts
 } from '../redux.js';
 import {
   addToCart,
   deleteFromCart,
-  fetchProducts,
   removeFromCart,
   fetchUser,
   fav
@@ -26,16 +26,24 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    updateProducts: (products) => {
-      return dispatch(updateProducts(products));
-    },
-    updateUser: user => {
-      return dispatch(updateUser(user));
-    }
-  };
+const mapDispatchToProps = {
+  updateProducts,
+  updateUser,
+  fetchProducts
 };
+// dispatch => {
+//   return {
+//     updateProducts: (products) => {
+//       return dispatch(updateProducts(products));
+//     },
+//     updateUser: user => {
+//       return dispatch(updateUser(user));
+//     },
+//     fetchProducts: () => {
+//       return dispatch(fetchProducts());
+//     }
+//   };
+// };
 
 export class App extends Component {
   constructor(...args) {
@@ -101,11 +109,7 @@ export class App extends Component {
   }
 
   componentDidMount() {
-    fetchProducts()
-      .then(products => {
-        return this.props.updateProducts(products)
-      })
-      .catch(err => console.error(err));
+    this.props.fetchProducts();
 
     const id = localStorage.getItem('id');
     const accessToken = localStorage.getItem('accessToken');
