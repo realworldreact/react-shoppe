@@ -1,9 +1,10 @@
 const types = {
-
+  UPDATE_PRODUCTS: 'UPDATE_PRODUCTS',
   UPDATE_SEARCH: 'UPDATE_SEARCH'
 };
 const initialState = {
-  search: ''
+  search: '',
+  products: []
 };
 // const action = {
 //   type,
@@ -15,11 +16,25 @@ export const updateSearch = (search) => {
     payload: search
   };
 };
+
+export const updateProducts = products => {
+  return {
+    type: types.UPDATE_PRODUCTS,
+    payload: products
+  };
+};
+
 export default (state = initialState, action) => {
   if (action.type === types.UPDATE_SEARCH) {
     return {
       ...state,
       search: action.payload || ''
+    };
+  }
+  if (action.type === types.UPDATE_PRODUCTS) {
+    return {
+      ...state,
+      products: action.payload
     };
   }
   return state;

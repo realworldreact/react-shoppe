@@ -7,7 +7,10 @@ import { Router, browserHistory as history } from 'react-router';
 import routes from './routes.jsx';
 import reducer from './redux.js';
 
-const store = createStore(reducer);
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 // <Provider store={ store }>
 //   <Router routes={ routes} />
 // </Provider>

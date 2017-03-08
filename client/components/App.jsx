@@ -1,5 +1,7 @@
 import React, { PropTypes, Component, cloneElement } from 'react';
+import { connect } from 'react-redux';
 import Nav from './Nav.jsx';
+import { updateProducts } from '../redux.js';
 import {
   addToCart,
   deleteFromCart,
@@ -10,7 +12,21 @@ import {
 } from '../api.js';
 import find from 'lodash/find';
 
-export default class App extends Component {
+const mapStateToProps = state => {
+  return {
+    products: state.products
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateProducts: (products) => {
+      return dispatch(updateProducts(products));
+    }
+  };
+};
+
+export class App extends Component {
   constructor(...args) {
     super(...args);
     this.state = {
@@ -81,7 +97,9 @@ export default class App extends Component {
 
   componentDidMount() {
     fetchProducts()
-      .then(products => this.setState({ products }))
+      .then(products => {
+        return this.props.updateProducts(products)
+      })
       .catch(err => console.error(err));
 
     const id = localStorage.getItem('id');
@@ -93,40 +111,19 @@ export default class App extends Component {
     }
   }
 
-  updateFilter(search) {
-    this.setState({ search: search });
-  }
-
   render() {
     const {
-      products,
       isSignedIn,
       token,
       cart,
       favs,
-      search,
       user: {
         username: name
       }
     } = this.state;
-
-    let filter;
-    if (search.length > 3) {
-      filter = new RegExp(
-        search
-          .replace(' ', '.')
-          .split('')
-          .join('.*')
-        ,
-        'i'
-      );
-    }
-    let finalProducts = products;
-    if (filter) {
-      finalProducts = products.filter(product => {
-        return filter.test(product.name);
-      });
-    }
+    const {
+      products
+    } = this.props;
     return (
       <div className='app'>
         <Nav
@@ -139,7 +136,6 @@ export default class App extends Component {
               this.props.children,
               {
                 cart,
-                filter: this.state.search,
                 fullCart: cart.map(item => {
                   const product = find(
                     products,
@@ -151,7 +147,7 @@ export default class App extends Component {
                   };
                 }),
                 token,
-                products: finalProducts.map(item => {
+                products: products.map(item => {
                   const isInCart = cart.some(
                     cartItem => item.id === cartItem.id
                   );
@@ -184,3 +180,8 @@ export default class App extends Component {
 App.propTypes = {
   children: PropTypes.element
 };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
