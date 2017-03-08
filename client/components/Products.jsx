@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import Product from './Product.jsx';
+import { updateSearch } from '../redux.js';
 
 const propTypes = {
   favs: PropTypes.array,
@@ -10,21 +12,22 @@ const propTypes = {
   addToFavs: PropTypes.func
 };
 
-export default class Products extends Component {
-  constructor(...props) {
-    super(...props);
-    this.state = {
-      search: ''
-    };
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
+const mapStateToProps = state => {
+  return {
+    search: state.search
+  };
+};
 
-  handleKeyDown(e) {
-    const { value } = e.target;
-    console.log('foo: ', e.target.value);
-    this.setState({ search: value });
-  }
+const mapDispatchToProps = dispatch => {
+  return {
+    updateSearch: (e) => {
+      const { value } = e.target;
+      return dispatch(updateSearch(value));
+    }
+  };
+};
 
+export class Products extends Component {
   renderProducts(filter, products) {
     if (!Array.isArray(products)) {
       return <div>Loading...</div>;
@@ -47,8 +50,7 @@ export default class Products extends Component {
   }
 
   render() {
-    const { products } = this.props;
-    const { search } = this.state;
+    const { search, products } = this.props;
     let filter;
     if (search.length > 3) {
       filter = new RegExp(
@@ -65,7 +67,7 @@ export default class Products extends Component {
         <div className='products-search'>
           <input
             className='products-search_input'
-            onChange={ this.handleKeyDown }
+            onChange={ this.props.updateSearch }
             value={ search }
           />
         </div>
@@ -79,3 +81,8 @@ export default class Products extends Component {
 
 Products.displayName = 'Products';
 Products.propTypes = propTypes;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Products);

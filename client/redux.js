@@ -1,26 +1,25 @@
 const types = {
-  INC: 'INC',
-  DEC: 'DEC'
+
+  UPDATE_SEARCH: 'UPDATE_SEARCH'
 };
 const initialState = {
-  count: 0
+  search: ''
 };
-
-export const increment = () => {
+// const action = {
+//   type,
+//   payload
+// };
+export const updateSearch = (search) => {
   return {
-    type: types.INC
+    type: types.UPDATE_SEARCH,
+    payload: search
   };
 };
 export default (state = initialState, action) => {
-  if (action.type === types.INC) {
-    return Object.assign({}, state, {
-      count: state.count + 1
-    });
-  }
-  if (action.type === types.DEC) {
+  if (action.type === types.UPDATE_SEARCH) {
     return {
       ...state,
-      count: state.count - 1
+      search: action.payload || ''
     };
   }
   return state;
