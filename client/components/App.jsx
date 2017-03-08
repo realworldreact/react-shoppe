@@ -1,7 +1,10 @@
 import React, { PropTypes, Component, cloneElement } from 'react';
 import { connect } from 'react-redux';
 import Nav from './Nav.jsx';
-import { updateProducts } from '../redux.js';
+import {
+  updateProducts,
+  updateUser
+} from '../redux.js';
 import {
   addToCart,
   deleteFromCart,
@@ -14,7 +17,12 @@ import find from 'lodash/find';
 
 const mapStateToProps = state => {
   return {
-    products: state.products
+    products: state.products,
+    user: state.user,
+    cart: state.cart,
+    favs: state.favs,
+    token: state.token,
+    isSignedIn: state.isSignedIn
   };
 };
 
@@ -22,6 +30,9 @@ const mapDispatchToProps = dispatch => {
   return {
     updateProducts: (products) => {
       return dispatch(updateProducts(products));
+    },
+    updateUser: user => {
+      return dispatch(updateUser(user));
     }
   };
 };
@@ -50,13 +61,7 @@ export class App extends Component {
       localStorage.setItem('id', user.id);
       localStorage.setItem('accessToken', user.accessToken);
     }
-    this.setState({
-      user,
-      cart: user.cart || [],
-      favs: user.favs || [],
-      token: user.accessToken,
-      isSignedIn: !!user.username
-    });
+    this.props.updateUser(user);
   }
 
   addToCart(itemId) {
@@ -119,9 +124,7 @@ export class App extends Component {
       favs,
       user: {
         username: name
-      }
-    } = this.state;
-    const {
+      },
       products
     } = this.props;
     return (

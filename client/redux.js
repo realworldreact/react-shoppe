@@ -1,10 +1,16 @@
 const types = {
   UPDATE_PRODUCTS: 'UPDATE_PRODUCTS',
-  UPDATE_SEARCH: 'UPDATE_SEARCH'
+  UPDATE_SEARCH: 'UPDATE_SEARCH',
+  UPDATE_USER: 'UPDATE_USER'
 };
 const initialState = {
   search: '',
-  products: []
+  products: [],
+  user: {},
+  cart: [],
+  favs: [],
+  token: null,
+  isSignedIn: false
 };
 // const action = {
 //   type,
@@ -24,6 +30,13 @@ export const updateProducts = products => {
   };
 };
 
+export const updateUser = user => {
+  return {
+    type: types.UPDATE_USER,
+    payload: user
+  };
+};
+
 export default (state = initialState, action) => {
   if (action.type === types.UPDATE_SEARCH) {
     return {
@@ -35,6 +48,17 @@ export default (state = initialState, action) => {
     return {
       ...state,
       products: action.payload
+    };
+  }
+  if (action.type === types.UPDATE_USER) {
+    const user = action.payload;
+    return {
+      ...state,
+      user,
+      cart: user.cart || [],
+      favs: user.favs || [],
+      token: user.accessToken,
+      isSignedIn: !!user.username
     };
   }
   return state;
