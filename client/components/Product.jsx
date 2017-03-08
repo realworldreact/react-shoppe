@@ -6,7 +6,9 @@ const propTypes = {
   description: PropTypes.string,
   image: PropTypes.string,
   isInCart: PropTypes.bool,
-  addToCart: PropTypes.func.isRequired
+  isFav: PropTypes.bool,
+  addToCart: PropTypes.func,
+  addToFavs: PropTypes.func
 };
 
 const imageBase = '/images/products/';
@@ -14,12 +16,18 @@ const imageBase = '/images/products/';
 export default class Product extends PureComponent {
   constructor(...props) {
     super(...props);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleCartClick = this.handleCartClick.bind(this);
+    this.handleFavClick = this.handleFavClick.bind(this);
   }
 
-  handleClick() {
+  handleCartClick() {
     const { id, addToCart } = this.props;
     addToCart(id);
+  }
+
+  handleFavClick() {
+    const { id, addToFavs } = this.props;
+    addToFavs(id);
   }
 
   render() {
@@ -27,11 +35,15 @@ export default class Product extends PureComponent {
       name,
       description,
       image,
-      isInCart
+      isInCart,
+      isFav
     } = this.props;
-    const cartButtonClassName = isInCart ?
+    const cartButtonImage = isInCart ?
       'AddToCartSelected' :
       'AddToCartUnSelected';
+    const favButtomImage = isFav ?
+      'HeartItemSelected' :
+      'HeartItemUnselected';
     return (
       <div className='products-item'>
         <div className='products-item-stock-photo'>
@@ -45,13 +57,16 @@ export default class Product extends PureComponent {
         </div>
         <div className='products-item-footer' >
           <button
-            className='products-item-favorite'
-            onClick={ this.handleClick }
+            className='products-item-cart'
+            onClick={ this.handleCartClick }
             >
-            <img src={ `/images/${cartButtonClassName}.png` } />
+            <img src={ `/images/${cartButtonImage}.png` } />
           </button>
-          <button className='products-item-cart'>
-            <img src='/images/HeartItemUnselected.png' />
+          <button
+            className='products-item-favorite'
+            onClick={ this.handleFavClick }
+            >
+            <img src={ `/images/${favButtomImage}.png` }/>
           </button>
         </div>
       </div>

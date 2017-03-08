@@ -1,6 +1,13 @@
 import React, { PropTypes, Component, cloneElement } from 'react';
 import Nav from './Nav.jsx';
-import { addToCart, deleteFromCart, fetchProducts } from '../api.js';
+import {
+  addToCart,
+  deleteFromCart,
+  fetchProducts,
+  removeFromCart,
+  fetchUser,
+  fav
+} from '../api.js';
 import find from 'lodash/find';
 
 export default class App extends Component {
@@ -9,6 +16,7 @@ export default class App extends Component {
     this.state = {
       products: [],
       cart: [],
+      favs: [],
       token: null,
       isSignedIn: false,
       user: {}
@@ -16,33 +24,72 @@ export default class App extends Component {
     this.updateUser = this.updateUser.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.deleteFromCart = this.deleteFromCart.bind(this);
+    this.removeFromCart = this.removeFromCart.bind(this);
+    this.addToFavs = this.addToFavs.bind(this);
   }
 
   updateUser(user = {}) {
+    if (user.id && user.accessToken) {
+      localStorage.setItem('id', user.id);
+      localStorage.setItem('accessToken', user.accessToken);
+    }
     this.setState({
       user,
       cart: user.cart || [],
+      favs: user.favs || [],
       token: user.accessToken,
       isSignedIn: !!user.username
     });
   }
 
   addToCart(itemId) {
-    const { token, user: { id } } = this.state;
-    addToCart(id, token, itemId)
+    const { token, user } = this.state;
+    if (!user.id || !token) {
+      return null;
+    }
+    return addToCart(user.id, token, itemId)
+      .then(cart => this.setState(cart));
+  }
+
+  removeFromCart(itemId) {
+    const { token, user } = this.state;
+    if (!user.id || !token) {
+      return null;
+    }
+    return removeFromCart(user.id, token, itemId)
       .then(cart => this.setState(cart));
   }
 
   deleteFromCart(itemId) {
-    const { token, user: { id } } = this.state;
-    deleteFromCart(id, token, itemId)
+    const { token, user } = this.state;
+    if (!user.id || !token) {
+      return null;
+    }
+    return deleteFromCart(user.id, token, itemId)
       .then(cart => this.setState(cart));
+  }
+
+  addToFavs(itemId) {
+    const { user, token } = this.state;
+    if (!user.id || !token) {
+      return null;
+    }
+    return fav(user.id, token, itemId)
+      .then(({ favs }) => this.setState({ favs }));
   }
 
   componentDidMount() {
     fetchProducts()
       .then(products => this.setState({ products }))
       .catch(err => console.error(err));
+
+    const id = localStorage.getItem('id');
+    const accessToken = localStorage.getItem('accessToken');
+    if (id && accessToken) {
+      fetchUser(id, accessToken).then(user => {
+        this.updateUser({ ...user, accessToken });
+      });
+    }
   }
 
   render() {
@@ -51,6 +98,7 @@ export default class App extends Component {
       isSignedIn,
       token,
       cart,
+      favs,
       user: {
         username: name
       }
@@ -82,17 +130,23 @@ export default class App extends Component {
                   const isInCart = cart.some(
                     cartItem => item.id === cartItem.id
                   );
-                  if (isInCart) {
+                  const isFav = favs.some(favId => {
+                    return favId === item.id;
+                  });
+                  if (isInCart || isFav) {
                     return {
                       ...item,
-                      isInCart
+                      isInCart,
+                      isFav
                     };
                   }
                   return item;
                 }),
                 updateUser: this.updateUser,
                 addToCart: this.addToCart,
-                deleteFromCart: this.deleteFromCart
+                deleteFromCart: this.deleteFromCart,
+                removeFromCart: this.removeFromCart,
+                addToFavs: this.addToFavs
               }
             )
           }

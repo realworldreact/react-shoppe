@@ -7,7 +7,7 @@ const propTypes = {
   products: PropTypes.array,
   user: PropTypes.object,
   addToCart: PropTypes.func,
-  updateFavs: PropTypes.func
+  addToFavs: PropTypes.func
 };
 
 export default class Products extends Component {
@@ -29,7 +29,7 @@ export default class Products extends Component {
     if (!Array.isArray(products)) {
       return <div>Loading...</div>;
     }
-    const { addToCart } = this.props;
+    const { addToCart, addToFavs } = this.props;
     let finalProducts = products;
     if (filter) {
       finalProducts = products.filter(product => {
@@ -40,6 +40,7 @@ export default class Products extends Component {
       <Product
         { ...item }
         addToCart={ addToCart }
+        addToFavs={ addToFavs }
         key={ item.id }
       />
     ));

@@ -6,6 +6,7 @@ const propTypes = {
   user: PropTypes.object,
   products: PropTypes.array,
   addToCart: PropTypes.func,
+  removeFromCart: PropTypes.func,
   deleteFromCart: PropTypes.func
 };
 
@@ -15,6 +16,7 @@ export default class Cart extends Component {
     const {
       fullCart,
       addToCart,
+      removeFromCart,
       deleteFromCart
     } = this.props;
     if (fullCart && fullCart.length === 0) {
@@ -74,6 +76,7 @@ export default class Cart extends Component {
                   </div>
                   <div
                     className='cart-count-down'
+                    onClick={ () => removeFromCart(item.id) }
                     >
                     <img src='/images/cart/SubtractOneItem.png' />
                   </div>
