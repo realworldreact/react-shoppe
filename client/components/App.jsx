@@ -4,13 +4,13 @@ import Nav from './Nav.jsx';
 import {
   updateProducts,
   updateUser,
-  fetchProducts
+  fetchProducts,
+  fetchUser
 } from '../redux.js';
 import {
   addToCart,
   deleteFromCart,
   removeFromCart,
-  fetchUser,
   fav
 } from '../api.js';
 import find from 'lodash/find';
@@ -29,7 +29,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   updateProducts,
   updateUser,
-  fetchProducts
+  fetchProducts,
+  fetchUser
 };
 // dispatch => {
 //   return {
@@ -110,14 +111,7 @@ export class App extends Component {
 
   componentDidMount() {
     this.props.fetchProducts();
-
-    const id = localStorage.getItem('id');
-    const accessToken = localStorage.getItem('accessToken');
-    if (id && accessToken) {
-      fetchUser(id, accessToken).then(user => {
-        this.updateUser({ ...user, accessToken });
-      });
-    }
+    this.props.fetchUser();
   }
 
   render() {

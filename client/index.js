@@ -9,7 +9,9 @@ import routes from './routes.jsx';
 import reducer from './redux.js';
 
 const middlewareStoreEnhancer = applyMiddleware(
-  thunkMiddleware
+  thunkMiddleware.withExtraArgument({
+    localStorage
+  })
 );
 
 const devToolStoreEnhancer =

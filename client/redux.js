@@ -5,6 +5,8 @@ const types = {
   FETCH_PRODUCT_ERROR: 'FETCH_PRODUCT_ERROR',
   UPDATE_PRODUCTS: 'UPDATE_PRODUCTS',
   UPDATE_SEARCH: 'UPDATE_SEARCH',
+  FETCH_USER: 'FETCH_USER',
+  FETCH_USER_ERROR: 'FETCH_USER_ERROR',
   UPDATE_USER: 'UPDATE_USER'
 };
 const initialState = {
@@ -51,6 +53,25 @@ export const fetchProducts = () => {
       .catch(err => {
         dispatch({ type: types.FETCH_PRODUCT_ERROR, payload: err });
       });
+  };
+};
+
+export const fetchUser = () => {
+  return (dispatch, getState, { localStorage }) => {
+    const id = localStorage.getItem('id');
+    const accessToken = localStorage.getItem('accessToken');
+    if (id && accessToken) {
+      dispatch({ type: types.FETCH_USER });
+      api.fetchUser(id, accessToken)
+        .then(
+          user => {
+            dispatch(updateUser({ ...user, accessToken }));
+          },
+          (err) => {
+            dispatch({ type: types.FETCH_USER, payload: err });
+          }
+        );
+    }
   };
 };
 
