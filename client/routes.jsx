@@ -3,8 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 
 import App from './components/App.jsx';
 import Products from './components/Products.jsx';
-import SignUp from './components/Sign-Up.jsx';
-import LogIn from './components/Log-In.jsx';
+import Auth from './components/Auth.jsx';
 import Cart from './components/Cart.jsx';
 
 export default (
@@ -14,11 +13,11 @@ export default (
     >
     <IndexRoute component={ Products } />
     <Route
-      component={ SignUp }
+      component={ Auth }
       path='sign-up'
     />
     <Route
-      component={ LogIn }
+      component={ Auth }
       path='log-in'
     />
     <Route
