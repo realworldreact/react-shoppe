@@ -5,14 +5,12 @@ import {
   updateProducts,
   updateUser,
   fetchProducts,
-  fetchUser
-} from '../redux.js';
-import {
+  fetchUser,
   addToCart,
-  deleteFromCart,
   removeFromCart,
-  fav
-} from '../api.js';
+  deleteFromCart,
+  addToFavs
+} from '../redux.js';
 import find from 'lodash/find';
 
 const mapStateToProps = state => {
@@ -30,7 +28,11 @@ const mapDispatchToProps = {
   updateProducts,
   updateUser,
   fetchProducts,
-  fetchUser
+  fetchUser,
+  addToCart,
+  deleteFromCart,
+  removeFromCart,
+  addToFavs
 };
 // dispatch => {
 //   return {
@@ -49,20 +51,7 @@ const mapDispatchToProps = {
 export class App extends Component {
   constructor(...args) {
     super(...args);
-    this.state = {
-      search: '',
-      products: [],
-      cart: [],
-      favs: [],
-      token: null,
-      isSignedIn: false,
-      user: {}
-    };
     this.updateUser = this.updateUser.bind(this);
-    this.addToCart = this.addToCart.bind(this);
-    this.deleteFromCart = this.deleteFromCart.bind(this);
-    this.removeFromCart = this.removeFromCart.bind(this);
-    this.addToFavs = this.addToFavs.bind(this);
   }
 
   updateUser(user = {}) {
@@ -71,42 +60,6 @@ export class App extends Component {
       localStorage.setItem('accessToken', user.accessToken);
     }
     this.props.updateUser(user);
-  }
-
-  addToCart(itemId) {
-    const { token, user } = this.state;
-    if (!user.id || !token) {
-      return null;
-    }
-    return addToCart(user.id, token, itemId)
-      .then(cart => this.setState(cart));
-  }
-
-  removeFromCart(itemId) {
-    const { token, user } = this.state;
-    if (!user.id || !token) {
-      return null;
-    }
-    return removeFromCart(user.id, token, itemId)
-      .then(cart => this.setState(cart));
-  }
-
-  deleteFromCart(itemId) {
-    const { token, user } = this.state;
-    if (!user.id || !token) {
-      return null;
-    }
-    return deleteFromCart(user.id, token, itemId)
-      .then(cart => this.setState(cart));
-  }
-
-  addToFavs(itemId) {
-    const { user, token } = this.state;
-    if (!user.id || !token) {
-      return null;
-    }
-    return fav(user.id, token, itemId)
-      .then(({ favs }) => this.setState({ favs }));
   }
 
   componentDidMount() {
@@ -123,7 +76,11 @@ export class App extends Component {
       user: {
         username: name
       },
-      products
+      products,
+      addToCart,
+      removeFromCart,
+      deleteFromCart,
+      addToFavs
     } = this.props;
     return (
       <div className='app'>
@@ -165,10 +122,10 @@ export class App extends Component {
                   return item;
                 }),
                 updateUser: this.updateUser,
-                addToCart: this.addToCart,
-                deleteFromCart: this.deleteFromCart,
-                removeFromCart: this.removeFromCart,
-                addToFavs: this.addToFavs
+                addToCart,
+                deleteFromCart,
+                removeFromCart,
+                addToFavs
               }
             )
           }
