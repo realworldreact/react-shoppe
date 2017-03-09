@@ -40,9 +40,15 @@ export const updateProducts = products => {
 };
 
 export const updateUser = user => {
-  return {
-    type: types.UPDATE_USER,
-    payload: user
+  return (dispatch, getState, { localStorage }) => {
+    if (user.id && user.accessToken) {
+      localStorage.setItem('id', user.id);
+      localStorage.setItem('accessToken', user.accessToken);
+    }
+    dispatch({
+      type: types.UPDATE_USER,
+      payload: user
+    });
   };
 };
 

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 const propTypes = {
@@ -7,7 +8,14 @@ const propTypes = {
   numOfItems: PropTypes.number
 };
 
-export default class Nav extends Component {
+const mapStateToProps = state => {
+  return {
+    isSignedIn: state.isSignedIn,
+    name: state.user.username
+  };
+};
+
+export class Nav extends Component {
   renderUserNav(name) {
     return (
       <div>
@@ -70,3 +78,7 @@ export default class Nav extends Component {
 
 Nav.propTypes = propTypes;
 Nav.displayName = 'Nav';
+
+export default connect(
+  mapStateToProps
+)(Nav);

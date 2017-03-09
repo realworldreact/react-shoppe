@@ -1,5 +1,9 @@
 import React, { PropTypes } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { withRouter, browserHistory as history } from 'react-router';
+
+import { updateUser } from '../redux.js';
 import { logIn, signUp } from '../api.js';
 
 const propTypes = {
@@ -7,13 +11,14 @@ const propTypes = {
   router: PropTypes.object
 };
 
+const mapDispatchToProps = {
+  updateUser
+};
+
 export class Auth extends React.Component {
   constructor(...props) {
     super(...props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {
-      user: null
-    };
   }
 
   handleSubmit(e) {
@@ -77,4 +82,7 @@ export class Auth extends React.Component {
 Auth.displayName = 'Auth';
 Auth.propTypes = propTypes;
 
-export default withRouter(Auth);
+export default compose(
+  connect(null, mapDispatchToProps),
+  withRouter
+)(Auth);
