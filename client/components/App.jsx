@@ -2,37 +2,22 @@ import React, { PropTypes, Component, cloneElement } from 'react';
 import { connect } from 'react-redux';
 import Nav from './Nav.jsx';
 import {
-  updateProducts,
   updateUser,
   fetchProducts,
-  fetchUser,
-  addToCart,
-  removeFromCart,
-  deleteFromCart,
-  addToFavs
+  fetchUser
 } from '../redux.js';
-import find from 'lodash/find';
 
 const mapStateToProps = state => {
   return {
-    products: state.products,
     user: state.user,
-    cart: state.cart,
-    favs: state.favs,
-    token: state.token,
     isSignedIn: state.isSignedIn
   };
 };
 
 const mapDispatchToProps = {
-  updateProducts,
   updateUser,
   fetchProducts,
-  fetchUser,
-  addToCart,
-  deleteFromCart,
-  removeFromCart,
-  addToFavs
+  fetchUser
 };
 // dispatch => {
 //   return {
@@ -70,17 +55,7 @@ export class App extends Component {
   render() {
     const {
       isSignedIn,
-      token,
-      cart,
-      favs,
-      user: {
-        username: name
-      },
-      products,
-      addToCart,
-      removeFromCart,
-      deleteFromCart,
-      addToFavs
+      user: { username: name }
     } = this.props;
     return (
       <div className='app'>
@@ -92,41 +67,7 @@ export class App extends Component {
           {
             cloneElement(
               this.props.children,
-              {
-                cart,
-                fullCart: cart.map(item => {
-                  const product = find(
-                    products,
-                    product => product.id === item.id
-                  );
-                  return {
-                    ...product,
-                    ...item
-                  };
-                }),
-                token,
-                products: products.map(item => {
-                  const isInCart = cart.some(
-                    cartItem => item.id === cartItem.id
-                  );
-                  const isFav = favs.some(favId => {
-                    return favId === item.id;
-                  });
-                  if (isInCart || isFav) {
-                    return {
-                      ...item,
-                      isInCart,
-                      isFav
-                    };
-                  }
-                  return item;
-                }),
-                updateUser: this.updateUser,
-                addToCart,
-                deleteFromCart,
-                removeFromCart,
-                addToFavs
-              }
+              { updateUser: this.updateUser }
             )
           }
         </div>

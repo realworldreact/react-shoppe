@@ -2,6 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Product from './Product.jsx';
 import { updateSearch } from '../redux.js';
+import {
+  addToCart,
+  addToFavs
+} from '../redux.js';
 
 const propTypes = {
   favs: PropTypes.array,
@@ -14,7 +18,23 @@ const propTypes = {
 
 const mapStateToProps = state => {
   return {
-    search: state.search
+    search: state.search,
+    products: state.products.map(item => {
+      const isInCart = state.cart.some(
+        cartItem => item.id === cartItem.id
+      );
+      const isFav = state.favs.some(favId => {
+        return favId === item.id;
+      });
+      if (isInCart || isFav) {
+        return {
+          ...item,
+          isInCart,
+          isFav
+        };
+      }
+      return item;
+    })
   };
 };
 
@@ -23,7 +43,9 @@ const mapDispatchToProps = dispatch => {
     updateSearch: (e) => {
       const { value } = e.target;
       return dispatch(updateSearch(value));
-    }
+    },
+    addToCart: (itemId) => dispatch(addToCart(itemId)),
+    addToFavs: (itemId) => dispatch(addToFavs(itemId))
   };
 };
 
