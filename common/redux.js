@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { browserHistory as history } from 'react-router';
 import * as api from './api.js';
 
@@ -32,18 +33,34 @@ export const updateFilter = e => {
   };
 };
 
-export function fetchProducts() {
-  return dispatch => {
-    dispatch({ type: types.FETCH_PRODUCTS });
-    api.fetchProducts()
-      .then(products => dispatch(fetchProductsComplete(products)))
-      .catch(err => dispatch({
-        type: types.FETCH_PRODUCTS_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
-}
+
+export const fetchProductsEpic = (actions) => {
+  return actions.ofType(types.FETCH_PRODUCTS)
+    .switchMap(() => {
+      return Observable.fromPromise(api.fetchProducts())
+        .map(products => fetchProductsComplete(products))
+        .catch(err => Observable.of({
+          type: types.FETCH_PRODUCTS_ERROR,
+          payload: err
+        }));
+    });
+};
+
+export const fetchProducts = () => ({
+  type: types.FETCH_PRODUCTS
+});
+// export function fetchProducts() {
+//   return dispatch => {
+//     dispatch({ type: types.FETCH_PRODUCTS });
+//     api.fetchProducts()
+//       .then(products => dispatch(fetchProductsComplete(products)))
+//       .catch(err => dispatch({
+//         type: types.FETCH_PRODUCTS_ERROR,
+//         error: true,
+//         payload: err
+//       }));
+//   };
+// }
 
 export function fetchProductsComplete(products) {
   return {
