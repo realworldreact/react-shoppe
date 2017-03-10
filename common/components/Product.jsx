@@ -11,7 +11,7 @@ function mapDispatchToProps(dispatch, { id }) {
 }
 
 const propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.number,
   name: PropTypes.string,
   description: PropTypes.string,
   image: PropTypes.string,
