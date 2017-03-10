@@ -38,7 +38,9 @@ var paths = {
   server: pckg.main,
   serverIgnore: [
     './client/**/*',
-    './package.json'
+    './package.json',
+    // comment the following for SSR
+    './common/**/*'
   ],
   stylus: './common/index.styl',
   stylusFiles: [
