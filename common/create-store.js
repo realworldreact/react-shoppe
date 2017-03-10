@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import { createEpicMiddleware } from 'redux-observable';
+import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
 
-import reducer, { fetchProductsEpic } from './redux.js';
+import reducer, { fetchProductsEpic, addToCartEpic } from './redux.js';
 
 export default function createAppStore(devTools = (f => f), deps) {
-  const epicMiddleware = createEpicMiddleware(fetchProductsEpic);
+  const rootEpic = combineEpics(fetchProductsEpic, addToCartEpic);
+  const epicMiddleware = createEpicMiddleware(rootEpic);
   const middleware = applyMiddleware(
     thunk.withExtraArgument(deps),
     epicMiddleware

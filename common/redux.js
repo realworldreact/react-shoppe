@@ -23,6 +23,7 @@ export const types = {
   UPDATE_USER: 'UPDATE_USER',
   UPDATE_USER_COMPLETE: 'UPDATE_USER_COMPLETE',
   UPDATE_USER_ERROR: 'UPDATE_USER_ERROR',
+  ADD_TO_CART: 'ADD_TO_CART',
   UPDATE_CART: 'UPDATE_CART'
 };
 
@@ -120,22 +121,45 @@ export function autoLogin() {
   };
 }
 
-export function addToCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.addToCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
+export const addToCartEpic = (actions, { getState }) => {
+  return actions.ofType(types.ADD_TO_CART)
+    .filter(() => {
+      const { user: { id }, token } = getState();
+      return id && token;
+    })
+    .switchMap(({ itemId }) => {
+      const { user: { id }, token } = getState();
+      return Observable.fromPromise(api.addToCart(id, token, itemId))
+        .map(({ cart }) => ({
           type: types.UPDATE_CART,
           cart
-        }));
-    }
+        }))
+        .catch(() => Observable.create({ type: 'ERROR_IN_CART' }));
+    });
+};
+
+export function addToCart(itemId) {
+  return {
+    type: types.ADD_TO_CART,
+    itemId
   };
 }
+// export function addToCart(itemId) {
+//   return function(dispatch, getState) {
+//     const {
+//       user: { id },
+//       token
+//     } = getState();
+
+//     if (id && token) {
+//       api.addToCart(id, token, itemId)
+//         .then(({ cart }) => dispatch({
+//           type: types.UPDATE_CART,
+//           cart
+//         }));
+//     }
+//   };
+// }
 
 export function removeFromCart(itemId) {
   return function(dispatch, getState) {
