@@ -45,12 +45,11 @@ export class Product extends PureComponent {
           { description }
         </div>
         <div className='products-item-footer' >
-          <button
-            className='products-item-cart'
-            onClick={ addToCart }
-            >
-            <img src={ `/images/${cartButtonImage}.png` } />
-          </button>
+          <div className='products-item-cart'>
+            <button onClick={ addToCart }>
+              <img src={ `/images/${cartButtonImage}.png` } />
+            </button>
+          </div>
         </div>
       </div>
     );
