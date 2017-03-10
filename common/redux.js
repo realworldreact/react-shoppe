@@ -24,6 +24,8 @@ export const types = {
   UPDATE_USER_COMPLETE: 'UPDATE_USER_COMPLETE',
   UPDATE_USER_ERROR: 'UPDATE_USER_ERROR',
   ADD_TO_CART: 'ADD_TO_CART',
+  REMOVE_FROM_CART: 'REMOVE_FROM_CART',
+  DELETE_FROM_CART: 'DELETE_FROM_CART',
   UPDATE_CART: 'UPDATE_CART'
 };
 
@@ -121,20 +123,37 @@ export function autoLogin() {
   };
 }
 
-export const addToCartEpic = (actions, { getState }) => {
-  return actions.ofType(types.ADD_TO_CART)
+const typeToMethod = {
+  [types.ADD_TO_CART]: 'addToCart',
+  [types.REMOVE_FROM_CART]: 'removeFromCart',
+  [types.DELETE_FROM_CART]: 'deleteFromCart'
+};
+
+function makeApiCall(type, id, token, itemId) {
+  /* eslint-disable import/namespace */
+  const method = typeToMethod[type];
+  return Observable.fromPromise(api[method](id, token, itemId))
+  /* eslint-enable import/namespace */
+    .map(({ cart }) => ({
+      type: types.UPDATE_CART,
+      cart
+    }))
+    .catch(() => Observable.create({ type: 'ERROR_IN_CART' }));
+}
+
+export const cartEpic = (actions, { getState }) => {
+  return actions.ofType(
+    types.ADD_TO_CART,
+    types.REMOVE_FROM_CART,
+    types.DELETE_FROM_CART
+  )
     .filter(() => {
       const { user: { id }, token } = getState();
       return id && token;
     })
-    .switchMap(({ itemId }) => {
+    .switchMap(({ type, itemId }) => {
       const { user: { id }, token } = getState();
-      return Observable.fromPromise(api.addToCart(id, token, itemId))
-        .map(({ cart }) => ({
-          type: types.UPDATE_CART,
-          cart
-        }))
-        .catch(() => Observable.create({ type: 'ERROR_IN_CART' }));
+      return makeApiCall(type, id, token, itemId);
     });
 };
 
@@ -144,54 +163,18 @@ export function addToCart(itemId) {
     itemId
   };
 }
-// export function addToCart(itemId) {
-//   return function(dispatch, getState) {
-//     const {
-//       user: { id },
-//       token
-//     } = getState();
 
-//     if (id && token) {
-//       api.addToCart(id, token, itemId)
-//         .then(({ cart }) => dispatch({
-//           type: types.UPDATE_CART,
-//           cart
-//         }));
-//     }
-//   };
-// }
-
-export function removeFromCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.removeFromCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
+export function deleteFromCart(itemId) {
+  return {
+    type: types.DELETE_FROM_CART,
+    itemId
   };
 }
 
-export function deleteFromCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.deleteFromCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
+export function removeFromCart(itemId) {
+  return {
+    type: types.REMOVE_FROM_CART,
+    itemId
   };
 }
 
@@ -241,3 +224,8 @@ export default function reducer(state = initialState, action) {
   }
   return state;
 }
+
+export const epics = [
+  cartEpic,
+  fetchProductsEpic
+];
