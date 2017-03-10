@@ -184,19 +184,10 @@ RETURNS
 Use this return to update clients favs.
 
 ## To start development
-To seed the database for the first time
-
-```
-npm run seed
-```
-then run
 
 ```bash
 npm start
 ```
-
-This will create a .env file in the root directory and start the default gulp
-task.
 
 The default gulp task will
 
