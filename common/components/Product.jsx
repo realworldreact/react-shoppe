@@ -1,11 +1,10 @@
 import React, { PropTypes, PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { addToCart, toggleFav } from '../redux.js';
+import { addToCart } from '../redux.js';
 
 function mapDispatchToProps(dispatch, { id }) {
   const dispatchers = {
-    addToCart: () => dispatch(addToCart(id)),
-    toggleFav: () => dispatch(toggleFav(id))
+    addToCart: () => dispatch(addToCart(id))
   };
   return () => dispatchers;
 }
@@ -16,9 +15,7 @@ const propTypes = {
   description: PropTypes.string,
   image: PropTypes.string,
   isInCart: PropTypes.bool,
-  isFav: PropTypes.bool,
-  addToCart: PropTypes.func.isRequired,
-  toggleFav: PropTypes.func.isRequired
+  addToCart: PropTypes.func.isRequired
 };
 
 const imageBase = '/images/products/';
@@ -30,16 +27,11 @@ export class Product extends PureComponent {
       description,
       image,
       isInCart,
-      isFav,
-      addToCart,
-      toggleFav
+      addToCart
     } = this.props;
     const cartButtonImage = isInCart ?
       'AddToCartSelected' :
       'AddToCartUnSelected';
-    const favButtonImage = isFav ?
-      'HeartItemSelected' :
-      'HeartItemUnselected';
 
     return (
       <div className='products-item'>
@@ -58,12 +50,6 @@ export class Product extends PureComponent {
             onClick={ addToCart }
             >
             <img src={ `/images/${cartButtonImage}.png` } />
-          </button>
-          <button
-            className='products-item-favorite'
-            onClick={ toggleFav }
-            >
-            <img src={ `/images/${favButtonImage}.png` } />
           </button>
         </div>
       </div>

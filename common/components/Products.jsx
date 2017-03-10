@@ -7,9 +7,8 @@ import { productSelector, updateFilter } from '../redux.js';
 const mapStateToProps = createSelector(
   productSelector,
   state => state.cart,
-  state => state.favs,
   state => state.search,
-  (products, cart, favs, search) => {
+  (products, cart, search) => {
   let filter = false;
   if (search.length > 3) {
     filter = new RegExp(
@@ -26,12 +25,10 @@ const mapStateToProps = createSelector(
     products: products
       .map(item => {
         const isInCart = cart.some(cartItem => item.id === cartItem.id);
-        const isFav = favs.some(fav => item.id === fav);
-        if (isInCart || isFav) {
+        if (isInCart) {
           return {
             ...item,
-            isInCart,
-            isFav
+            isInCart
           };
         }
         return item;
@@ -47,12 +44,10 @@ const mapDispatchToProps = {
 const propTypes = {
   search: PropTypes.string.isRequired,
   dispatch: PropTypes.func,
-  favs: PropTypes.array,
   cart: PropTypes.array,
   products: PropTypes.array,
   user: PropTypes.object,
   addToCart: PropTypes.func,
-  updateFavs: PropTypes.func,
   updateFilter: PropTypes.func
 };
 

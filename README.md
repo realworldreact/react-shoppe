@@ -49,7 +49,6 @@ RETURNS
   email: String,
   username: String,
   cart: [],
-  favs: [],
   accessToken: String
 }
 ```
@@ -160,28 +159,6 @@ RETURNS
 returns the updated cart. Use this information to ensure your clients cart is up
 to date with your server
 
-### Favorite
-Access users favs through the users API
-
-`GET /api/users/:userId/fav?access_token=${accessToken}`
-
-BODY
-
-```js
-{
-  itemId: String // the id of the product
-}
-```
-
-RETURNS
-
-```js
-{
-  fav: [ itemId, itemId, ...itemId ]
-}
-```
-
-Use this return to update clients favs.
 
 ## To start development
 
