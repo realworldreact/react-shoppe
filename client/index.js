@@ -13,10 +13,10 @@ const devTools =
   win.__REDUX_DEVTOOLS_EXTENSION__() :
   (f => f);
 
-const store = createAppStore(
+const { store } = createAppStore({
   devTools,
-  { storage: win.localStorage }
-);
+  deps: { storage: win.localStorage }
+});
 
 // <Provider store={ store }>
 //   <Router routes={ routes } history={ history } />

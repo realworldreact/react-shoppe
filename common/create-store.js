@@ -4,8 +4,13 @@ import thunk from 'redux-thunk';
 
 import reducer, { epics } from './redux.js';
 
-export default function createAppStore(devTools = (f => f), deps) {
-  const rootEpic = combineEpics(...epics);
+export default function createAppStore({
+  devTools = (f => f),
+  deps,
+  wrapEpic = (f => f)
+}) {
+  const rootEpic = wrapEpic(combineEpics(...epics));
+  console.log('rootEpic: ', rootEpic);
   const epicMiddleware = createEpicMiddleware(rootEpic);
   const middleware = applyMiddleware(
     thunk.withExtraArgument(deps),
@@ -18,8 +23,13 @@ export default function createAppStore(devTools = (f => f), deps) {
     devTools
   );
 
-  return createStore(
+  const store = createStore(
     reducer,
     storeEnhancer
   );
+
+  return {
+    store,
+    rootEpic
+  };
 }

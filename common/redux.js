@@ -138,7 +138,7 @@ function makeApiCall(type, id, token, itemId) {
       type: types.UPDATE_CART,
       cart
     }))
-    .catch(() => Observable.create({ type: 'ERROR_IN_CART' }));
+    .catch(() => Observable.of({ type: 'ERROR_IN_CART' }));
 }
 
 export const cartEpic = (actions, { getState }) => {
