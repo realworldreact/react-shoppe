@@ -1,8 +1,7 @@
 /* eslint-disable no-undefined */
 import { createElement } from 'react';
 import { Provider } from 'react-redux';
-import { renderToString } from 'react-dom/server';
-import { wrapRootEpic } from 'react-redux-epic';
+import { wrapRootEpic, renderToString } from 'react-redux-epic';
 import { RouterContext, match } from 'react-router';
 import Fetchr from 'fetchr';
 
@@ -39,26 +38,18 @@ export default function rootScript(app) {
           renderProps
         )
       );
-      const html = renderToString(element);
-      const state = store.getState();
-      res.expose(state, 'prestate');
-      return res.render(
-        'index',
-        {
-          title: 'react-shoppe',
-          html: html
-        }
-      );
-      // return renderToString(element, rootEpic)
-      //   .map(({ markup: html }) => {
-      //     return res.render(
-      //       'index',
-      //       {
-      //         title: 'react-shoppe',
-      //         html: html
-      //       }
-      //     );
-      //   });
+      return renderToString(element, rootEpic)
+        .map(({ markup: html }) => {
+          const state = store.getState();
+          res.expose(state, 'prestate');
+          return res.render(
+            'index',
+            {
+              title: 'react-shoppe',
+              html: html
+            }
+          );
+        });
     });
   }
 
