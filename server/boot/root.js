@@ -1,6 +1,6 @@
 import Fetcher from 'fetchr';
 import { createElement } from 'react';
-import { Router, match } from 'react-router';
+import { RouterContext, match } from 'react-router';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-redux-epic';
 
@@ -24,12 +24,12 @@ export default function rootScript(app) {
     const { epic, store } = createStore({
       dependencies: { fetcher: new Fetcher({ req }) }
     });
-    match({ location: req.originalUrl, routes }, (err, redirect, props) => {
+    match({ location: req.path, routes }, (err, redirect, props) => {
       if (err) {
         return next(err);
       }
       return renderToString(
-        createElement(Provider, { store }, createElement(Router, props)),
+        createElement(Provider, { store }, createElement(RouterContext, props)),
         epic
       )
         .map(({ markup }) => {
