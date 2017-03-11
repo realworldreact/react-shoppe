@@ -5,6 +5,8 @@ require('babel-register');
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var path = require('path');
+const Fetchr = require('fetchr');
+const productsService = require('./services/products.js');
 
 var app = loopback();
 
@@ -15,6 +17,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(loopback.token());
 app.disable('x-powered-by');
+app.use('/services', Fetchr.middleware());
 
 app.start = function() {
   // start the web server
@@ -40,6 +43,7 @@ boot(
   function(err) { if (err) { throw err; } }
 );
 
+Fetchr.registerService(productsService(app));
 module.exports = app;
 
 // start the server if `$ node server/server.js`

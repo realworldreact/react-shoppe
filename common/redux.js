@@ -37,17 +37,18 @@ export const updateFilter = e => {
 };
 
 
-export const fetchProductsEpic = (actions) => {
+export function fetchProductsEpic(actions, _, { fetchr } = {}) {
   return actions.ofType(types.FETCH_PRODUCTS)
     .switchMap(() => {
-      return Observable.fromPromise(api.fetchProducts())
+      return Observable.fromPromise(fetchr.read('products').end())
+        .map(({ data }) => data)
         .map(products => fetchProductsComplete(products))
         .catch(err => Observable.of({
           type: types.FETCH_PRODUCTS_ERROR,
           payload: err
         }));
     });
-};
+}
 
 export const fetchProducts = () => ({
   type: types.FETCH_PRODUCTS
@@ -103,7 +104,7 @@ export function auth(isSignUp, e) {
 export function autoLogin() {
   return (dispatch, getState, { storage }) => {
     dispatch({ type: types.AUTO_LOGIN });
-    if (!storage.userId || !storage.token) {
+    if (!storage || !storage.userId || !storage.token) {
       return dispatch({ type: types.AUTO_LOGIN_NO_USER });
     }
     return api.fetchUser(storage.userId, storage.token)

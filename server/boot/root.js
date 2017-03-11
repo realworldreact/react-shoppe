@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { wrapRootEpic } from 'react-redux-epic';
 import { RouterContext, match } from 'react-router';
+import Fetchr from 'fetchr';
 
 import createAppStore from '../../common/create-store.js';
 import routes from '../../common/routes.jsx';
@@ -22,11 +23,13 @@ export default function rootScript(app) {
   });
 
   function renderHome(req, res, next) {
+    const fetchr = new Fetchr({ req });
     const location = req.path;
     match({ routes, location }, (err, _, renderProps) => {
       if (err) { return next(err); }
       const { store, rootEpic } = createAppStore({
-        wrapEpic: wrapRootEpic
+        wrapEpic: wrapRootEpic,
+        deps: { fetchr }
       });
       const element = createElement(
         Provider,

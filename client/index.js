@@ -1,4 +1,5 @@
 import 'rxjs';
+import Fetchr from 'fetchr';
 import { createElement } from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory as history } from 'react-router';
@@ -7,6 +8,9 @@ import { Provider } from 'react-redux';
 import createAppStore from '../common/create-store.js';
 import routes from '../common/routes.jsx';
 
+const fetchr = new Fetchr({
+  xhrPath: '/services'
+});
 const win = typeof window !== 'undefined' ? window : {};
 const devTools =
   typeof win.__REDUX_DEVTOOLS_EXTENSION__ === 'function' ?
@@ -15,7 +19,10 @@ const devTools =
 
 const { store } = createAppStore({
   devTools,
-  deps: { storage: win.localStorage }
+  deps: {
+    storage: win.localStorage,
+    fetchr
+  }
 });
 
 // <Provider store={ store }>

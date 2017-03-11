@@ -9,9 +9,12 @@ export default function createAppStore({
   deps,
   wrapEpic = (f => f)
 }) {
-  const rootEpic = wrapEpic(combineEpics(...epics));
-  console.log('rootEpic: ', rootEpic);
-  const epicMiddleware = createEpicMiddleware(rootEpic);
+  const rootEpic = combineEpics(...epics);
+  const epicWithDeps =
+    (actions, store) => rootEpic(actions, store, deps);
+  const finalEpic = wrapEpic(epicWithDeps);
+  // console.log('rootEpic: ', rootEpic);
+  const epicMiddleware = createEpicMiddleware(finalEpic);
   const middleware = applyMiddleware(
     thunk.withExtraArgument(deps),
     epicMiddleware
@@ -30,6 +33,6 @@ export default function createAppStore({
 
   return {
     store,
-    rootEpic
+    rootEpic: finalEpic
   };
 }
