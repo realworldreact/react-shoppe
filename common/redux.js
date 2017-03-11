@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { browserHistory as history } from 'react-router';
 import * as api from './api.js';
 
-const initialState = {
+export const initialState = {
   search: '',
   cart: [],
   products: [],

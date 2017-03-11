@@ -40,6 +40,8 @@ export default function rootScript(app) {
         )
       );
       const html = renderToString(element);
+      const state = store.getState();
+      res.expose(state, 'prestate');
       return res.render(
         'index',
         {

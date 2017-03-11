@@ -7,10 +7,11 @@ var boot = require('loopback-boot');
 var path = require('path');
 const Fetchr = require('fetchr');
 const productsService = require('./services/products.js');
+const expressState = require('express-state');
 
 var app = loopback();
 
-// expressState.extend(app);
+expressState.extend(app);
 app.set('state namespace', '__ar__');
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));

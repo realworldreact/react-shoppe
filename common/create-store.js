@@ -2,12 +2,13 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
 
-import reducer, { epics } from './redux.js';
+import reducer, { initialState, epics } from './redux.js';
 
 export default function createAppStore({
   devTools = (f => f),
   deps,
-  wrapEpic = (f => f)
+  wrapEpic = (f => f),
+  preState = initialState
 }) {
   const rootEpic = combineEpics(...epics);
   const epicWithDeps =
@@ -28,6 +29,7 @@ export default function createAppStore({
 
   const store = createStore(
     reducer,
+    preState,
     storeEnhancer
   );
 
