@@ -49,7 +49,10 @@ export default function rootScript(app) {
               html: html
             }
           );
-        });
+        })
+        // don't forget, something needs to subscribe to the observable.
+        // In an express request handler, that needs to be you...
+        .subscribe(() => {}, next);
     });
   }
 
