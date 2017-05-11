@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import { browserHistory as history } from 'react-router';
+import { combineEpics } from 'redux-observable';
 import * as api from './api.js';
 
 const initialState = {
@@ -27,7 +28,8 @@ export const types = {
   ADD_TO_CART: 'ADD_TO_CART',
   REMOVE_FROM_CART: 'REMOVE_FROM_CART',
   DELETE_FROM_CART: 'DELETE_FROM_CART',
-  UPDATE_CART: 'UPDATE_CART'
+  UPDATE_CART: 'UPDATE_CART',
+  UPDATE_CART_ERROR: 'UPDATE_CART_ERROR'
 };
 
 export const updateFilter = e => {
@@ -143,31 +145,67 @@ export const autoLogin = () => ({
 //   };
 // }
 
-function makeCartThunk(type) {
-  return itemId => (dispatch, getState) => {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.makeCartApiCall(type, id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
-  };
+export function cartEpic(actions, store) {
+  return actions.ofType(
+    types.ADD_TO_CART,
+    types.REMOVE_FROM_CART,
+    types.DELETE_FROM_CART
+  )
+    .switchMap(({ type, itemId }) => {
+      const {
+        user: { id },
+        token
+      } = store.getState();
+      if (id && token) {
+        return Observable.fromPromise(
+          api.makeCartApiCall(type, id, token, itemId)
+        )
+          .map(({ cart }) => ({ type: types.UPDATE_CART, cart }))
+          .catch(err => Observable.of({ type: types.UPDATE_CART_ERROR, err }));
+      }
+      return Observable.empty();
+    });
 }
-export const addToCart = makeCartThunk(types.ADD_TO_CART);
-export const removeFromCart = makeCartThunk(types.REMOVE_FROM_CART);
-export const deleteFromCart = makeCartThunk(types.DELETE_FROM_CART);
+
+// function makeCartThunk(type) {
+//   return itemId => (dispatch, getState) => {
+//     const {
+//       user: { id },
+//       token
+//     } = getState();
+
+//     if (id && token) {
+//       api.makeCartApiCall(type, id, token, itemId)
+//         .then(({ cart }) => dispatch({
+//           type: types.UPDATE_CART,
+//           cart
+//         }));
+//     }
+//   };
+// }
+export const addToCart = (itemId) => ({
+  type: types.ADD_TO_CART,
+  itemId
+});
+export const removeFromCart = (itemId) => ({
+  type: types.REMOVE_FROM_CART,
+  itemId
+});
+export const deleteFromCart = (itemId) => ({
+  type: types.DELETE_FROM_CART,
+  itemId
+});
 
 export const cartSelector = state => state.cart;
 // state => [...Product]
 export const productSelector = state => {
   return state.products.map(id => state.productsById[id]);
 };
+
+export const rootEpic = combineEpics(
+  cartEpic,
+  autoLoginEpic
+);
 
 export default function reducer(state = initialState, action) {
   if (action.type === types.UPDATE_USER_COMPLETE) {
