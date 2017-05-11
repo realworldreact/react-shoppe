@@ -39,18 +39,31 @@ export const updateFilter = e => {
   };
 };
 
-export function fetchProducts() {
-  return dispatch => {
-    dispatch({ type: types.FETCH_PRODUCTS });
-    api.fetchProducts()
-      .then(products => dispatch(fetchProductsComplete(products)))
-      .catch(err => dispatch({
-        type: types.FETCH_PRODUCTS_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
+export function fetchProductsEpic(actions) {
+  return actions.ofType(types.FETCH_PRODUCTS)
+    .switchMap(() => {
+      return Observable.fromPromise(api.fetchProducts())
+        .map(fetchProductsComplete)
+        .catch(err => Observable.of({
+          type: types.FETCH_PRODUCTS_ERROR,
+          err
+        }));
+    });
 }
+
+export const fetchProducts = () => ({ type: types.FETCH_PRODUCTS });
+// export function fetchProducts() {
+//   return dispatch => {
+//     dispatch({ type: types.FETCH_PRODUCTS });
+//     api.fetchProducts()
+//       .then(products => dispatch(fetchProductsComplete(products)))
+//       .catch(err => dispatch({
+//         type: types.FETCH_PRODUCTS_ERROR,
+//         error: true,
+//         payload: err
+//       }));
+//   };
+// }
 
 export function fetchProductsComplete(products) {
   return {
@@ -210,7 +223,8 @@ export const productSelector = state => {
 
 export const rootEpic = combineEpics(
   cartEpic,
-  autoLoginEpic
+  autoLoginEpic,
+  fetchProductsEpic
 );
 
 export default function reducer(state = initialState, action) {
