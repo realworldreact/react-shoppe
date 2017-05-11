@@ -22,39 +22,53 @@ export function toggleFav(userId, token, itemId) {
     options
   );
 }
-
-export function addToCart(userId, token, itemId) {
+export const cartMethods = {
+  ADD_TO_CART: 'add-to-cart',
+  REMOVE_FROM_CART: 'remove-from-cart',
+  DELETE_FROM_CART: 'delete-from-cart'
+};
+export function makeCartApiCall(type, id, token, itemId) {
+  const method = cartMethods[type];
+  const url = `${api}/${id}/${method}?access_token=${token}`;
   const options = {
     ...defaultOptions,
     body: JSON.stringify({ itemId })
   };
-  return makeFetch(
-    `${api}/${userId}/add-to-cart?access_token=${token}`,
-    options
-  );
+  return makeFetch(url, options);
 }
 
-export function removeFromCart(userId, token, itemId) {
-  const options = {
-    ...defaultOptions,
-    body: JSON.stringify({ itemId })
-  };
-  return makeFetch(
-    `${api}/${userId}/remove-from-cart?access_token=${token}`,
-    options
-  );
-}
+// export function addToCart(userId, token, itemId) {
+//   const options = {
+//     ...defaultOptions,
+//     body: JSON.stringify({ itemId })
+//   };
+//   return makeFetch(
+//     `${api}/${userId}/add-to-cart?access_token=${token}`,
+//     options
+//   );
+// }
 
-export function deleteFromCart(userId, token, itemId) {
-  const options = {
-    ...defaultOptions,
-    body: JSON.stringify({ itemId })
-  };
-  return makeFetch(
-    `${api}/${userId}/delete-from-cart?access_token=${token}`,
-    options
-  );
-}
+// export function removeFromCart(userId, token, itemId) {
+//   const options = {
+//     ...defaultOptions,
+//     body: JSON.stringify({ itemId })
+//   };
+//   return makeFetch(
+//     `${api}/${userId}/remove-from-cart?access_token=${token}`,
+//     options
+//   );
+// }
+
+// export function deleteFromCart(userId, token, itemId) {
+//   const options = {
+//     ...defaultOptions,
+//     body: JSON.stringify({ itemId })
+//   };
+//   return makeFetch(
+//     `${api}/${userId}/delete-from-cart?access_token=${token}`,
+//     options
+//   );
+// }
 
 export function fetchUser(id, token) {
   const options = {

@@ -22,6 +22,10 @@ export const types = {
   UPDATE_USER: 'UPDATE_USER',
   UPDATE_USER_COMPLETE: 'UPDATE_USER_COMPLETE',
   UPDATE_USER_ERROR: 'UPDATE_USER_ERROR',
+
+  ADD_TO_CART: 'ADD_TO_CART',
+  REMOVE_FROM_CART: 'REMOVE_FROM_CART',
+  DELETE_FROM_CART: 'DELETE_FROM_CART',
   UPDATE_CART: 'UPDATE_CART'
 };
 
@@ -103,15 +107,15 @@ export function autoLogin() {
   };
 }
 
-export function addToCart(itemId) {
-  return function(dispatch, getState) {
+function makeCartThunk(type) {
+  return itemId => (dispatch, getState) => {
     const {
       user: { id },
       token
     } = getState();
 
     if (id && token) {
-      api.addToCart(id, token, itemId)
+      api.makeCartApiCall(type, id, token, itemId)
         .then(({ cart }) => dispatch({
           type: types.UPDATE_CART,
           cart
@@ -119,41 +123,9 @@ export function addToCart(itemId) {
     }
   };
 }
-
-export function removeFromCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.removeFromCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
-  };
-}
-
-export function deleteFromCart(itemId) {
-  return function(dispatch, getState) {
-    const {
-      user: { id },
-      token
-    } = getState();
-
-    if (id && token) {
-      api.deleteFromCart(id, token, itemId)
-        .then(({ cart }) => dispatch({
-          type: types.UPDATE_CART,
-          cart
-        }));
-    }
-  };
-}
-
+export const addToCart = makeCartThunk(types.ADD_TO_CART);
+export const removeFromCart = makeCartThunk(types.REMOVE_FROM_CART);
+export const deleteFromCart = makeCartThunk(types.DELETE_FROM_CART);
 
 export const cartSelector = state => state.cart;
 // state => [...Product]
