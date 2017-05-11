@@ -3,6 +3,7 @@ import { createElement } from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory as history } from 'react-router';
 import { Provider } from 'react-redux';
+import Fetcher from 'fetchr';
 
 import createAppStore from '../common/create-store.js';
 import routes from '../common/routes.jsx';
@@ -15,7 +16,10 @@ const devTools =
 
 const store = createAppStore(
   devTools,
-  { localStorage: win.localStorage }
+  {
+    localStorage: win.localStorage,
+    fetcher: new Fetcher({ xhrPath: '/services' })
+  }
 );
 
 // <Provider store={ store }>

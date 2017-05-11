@@ -5,6 +5,7 @@ require('babel-register');
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var path = require('path');
+var Fetcher = require('fetchr');
 
 var app = loopback();
 
@@ -15,6 +16,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(loopback.token());
 app.disable('x-powered-by');
+app.use('/services', Fetcher.middleware());
 
 app.start = function() {
   // start the web server

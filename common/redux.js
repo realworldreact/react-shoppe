@@ -39,10 +39,12 @@ export const updateFilter = e => {
   };
 };
 
-export function fetchProductsEpic(actions) {
+export function fetchProductsEpic(actions, _, { fetcher }) {
   return actions.ofType(types.FETCH_PRODUCTS)
     .switchMap(() => {
-      return Observable.fromPromise(api.fetchProducts())
+      return Observable.fromPromise(
+        fetcher.read('products').end()
+      )
         .map(fetchProductsComplete)
         .catch(err => Observable.of({
           type: types.FETCH_PRODUCTS_ERROR,
