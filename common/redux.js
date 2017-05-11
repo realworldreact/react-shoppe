@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { browserHistory as history } from 'react-router';
 import * as api from './api.js';
 
@@ -84,28 +85,63 @@ export function auth(isSignUp, e) {
   };
 }
 
-export function autoLogin() {
-  return (dispatch, getState, { storage }) => {
-    dispatch({ type: types.AUTO_LOGIN });
-    if (!storage.userId || !storage.token) {
-      return dispatch({ type: types.AUTO_LOGIN_NO_USER });
-    }
-    return api.fetchUser(storage.userId, storage.token)
-      .then(user => dispatch({
-        type: types.UPDATE_USER_COMPLETE,
-        user
-      }))
-      .catch(err => {
-        delete storage.userId;
-        delete storage.token;
-        dispatch({
-          type: types.UPDATE_USER_ERROR,
-          error: true,
-          payload: err
+// 1 Observable.of(1, 2, 3).subscribe(x => console.log(x)); => 1\n 2\n 3\n
+// 2 Observable.of([1, 2, 3]).subscribe(x => console.log(x)); => [1, 2, 3]\n
+// 3 Observable.from([1, 2, 3]).subscribe(x => console.log(x)); => 1\n 2\n 3\n
+// 4 Observable.from(1, 2, 3).subscribe(x => console.log(x)); => throws
+export function autoLoginEpic(actions) {
+  return actions.ofType(types.AUTO_LOGIN)
+    // mergeMap concatMap
+    .switchMap(() => {
+      const userId = localStorage.getItem('userId');
+      const token = localStorage.getItem('token');
+      if (!userId || !token) {
+        // return [ { type: types.AUTO_LOGIN_NO_USER } ];
+        return Observable.of({ type: types.AUTO_LOGIN_NO_USER });
+      }
+      // return { type: 'USER_FOUND' };
+      return Observable.fromPromise(api.fetchUser(userId, token))
+        .map(user => ({
+          type: types.UPDATE_USER_COMPLETE,
+          user
+        }))
+        .catch(err => {
+          delete localStorage.userId;
+          delete localStorage.token;
+          return Observable.of({
+            type: types.UPDATE_USER_ERROR,
+            error: true,
+            payload: err
+          });
         });
     });
-  };
 }
+
+export const autoLogin = () => ({
+  type: types.AUTO_LOGIN
+});
+// export function autoLogin() {
+//   return (dispatch, getState, { storage }) => {
+//     dispatch({ type: types.AUTO_LOGIN });
+//     if (!storage.userId || !storage.token) {
+//       return dispatch({ type: types.AUTO_LOGIN_NO_USER });
+//     }
+//     return api.fetchUser(storage.userId, storage.token)
+//       .then(user => dispatch({
+//         type: types.UPDATE_USER_COMPLETE,
+//         user
+//       }))
+//       .catch(err => {
+//         delete storage.userId;
+//         delete storage.token;
+//         dispatch({
+//           type: types.UPDATE_USER_ERROR,
+//           error: true,
+//           payload: err
+//         });
+//     });
+//   };
+// }
 
 function makeCartThunk(type) {
   return itemId => (dispatch, getState) => {
