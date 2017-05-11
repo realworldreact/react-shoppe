@@ -62,13 +62,13 @@ export function fetchProductsComplete(products) {
 
 export function auth(isSignUp, e) {
   e.preventDefault();
-  return (dispatch, getState, { storage }) => {
+  return (dispatch, getState, { localStorage }) => {
     dispatch({ type: types.UPDATE_USER });
     api.auth(isSignUp, e.target)
       .then(user => {
         if (user.id && user.accessToken) {
-          storage.setItem('userId', user.id);
-          storage.setItem('token', user.accessToken);
+          localStorage.setItem('userId', user.id);
+          localStorage.setItem('token', user.accessToken);
         }
         return user;
       })
@@ -91,9 +91,12 @@ export function auth(isSignUp, e) {
 // 2 Observable.of([1, 2, 3]).subscribe(x => console.log(x)); => [1, 2, 3]\n
 // 3 Observable.from([1, 2, 3]).subscribe(x => console.log(x)); => 1\n 2\n 3\n
 // 4 Observable.from(1, 2, 3).subscribe(x => console.log(x)); => throws
-export function autoLoginEpic(actions) {
+export function autoLoginEpic(actions, _, { localStorage }) {
   return actions.ofType(types.AUTO_LOGIN)
     // mergeMap concatMap
+    // .filter(() => (
+    //   localStorage.getItem('userId') || localStorage.getItem('token')
+    // ))
     .switchMap(() => {
       const userId = localStorage.getItem('userId');
       const token = localStorage.getItem('token');
@@ -151,19 +154,22 @@ export function cartEpic(actions, store) {
     types.REMOVE_FROM_CART,
     types.DELETE_FROM_CART
   )
-    .switchMap(({ type, itemId }) => {
+    .map(action => {
       const {
         user: { id },
         token
       } = store.getState();
-      if (id && token) {
-        return Observable.fromPromise(
-          api.makeCartApiCall(type, id, token, itemId)
-        )
-          .map(({ cart }) => ({ type: types.UPDATE_CART, cart }))
-          .catch(err => Observable.of({ type: types.UPDATE_CART_ERROR, err }));
-      }
-      return Observable.empty();
+      return { ...action, id, token };
+    })
+    .filter(({ id, token }) => {
+      return id && token;
+    })
+    .switchMap(({ type, itemId, id, token }) => {
+      return Observable.fromPromise(
+        api.makeCartApiCall(type, id, token, itemId)
+      )
+        .map(({ cart }) => ({ type: types.UPDATE_CART, cart }))
+        .catch(err => Observable.of({ type: types.UPDATE_CART_ERROR, err }));
     });
 }
 

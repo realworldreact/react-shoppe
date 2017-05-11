@@ -5,10 +5,13 @@ import { createEpicMiddleware } from 'redux-observable';
 import reducer, { rootEpic } from './redux.js';
 
 
-export default function createAppStore(devTools = (f => f), deps) {
-  const epicMiddle = createEpicMiddleware(rootEpic);
+export default function createAppStore(
+  devTools = (f => f),
+  dependencies
+) {
+  const epicMiddle = createEpicMiddleware(rootEpic, { dependencies });
   const middleware = applyMiddleware(
-    thunk.withExtraArgument(deps),
+    thunk.withExtraArgument(dependencies),
     epicMiddle
   );
 

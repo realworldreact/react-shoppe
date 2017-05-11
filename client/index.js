@@ -15,7 +15,7 @@ const devTools =
 
 const store = createAppStore(
   devTools,
-  { storage: win.localStorage }
+  { localStorage: win.localStorage }
 );
 
 // <Provider store={ store }>
