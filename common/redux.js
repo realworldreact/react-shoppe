@@ -39,12 +39,22 @@ export const updateFilter = e => {
   };
 };
 
+export function errorEpic(actions) {
+  return actions.filter(({ err }) => !!err)
+    .do(action => {
+      console.log('Error action with ' + action.type);
+      console.error(action.err);
+    })
+    .ignoreElements();
+}
+
 export function fetchProductsEpic(actions, _, { fetcher }) {
   return actions.ofType(types.FETCH_PRODUCTS)
     .switchMap(() => {
       return Observable.fromPromise(
         fetcher.read('products').end()
       )
+        .map(({ data }) => data)
         .map(fetchProductsComplete)
         .catch(err => Observable.of({
           type: types.FETCH_PRODUCTS_ERROR,
@@ -226,7 +236,8 @@ export const productSelector = state => {
 export const rootEpic = combineEpics(
   cartEpic,
   autoLoginEpic,
-  fetchProductsEpic
+  fetchProductsEpic,
+  errorEpic
 );
 
 export default function reducer(state = initialState, action) {
