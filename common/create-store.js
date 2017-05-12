@@ -8,7 +8,8 @@ import reducer, { rootEpic } from './redux.js';
 export default function createAppStore(
   devTools = (f => f),
   dependencies,
-  wrapEpic = (f => f)
+  wrapEpic = (f => f),
+  preload
 ) {
   const wrappedEpic = wrapEpic(rootEpic);
   const epicMiddle = createEpicMiddleware(wrappedEpic, { dependencies });
@@ -26,6 +27,7 @@ export default function createAppStore(
     wrappedEpic,
     store: createStore(
       reducer,
+      preload,
       storeEnhancer
     )
   };

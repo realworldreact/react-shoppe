@@ -42,6 +42,8 @@ export default function rootScript(app) {
         wrappedEpic
       )
         .map(({ markup }) => {
+          const preload = store.getState();
+          res.expose(preload, 'preload');
           return res.render('index', {
             title: 'react-shoppe',
             html: markup

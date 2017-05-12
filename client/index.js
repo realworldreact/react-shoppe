@@ -14,12 +14,15 @@ const devTools =
   win.__REDUX_DEVTOOLS_EXTENSION__() :
   (f => f);
 
+const preload = win.__ar__ && win.__ar__.preload;
 const { store } = createAppStore(
   devTools,
   {
     localStorage: win.localStorage,
     fetcher: new Fetcher({ xhrPath: '/services' })
-  }
+  },
+  f => f,
+  preload
 );
 
 // <Provider store={ store }>

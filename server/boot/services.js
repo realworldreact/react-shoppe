@@ -5,7 +5,6 @@ module.exports = function services(app) {
   const productsSevice = {
     name: 'products',
     read: (req, resource, params, config, cb) => {
-      console.log('foobar');
       Product.find({})
         .then(products => {
           return products.map(product => product.toJSON());
