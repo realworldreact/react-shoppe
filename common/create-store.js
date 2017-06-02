@@ -6,7 +6,12 @@ import reducer, { rootEpic } from './redux.js';
 
 
 export default function createAppStore(devTools = (f => f), deps) {
-  const epicMiddleware = createEpicMiddleware(rootEpic);
+  const epicMiddleware = createEpicMiddleware(
+    rootEpic,
+    {
+      dependencies: deps
+    }
+  );
 
   const middleware = applyMiddleware(
     thunk.withExtraArgument(deps),
