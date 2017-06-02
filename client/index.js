@@ -2,9 +2,12 @@ import { createElement } from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory as history } from 'react-router';
 import { Provider } from 'react-redux';
+import Fetcher from 'fetchr';
 
 import createAppStore from '../common/create-store.js';
 import routes from '../common/routes.jsx';
+
+const fetcher = new Fetcher({ xhrPath: '/services' });
 
 const win = typeof window !== 'undefined' ? window : {};
 const devTools =
@@ -15,6 +18,7 @@ const devTools =
 const store = createAppStore({
   devTools,
   deps: {
+    fetcher,
     storage: win.localStorage,
     localStorage: win.localStorage
   }

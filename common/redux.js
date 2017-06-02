@@ -54,10 +54,11 @@ export const fetchProducts = () => ({
 //   };
 // }
 
-export function fetchProductsEpic(actions) {
+export function fetchProductsEpic(actions, _, { fetcher }) {
   return actions.ofType(types.FETCH_PRODUCTS)
     .switchMap(() => {
-      return Observable.ajax.getJSON('/api/products')
+      return Observable.fromPromise(fetcher.read('products').end())
+        .map(({ data }) => data)
         .map(products => fetchProductsComplete(products))
         .catch(err => Observable.of({
           type: types.FETCH_PRODUCTS_ERROR,
