@@ -2,10 +2,14 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createEpicMiddleware } from 'redux-observable';
 
-import reducer, { rootEpic } from './redux.js';
+import reducer, { initialState, rootEpic } from './redux.js';
 
 
-export default function createAppStore(devTools = (f => f), deps) {
+export default function createAppStore({
+  initialState: preload = {},
+  devTools = (f => f),
+  deps = {}
+}) {
   const epicMiddleware = createEpicMiddleware(
     rootEpic,
     {
@@ -25,6 +29,7 @@ export default function createAppStore(devTools = (f => f), deps) {
 
   return createStore(
     reducer,
+    { ...initialState, ...preload },
     storeEnhancer
   );
 }
