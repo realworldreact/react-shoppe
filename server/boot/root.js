@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToString } from 'react-redux-epic';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import Fetcher from 'fetchr';
@@ -27,13 +27,13 @@ export default function rootScript(app) {
         return next(err);
       }
       const fetcher = new Fetcher({ req });
-      const store = createAppStore({
+      const { wrappedRootEpic, store } = createAppStore({
         deps: {
           fetcher
         },
         initialState: {}
       });
-      const markup = renderToString(
+      return renderToString(
         React.createElement(
           Provider,
           { store },
@@ -41,15 +41,27 @@ export default function rootScript(app) {
             RouterContext,
             routerProps
           )
-        )
-      );
-      return res.render(
-        'index',
-        {
-          title: 'react-shoppe',
-          markup
-        }
-      );
+        ),
+        wrappedRootEpic
+      )
+        .map(({ markup }) => {
+          const state = store.getState();
+          app.expose(state, 'initialState');
+          return res.render(
+          'index',
+            {
+              title: 'react-shoppe',
+              markup
+            }
+          );
+        })
+        .subscribe(
+          null,
+          next,
+          () => {
+            console.log('request complete');
+          }
+        );
     });
   }
 

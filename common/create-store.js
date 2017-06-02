@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createEpicMiddleware } from 'redux-observable';
+import { wrapRootEpic } from 'react-redux-epic';
 
 import reducer, { initialState, rootEpic } from './redux.js';
 
@@ -10,8 +11,9 @@ export default function createAppStore({
   devTools = (f => f),
   deps = {}
 }) {
+  const wrappedRootEpic = wrapRootEpic(rootEpic);
   const epicMiddleware = createEpicMiddleware(
-    rootEpic,
+    wrappedRootEpic,
     {
       dependencies: deps
     }
@@ -27,9 +29,13 @@ export default function createAppStore({
     devTools
   );
 
-  return createStore(
+  const store = createStore(
     reducer,
     { ...initialState, ...preload },
     storeEnhancer
   );
+  return {
+    store,
+    wrappedRootEpic
+  };
 }

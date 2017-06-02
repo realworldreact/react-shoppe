@@ -15,8 +15,13 @@ const devTools =
   win.__REDUX_DEVTOOLS_EXTENSION__() :
   (f => f);
 
-const store = createAppStore({
+const initialState = win.__ar__ && win.__ar__.initialState ?
+  win.__ar__.initialState :
+  {};
+
+const { store } = createAppStore({
   devTools,
+  initialState,
   deps: {
     fetcher,
     storage: win.localStorage,
