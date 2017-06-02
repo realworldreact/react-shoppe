@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+import { combineEpics } from 'redux-observable';
 import { browserHistory as history } from 'react-router';
 import * as api from './api.js';
 
@@ -36,17 +38,28 @@ export const updateFilter = e => {
   };
 };
 
-export function fetchProducts() {
-  return dispatch => {
-    dispatch({ type: types.FETCH_PRODUCTS });
-    api.fetchProducts()
-      .then(products => dispatch(fetchProductsComplete(products)))
-      .catch(err => dispatch({
-        type: types.FETCH_PRODUCTS_ERROR,
-        error: true,
-        payload: err
-      }));
-  };
+export const fetchProducts = () => ({
+  type: types.FETCH_PRODUCTS
+});
+// export function fetchProducts() {
+//   return dispatch => {
+//     dispatch({ type: types.FETCH_PRODUCTS });
+//     api.fetchProducts()
+//       .then(products => dispatch(fetchProductsComplete(products)))
+//       .catch(err => dispatch({
+//         type: types.FETCH_PRODUCTS_ERROR,
+//         error: true,
+//         payload: err
+//       }));
+//   };
+// }
+
+export function fetchProductsEpic(actions) {
+  return actions.ofType(types.FETCH_PRODUCTS)
+    .switchMap(() => {
+      return Observable.ajax.getJSON('/api/products')
+        .map(products => fetchProductsComplete(products));
+    });
 }
 
 export function fetchProductsComplete(products) {
@@ -132,6 +145,10 @@ export const cartSelector = state => state.cart;
 export const productSelector = state => {
   return state.products.map(id => state.productsById[id]);
 };
+
+export const rootEpic = combineEpics(
+  fetchProductsEpic
+);
 
 export default function reducer(state = initialState, action) {
   if (action.type === types.UPDATE_USER_COMPLETE) {
