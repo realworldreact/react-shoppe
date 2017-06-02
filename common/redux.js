@@ -58,7 +58,12 @@ export function fetchProductsEpic(actions) {
   return actions.ofType(types.FETCH_PRODUCTS)
     .switchMap(() => {
       return Observable.ajax.getJSON('/api/products')
-        .map(products => fetchProductsComplete(products));
+        .map(products => fetchProductsComplete(products))
+        .catch(err => Observable.of({
+          type: types.FETCH_PRODUCTS_ERROR,
+          error: true,
+          payload: err
+        }));
     });
 }
 
@@ -134,35 +139,30 @@ export function autoLoginEpic(actions, { getState }, { localStorage }) {
     })
     .switchMap(({ userId, token }) => {
       return Observable.of({ userId, token })
-        .do(item => console.log('pre error', item))
-        .map(() => { throw new Error('Cats suck'); })
-        .do(item => console.log('before filter: ', item))
         .filter(({ userId, token }) => userId && token)
-        .do(
-          item => console.log('pre item: ', item),
-          err => console.log('err: ', err),
-          () => console.log('obs complete: ')
-        )
-        .map(() => {
-          return { type: 'AUTO_LOGIN_LOGGED_IN' };
+        .switchMap(({ userId, token }) => {
+          return Observable.fromPromise(api.fetchUser(userId, token))
+            .map(user => ({
+              type: types.UPDATE_USER_COMPLETE,
+              user
+            }))
+            .do(
+              null,
+              () => {
+                delete localStorage.userId;
+                delete localStorage.token;
+              }
+            )
+            .catch(err => {
+              return Observable.of({
+                type: types.UPDATE_USER_ERROR,
+                error: true,
+                payload: err
+              });
+            });
         })
-        // .defaultIfEmpty({ type: types.AUTO_LOGIN_NO_USER })
-        // .do(item => console.log('after default: ', item));
+        .defaultIfEmpty({ type: types.AUTO_LOGIN_NO_USER });
     });
-    // return api.fetchUser(storage.userId, storage.token)
-    //   .then(user => dispatch({
-    //     type: types.UPDATE_USER_COMPLETE,
-    //     user
-    //   }))
-    //   .catch(err => {
-    //     delete storage.userId;
-    //     delete storage.token;
-    //     dispatch({
-    //       type: types.UPDATE_USER_ERROR,
-    //       error: true,
-    //       payload: err
-    //     });
-    // });
 }
 
 export function cartEpic(actions, { getState }) {
