@@ -120,25 +120,59 @@ export function autoLogin() {
   };
 }
 
-function makeCartThunk(type) {
-  return itemId => (dispatch, getState) => {
-    const {
-      user: { id },
-      token
-    } = getState();
+// function makeCartThunk(type) {
+//   return itemId => (dispatch, getState) => {
+//     const {
+//       user: { id },
+//       token
+//     } = getState();
 
-    if (id && token) {
-      api.makeCartApiCall(type, id, token, itemId)
-        .then(({ cart }) => dispatch({
+//     if (id && token) {
+//       api.makeCartApiCall(type, id, token, itemId)
+//         .then(({ cart }) => dispatch({
+//           type: types.UPDATE_CART,
+//           cart
+//         }));
+//     }
+//   };
+// }
+export function cartEpic(actions, { getState }) {
+  return actions.ofType(
+    types.ADD_TO_CART,
+    types.REMOVE_FROM_CART,
+    types.DELETE_FROM_CART
+  )
+    .switchMap((action) => {
+      const type = action.type;
+      const itemId = action.itemId;
+      const {
+        user: { id },
+        token
+      } = getState();
+      if (!id || !token) {
+        return Observable.of({ type: 'USER_NOT_LOGGED_IN' });
+      }
+      return Observable.fromPromise(
+        api.makeCartApiCall(type, id, token, itemId)
+      )
+        .map(({ cart }) => ({
           type: types.UPDATE_CART,
           cart
         }));
-    }
-  };
+    });
 }
-export const addToCart = makeCartThunk(types.ADD_TO_CART);
-export const removeFromCart = makeCartThunk(types.REMOVE_FROM_CART);
-export const deleteFromCart = makeCartThunk(types.DELETE_FROM_CART);
+export const addToCart = (itemId) => ({
+  type: types.ADD_TO_CART,
+  itemId
+});
+export const removeFromCart = (itemId) => ({
+  type: types.REMOVE_FROM_CART,
+  itemId
+});
+export const deleteFromCart = (itemId) => ({
+  type: types.DELETE_FROM_CART,
+  itemId
+});
 
 export const cartSelector = state => state.cart;
 // state => [...Product]
@@ -147,7 +181,8 @@ export const productSelector = state => {
 };
 
 export const rootEpic = combineEpics(
-  fetchProductsEpic
+  fetchProductsEpic,
+  cartEpic
 );
 
 export default function reducer(state = initialState, action) {
