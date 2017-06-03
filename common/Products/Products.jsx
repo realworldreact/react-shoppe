@@ -3,6 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import Product from './Product.jsx';
 
 const propTypes = {
+  addToCart: PropTypes.func,
   products: PropTypes.array
 };
 
@@ -16,7 +17,7 @@ export default class Products extends Component {
 
   render() {
     const { search } = this.state;
-    const { products } = this.props;
+    const { addToCart, products } = this.props;
     const searchRegex = new RegExp(search);
     return (
       <div className='products'>
@@ -40,16 +41,18 @@ export default class Products extends Component {
                 }
                 return true;
               })
-              .map(({ name, description, image }) => {
-            return (
-              <Product
-                description={ description }
-                image={ image }
-                key={ name }
-                name={ name }
-              />
-            );
-          }) }
+              .map(({ id, name, description, image }) => {
+                return (
+                  <Product
+                    description={ description }
+                    handleClick={ addToCart }
+                    id={ id }
+                    image={ image }
+                    key={ name }
+                    name={ name }
+                  />
+                );
+              }) }
         </div>
       </div>
     );

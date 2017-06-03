@@ -4,8 +4,9 @@ import { Route } from 'react-router-dom';
 import Nav from './Nav/Nav.jsx';
 import Products from './Products/Products.jsx';
 import Auth from './Auth/Auth.jsx';
+import Cart from './Cart/Cart.jsx';
 
-import { fetchUser, fetchProducts } from './api.js';
+import { fetchUser, fetchProducts, makeCartApiCall } from './api.js';
 
 const propTypes = {};
 
@@ -19,6 +20,7 @@ export default class App extends Component {
       userId: ''
     };
     this.handleAuth = this.handleAuth.bind(this);
+    this.addToCart = this.addToCart.bind(this);
   }
 
   componentDidMount() {
@@ -41,13 +43,35 @@ export default class App extends Component {
     this.setState({
       user,
       token: user.accessToken,
-      userId: user.id
+      userId: user.id,
+      cart: user.cart
+    });
+  }
+
+  addToCart(itemId) {
+    const method = 'ADD_TO_CART';
+    const { token, userId } = this.state;
+    console.log('attemt to add: ', itemId);
+    console.log('userId: ', userId);
+    makeCartApiCall(
+      method,
+      userId,
+      token,
+      itemId
+    ).then(({ cart }) => {
+      console.log('cart: ', cart);
+      this.setState({
+        cart
+      });
     });
   }
 
   render() {
     const { products, user } = this.state;
-    const { cart, username } = user;
+    const {
+      cart = [],
+      username
+    } = user;
     return (
       <div className='app'>
         <Nav
@@ -60,7 +84,12 @@ export default class App extends Component {
             exact={ true }
             path='/'
             render={ () => {
-              return <Products products={products} />;
+              return (
+                <Products
+                  addToCart={ this.addToCart }
+                  products={products}
+                />
+              );
             }}
           />
           <Route
@@ -73,6 +102,12 @@ export default class App extends Component {
             path='/log-in'
             render={ () => {
               return <Auth isSignUp={ false } onSubmit={ this.handleAuth }/>;
+            }}
+          />
+          <Route
+            path='/cart'
+            render={() => {
+              return <Cart />;
             }}
           />
         </div>
