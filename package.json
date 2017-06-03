@@ -13,7 +13,7 @@
     "start": "npm run create-env && gulp",
     "seed": "npm run create-env && node seed",
     "create-env": "node -e \"var fs = require('fs'); fs.access('./.env', function(err) { if (err) { console.log('\\n\\ncreating .env file\\n\\n'); return fs.writeFileSync('./.env', ''); } console.log('\\n\\n.env file present\\n\\n'); });\"",
-    "static": "httpster -p 3000 -d public"
+    "static": "httpster -p 3003 -d public"
   },
   "dependencies": {
     "babel-core": "^6.14.0",
