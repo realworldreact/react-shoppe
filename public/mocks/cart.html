@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cart</title>
+  <link href="/css/index.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div class="app">
+    <nav class="nav" >
+      <a class="nav-logo"  href="/"><img  src="/images/navbar/Logo.png"></a>
+      <div class="nav-list nav-list-named"  style="margin-left: 2em">
+        <div >
+          <ul>
+            <li class="nav-list-user-logo" ><img src="/images/navbar/UserLogo.png"></li>
+            <li class="nav-list-user-name" >john doe</li>
+            <li class="nav-list-cart">
+              <a href="/cart"><img src="/images/navbar/CartIcon.png">1</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="app-child" >
+      <div class="cart">
+        <div class="cart-title">
+          <h2>My Cart</h2>
+        </div>
+        <div class="cart-list">
+          <div class="cart-list-row">
+            <div class="cart-list-item">
+              Item
+            </div>
+            <div class="cart-list-item">
+              Qty
+            </div>
+            <div class="cart-list-item">
+              Price
+            </div>
+            <div class="cart-list-item"></div>
+          </div>
+          <div class="cart-list-row">
+            <div class="cart-list-item cart-list-product">
+              <div class="cart-list-stock-photo"><img src="/images/products/apricot.png"></div>
+              <div class="cart-list-info">
+                <div class="cart-list-info-name">
+                  Apricots
+                </div>
+                <div class="cart-list-info-name">
+                  $ 1.50
+                </div>
+              </div>
+            </div>
+            <div class="cart-list-item cart-count-item">
+              <div class="cart-count-up"><img src="/images/cart/AddOneItem.png"></div>
+              <div class="cart-count-count">
+                3
+              </div>
+              <div class="cart-count-down"><img src="/images/cart/SubtractOneItem.png"></div>
+            </div>
+            <div class="cart-list-item">
+              $4.50
+            </div>
+            <div class="cart-list-item cart-delete-item"><img src="/images/cart/DeleteItem.png"></div>
+          </div>
+          <div class="cart-list-row">
+            <div class="cart-list-item"></div>
+            <div class="cart-list-item"></div>
+            <div class="cart-list-item">
+              Total
+            </div>
+            <div class="cart-list-item">
+              $4.50
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

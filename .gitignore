@@ -18,6 +18,7 @@ coverage
 node_modules
 npm-debug.log
 !public/images
+!public/mocks
 public/css
 public/js
 *.env

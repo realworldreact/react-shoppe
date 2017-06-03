@@ -12,7 +12,8 @@
     "lint": "eslint .",
     "start": "npm run create-env && gulp",
     "seed": "npm run create-env && node seed",
-    "create-env": "node -e \"var fs = require('fs'); fs.access('./.env', function(err) { if (err) { console.log('\\n\\ncreating .env file\\n\\n'); return fs.writeFileSync('./.env', ''); } console.log('\\n\\n.env file present\\n\\n'); });\""
+    "create-env": "node -e \"var fs = require('fs'); fs.access('./.env', function(err) { if (err) { console.log('\\n\\ncreating .env file\\n\\n'); return fs.writeFileSync('./.env', ''); } console.log('\\n\\n.env file present\\n\\n'); });\"",
+    "static": "httpster -p 3000 -d public"
   },
   "dependencies": {
     "babel-core": "^6.14.0",
@@ -68,6 +69,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stylus": "^2.5.0",
     "gulp-util": "^3.0.7",
+    "httpster": "^1.0.3",
     "json-loader": "^0.5.4",
     "kouto-swiss": "^0.12.0",
     "nodemon": "^1.10.2",
