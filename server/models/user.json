@@ -3,6 +3,7 @@
   "base": "User",
   "strict": true,
   "idInjection": true,
+  "injectOptionsFromRemoteContext": true,
   "options": {
     "validateUpsert": true
   },
