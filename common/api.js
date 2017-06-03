@@ -12,16 +12,6 @@ export function fetchProducts() {
   return makeFetch('/api/products');
 }
 
-export function toggleFav(userId, token, itemId) {
-  const options = {
-    ...defaultOptions,
-    body: JSON.stringify({ itemId })
-  };
-  return makeFetch(
-    `${api}/${userId}/fav?access_token=${token}`,
-    options
-  );
-}
 export const cartMethods = {
   ADD_TO_CART: 'add-to-cart',
   REMOVE_FROM_CART: 'remove-from-cart',
@@ -37,38 +27,7 @@ export function makeCartApiCall(type, id, token, itemId) {
   return makeFetch(url, options);
 }
 
-// export function addToCart(userId, token, itemId) {
-//   const options = {
-//     ...defaultOptions,
-//     body: JSON.stringify({ itemId })
-//   };
-//   return makeFetch(
-//     `${api}/${userId}/add-to-cart?access_token=${token}`,
-//     options
-//   );
-// }
-
-// export function removeFromCart(userId, token, itemId) {
-//   const options = {
-//     ...defaultOptions,
-//     body: JSON.stringify({ itemId })
-//   };
-//   return makeFetch(
-//     `${api}/${userId}/remove-from-cart?access_token=${token}`,
-//     options
-//   );
-// }
-
-// export function deleteFromCart(userId, token, itemId) {
-//   const options = {
-//     ...defaultOptions,
-//     body: JSON.stringify({ itemId })
-//   };
-//   return makeFetch(
-//     `${api}/${userId}/delete-from-cart?access_token=${token}`,
-//     options
-//   );
-// }
+makeCartApiCall.cartMethods = cartMethods;
 
 export function fetchUser(id, token) {
   const options = {
