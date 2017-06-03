@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 
 import Nav from './Nav/Nav.jsx';
 import Products from './Products/Products.jsx';
+import Auth from './Auth/Auth.jsx';
 
 import { fetchProducts } from './api.js';
 
@@ -12,13 +13,21 @@ export default class App extends Component {
   constructor(...args) {
     super(...args);
     this.state = {
-      products: []
+      products: [],
+      user: {}
     };
+    this.handleAuth = this.handleAuth.bind(this);
   }
 
   componentDidMount() {
     fetchProducts().then((products) => {
       this.setState({ products });
+    });
+  }
+
+  handleAuth(user) {
+    this.setState({
+      user
     });
   }
 
@@ -29,10 +38,23 @@ export default class App extends Component {
         <Nav />
         <div className='app-child'>
           <Route
+            exact={ true }
+            path='/'
             render={ () => {
               return <Products products={products} />;
             }}
-            path='/'
+          />
+          <Route
+            path='/sign-up'
+            render={ () => {
+              return <Auth onSubmit={ this.handleAuth }/>;
+            }}
+          />
+          <Route
+            path='/log-in'
+            render={ () => {
+              return <Auth onSubmit={ this.handleAuth }/>;
+            }}
           />
         </div>
       </div>
