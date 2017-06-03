@@ -47,13 +47,13 @@ export default class App extends Component {
           <Route
             path='/sign-up'
             render={ () => {
-              return <Auth onSubmit={ this.handleAuth }/>;
-            }}
+              return <Auth isSignUp={ true } onSubmit={ this.handleAuth }/>;
+            } }
           />
           <Route
             path='/log-in'
             render={ () => {
-              return <Auth onSubmit={ this.handleAuth }/>;
+              return <Auth isSignUp={ false } onSubmit={ this.handleAuth }/>;
             }}
           />
         </div>
