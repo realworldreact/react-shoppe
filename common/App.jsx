@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+import _ from 'lodash';
 
 import Nav from './Nav/Nav.jsx';
 import Products from './Products/Products.jsx';
@@ -120,7 +121,22 @@ export default class App extends Component {
           <Route
             path='/cart'
             render={() => {
-              return <Cart />;
+              return (
+                <Cart
+                  cart={ cart.map((cartItem) => {
+                    const productIndex = _.findIndex(products, (product) => {
+                      return product.id === cartItem.id;
+                    });
+                    const product = products[productIndex];
+                    const finalItem = {
+                      ...product,
+                      ...cartItem,
+                      totalItem: product.price * cartItem.count
+                    };
+                    return finalItem;
+                  }) }
+                />
+              );
             }}
           />
         </div>
