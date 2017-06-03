@@ -5,7 +5,7 @@ import Nav from './Nav/Nav.jsx';
 import Products from './Products/Products.jsx';
 import Auth from './Auth/Auth.jsx';
 
-import { fetchProducts } from './api.js';
+import { fetchUser, fetchProducts } from './api.js';
 
 const propTypes = {};
 
@@ -14,20 +14,34 @@ export default class App extends Component {
     super(...args);
     this.state = {
       products: [],
-      user: {}
+      user: {},
+      token: '',
+      userId: ''
     };
     this.handleAuth = this.handleAuth.bind(this);
   }
 
   componentDidMount() {
+    const id = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    if (id && token) {
+      fetchUser(id, token).then(user => {
+        console.log('user: ', user);
+        this.handleAuth(user);
+      });
+    }
     fetchProducts().then((products) => {
       this.setState({ products });
     });
   }
 
   handleAuth(user) {
+    localStorage.setItem('userId', user.id);
+    localStorage.setItem('token', user.accessToken);
     this.setState({
-      user
+      user,
+      token: user.accessToken,
+      userId: user.id
     });
   }
 
