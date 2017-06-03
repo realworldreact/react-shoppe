@@ -33,14 +33,13 @@ var syncPort = yargs.argv['sync-port'] || process.env.SYNC_PORT || '3000';
 var syncUIPort = yargs.argv['sync-ui-port'] ||
   process.env.SYNC_UI_PORT ||
   parseInt(syncPort, 10) + 2;
-
+var isNotSSR = !process.env.SSR;
 var paths = {
   server: pckg.main,
   serverIgnore: [
-    './client/**/*',
-    './package.json',
-    // comment the following for SSR
-    './common/**/*'
+    'client/**/*',
+    'package.json',
+    'gulpfile.js'
   ],
   stylus: './common/index.styl',
   stylusFiles: [
@@ -53,6 +52,11 @@ var paths = {
     './public/main.css'
   ]
 };
+
+if (isNotSSR) {
+  debug('no ssr');
+  paths.serverIgnore.push('common/**/*');
+}
 
 function errorHandler() {
   var args = Array.prototype.slice.call(arguments);
