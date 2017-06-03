@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { auth } from '../api.js';
 
@@ -9,6 +10,9 @@ const propTypes = {
 export default class Auth extends Component {
   constructor(...args) {
     super(...args);
+    this.state = {
+      isAuthed: false
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -18,10 +22,15 @@ export default class Auth extends Component {
       .then(user => {
         console.log('user: ', user);
         this.props.onSubmit(user);
+        this.setState({ isAuthed: true });
       });
   }
 
   render() {
+    const { isAuthed } = this.state;
+    if (isAuthed) {
+      return <Redirect to='/' />;
+    }
     return (
       <div className="auth">
         <form onSubmit={ this.handleSubmit }>
