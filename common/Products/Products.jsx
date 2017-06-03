@@ -17,6 +17,7 @@ export default class Products extends Component {
   render() {
     const { search } = this.state;
     const { products } = this.props;
+    const searchRegex = new RegExp(search);
     return (
       <div className='products'>
         <div className='products-search'>
@@ -33,6 +34,12 @@ export default class Products extends Component {
         </div>
         <div className='products-lists'>
           { products
+              .filter(({ name }) => {
+                if (search.length > 2) {
+                  return searchRegex.test(name);
+                }
+                return true;
+              })
               .map(({ name, description, image }) => {
             return (
               <Product
