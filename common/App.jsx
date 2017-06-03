@@ -46,10 +46,15 @@ export default class App extends Component {
   }
 
   render() {
-    const { products } = this.state;
+    const { products, user } = this.state;
+    const { cart, username } = user;
     return (
       <div className='app'>
-        <Nav />
+        <Nav
+          isSignedIn={ !!username }
+          name={ username }
+          numOfItems={ cart.length }
+        />
         <div className='app-child'>
           <Route
             exact={ true }

@@ -9,9 +9,7 @@ const propTypes = {
 
 export default class Nav extends Component {
   render() {
-    const isSignedIn = true;
-    const name = 'John Doe';
-    const numOfItems = 5;
+    const { isSignedIn, name, numOfItems } = this.props;
     let navListClassName = 'nav-list';
     let leftNav = null;
     if (isSignedIn) {
@@ -23,18 +21,18 @@ export default class Nav extends Component {
           </li>
           <li className='nav-list-user-name'>{ name }</li>
           <li className='nav-list-cart'>
-            <a href='/cart'>
+            <Link to='/cart'>
               <img src='/images/navbar/CartIcon.png' />
               { numOfItems }
-            </a>
+            </Link>
           </li>
         </ul>
       );
     } else {
       leftNav = (
         <ul>
-          <li>Sign Up</li>
-          <li>Log In</li>
+          <li><Link to='/sign-up'>Sign Up</Link></li>
+          <li><Link to='/log-in'>Log In</Link></li>
         </ul>
       );
     }
