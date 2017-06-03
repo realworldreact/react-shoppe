@@ -17,7 +17,8 @@ export default class App extends Component {
       products: [],
       user: {},
       token: '',
-      userId: ''
+      userId: '',
+      cart: []
     };
     this.handleAuth = this.handleAuth.bind(this);
     this.addToCart = this.addToCart.bind(this);
@@ -67,11 +68,12 @@ export default class App extends Component {
   }
 
   render() {
-    const { products, user } = this.state;
     const {
-      cart = [],
-      username
-    } = user;
+      products,
+      user,
+      cart
+    } = this.state;
+    const { username } = user;
     return (
       <div className='app'>
         <Nav
@@ -87,7 +89,18 @@ export default class App extends Component {
               return (
                 <Products
                   addToCart={ this.addToCart }
-                  products={products}
+                  products={products.map((product) => {
+                    const isInCart = cart.some((cart) => {
+                      return product.id === cart.id;
+                    });
+                    if (isInCart) {
+                      return {
+                        ...product,
+                        isInCart
+                      };
+                    }
+                    return product;
+                  })}
                 />
               );
             }}

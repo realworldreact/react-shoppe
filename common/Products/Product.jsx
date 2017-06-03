@@ -3,6 +3,7 @@ import React, { PropTypes } from 'react';
 const propTypes = {
   id: PropTypes.number,
   image: PropTypes.string,
+  isInCart: PropTypes.bool,
   name: PropTypes.string,
   description: PropTypes.string,
   handleClick: PropTypes.func
@@ -11,10 +12,12 @@ const propTypes = {
 export default function Product({
   id,
   image,
+  isInCart,
   name,
   description,
   handleClick
 }) {
+  const cartImage = isInCart ? 'Selected' : 'Unselected';
   return (
     <div className='products-item'>
       <div className='products-item-stock-photo'>
@@ -29,7 +32,7 @@ export default function Product({
       <div className='products-item-footer'>
         <div className='products-item-cart'>
           <button onClick={ () => handleClick(id) }>
-            <img src='/images/AddToCartUnselected.png' />
+            <img src={ '/images/AddToCart' + cartImage + '.png' } />
           </button>
         </div>
       </div>

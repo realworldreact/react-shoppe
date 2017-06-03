@@ -41,13 +41,14 @@ export default class Products extends Component {
                 }
                 return true;
               })
-              .map(({ id, name, description, image }) => {
+              .map(({ id, name, description, image, isInCart }) => {
                 return (
                   <Product
                     description={ description }
                     handleClick={ addToCart }
                     id={ id }
                     image={ image }
+                    isInCart={ isInCart }
                     key={ name }
                     name={ name }
                   />
